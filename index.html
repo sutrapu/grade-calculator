@@ -1,15 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Free High School GPA Calculator</title>
-
-<meta name="description"
-content="Free GPA Calculator for high school students. Calculate weighted and unweighted GPA, final grades, semester comparison, study planner and more." />
-
-<script src="https://cdn.tailwindcss.com"></script>
+<title>Ultimate GPA Calculator</title>
 
 <style>
 
@@ -20,59 +15,28 @@ content="Free GPA Calculator for high school students. Calculate weighted and un
 }
 
 body{
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-    background:#f5f7fb;
-    min-height:100vh;
+    font-family:Arial, sans-serif;
+    background:#f4f7fb;
     color:#1f2937;
 }
 
-/* ========================= */
-/* HEADER */
-/* ========================= */
+/* ================= HEADER ================= */
 
 .hero{
-    background:linear-gradient(135deg,#163c66 0%,#2563eb 50%,#60a5fa 100%);
-    padding:30px 20px 140px;
+    background:linear-gradient(135deg,#163c66,#2563eb,#60a5fa);
+    padding:40px 20px 140px;
     text-align:center;
     position:relative;
-    z-index:1;
-}
-
-.hero::before{
-    content:"";
-    position:absolute;
-    width:400px;
-    height:400px;
-    background:rgba(255,255,255,0.06);
-    border-radius:50%;
-    top:-250px;
-    right:-120px;
 }
 
 .hero h1{
     color:white;
-    font-size:38px;
-    font-weight:800;
+    font-size:42px;
     margin-bottom:10px;
 }
 
 .hero p{
-    color:rgba(255,255,255,0.85);
-    font-size:15px;
-}
-
-.hero-badge{
-    margin-top:18px;
-    display:inline-flex;
-    align-items:center;
-    gap:10px;
-    background:rgba(255,255,255,0.18);
-    color:white;
-    padding:10px 18px;
-    border-radius:999px;
-    backdrop-filter:blur(10px);
-    font-size:14px;
-    font-weight:600;
+    color:rgba(255,255,255,0.9);
 }
 
 .hero-buttons{
@@ -85,121 +49,91 @@ body{
 
 .hero-buttons button{
     border:none;
-    background:rgba(255,255,255,0.18);
-    color:white;
-    padding:10px 14px;
+    padding:10px 15px;
     border-radius:999px;
-    font-size:12px;
+    background:rgba(255,255,255,0.2);
+    color:white;
     cursor:pointer;
-    transition:0.25s;
-    font-weight:700;
+    font-weight:bold;
 }
 
 .hero-buttons button:hover{
-    transform:translateY(-2px);
-    background:rgba(255,255,255,0.28);
+    background:rgba(255,255,255,0.35);
 }
 
-/* ========================= */
-/* CONTAINER */
-/* ========================= */
+/* ================= CONTAINER ================= */
 
 .container{
     max-width:1100px;
     margin:auto;
-    padding:0 18px 40px;
-    margin-top:-90px;
+    padding:20px;
+    margin-top:-80px;
     position:relative;
     z-index:10;
 }
 
-/* ========================= */
-/* TABS */
-/* ========================= */
+/* ================= TABS ================= */
 
 .tabs{
     background:#111827;
-    padding:10px;
+    padding:12px;
     border-radius:18px;
     display:flex;
     gap:10px;
     overflow-x:auto;
-    margin-bottom:24px;
-    box-shadow:0 10px 30px rgba(0,0,0,0.12);
-
-    position:relative;
-    z-index:100;
+    margin-bottom:25px;
 }
 
-.card{
-    position:relative;
-    z-index:20;
-}
-
-.tabs button{
+.tab-btn{
     border:none;
+    background:transparent;
+    color:#d1d5db;
     padding:12px 18px;
     border-radius:12px;
-    font-weight:700;
-    font-size:14px;
     cursor:pointer;
-    background:transparent;
-    color:rgba(255,255,255,0.7);
-    transition:0.25s;
+    font-weight:bold;
     white-space:nowrap;
 }
 
-.tabs button.active{
+.tab-btn.active{
     background:white;
-    color:#1e293b;
+    color:#111827;
 }
 
-.tabs button:hover{
-    background:rgba(255,255,255,0.1);
-}
-
-/* ========================= */
-/* CARD */
-/* ========================= */
+/* ================= CARD ================= */
 
 .card{
     background:white;
     border-radius:24px;
     padding:30px;
-    box-shadow:0 12px 35px rgba(0,0,0,0.08);
+    box-shadow:0 10px 30px rgba(0,0,0,0.08);
 }
 
 .card h2{
+    margin-bottom:10px;
     font-size:30px;
-    margin-bottom:6px;
-    font-weight:800;
 }
 
-.card p.subtitle{
+.subtitle{
     color:#6b7280;
-    margin-bottom:28px;
+    margin-bottom:25px;
 }
 
-/* ========================= */
-/* TOGGLE */
-/* ========================= */
+/* ================= TOGGLE ================= */
 
 .toggle-group{
     display:flex;
-    gap:12px;
-    margin-bottom:24px;
-    flex-wrap:wrap;
+    gap:10px;
+    margin-bottom:25px;
 }
 
 .toggle-btn{
     border:none;
-    padding:12px 18px;
+    padding:12px 20px;
     border-radius:999px;
     background:#e5e7eb;
-    color:#374151;
     cursor:pointer;
-    font-weight:700;
-    transition:0.25s;
+    font-weight:bold;
 }
 
 .toggle-btn.active{
@@ -207,64 +141,44 @@ body{
     color:white;
 }
 
-/* ========================= */
-/* ROWS */
-/* ========================= */
+/* ================= ROWS ================= */
 
 #gpaRows{
     display:flex;
     flex-direction:column;
-    gap:14px;
+    gap:15px;
 }
 
 .gpa-row{
     display:grid;
-    grid-template-columns: 1.8fr 0.9fr 0.7fr auto;
-    gap:12px;
-    align-items:center;
+    grid-template-columns:2fr 1fr 1fr auto;
+    gap:10px;
 }
 
 .gpa-row input,
 .gpa-row select{
-    width:100%;
     padding:14px;
     border:2px solid #e5e7eb;
     border-radius:14px;
-    outline:none;
-    transition:0.2s;
     font-size:15px;
 }
 
-.gpa-row input:focus,
-.gpa-row select:focus{
-    border-color:#2563eb;
-}
-
 .delete-btn{
-    width:42px;
-    height:42px;
+    width:45px;
     border:none;
     border-radius:50%;
     background:#fee2e2;
-    color:#dc2626;
-    font-size:18px;
+    color:red;
     cursor:pointer;
-    transition:0.2s;
+    font-size:18px;
 }
 
-.delete-btn:hover{
-    transform:scale(1.08);
-}
-
-/* ========================= */
-/* BUTTONS */
-/* ========================= */
+/* ================= BUTTONS ================= */
 
 .actions{
-    margin-top:22px;
+    margin-top:25px;
     display:flex;
-    gap:14px;
-    flex-wrap:wrap;
+    gap:15px;
 }
 
 .btn{
@@ -272,78 +186,48 @@ body{
     border:none;
     padding:16px;
     border-radius:16px;
-    font-weight:800;
     cursor:pointer;
-    transition:0.25s;
+    font-weight:bold;
     font-size:15px;
-}
-
-.btn:hover{
-    transform:translateY(-2px);
 }
 
 .btn-primary{
     background:#2563eb;
     color:white;
-    box-shadow:0 8px 20px rgba(37,99,235,0.3);
 }
 
 .btn-secondary{
-    background:#f3f4f6;
-    color:#374151;
+    background:#e5e7eb;
 }
 
-/* ========================= */
-/* RESULT */
-/* ========================= */
+/* ================= RESULT ================= */
 
 .result{
-    margin-top:28px;
-    background:linear-gradient(135deg,#eff6ff,#dbeafe);
-    border-radius:24px;
-    padding:28px;
+    margin-top:30px;
+    background:#eff6ff;
+    border-radius:20px;
+    padding:25px;
     display:none;
-    animation:fade 0.4s ease;
-}
-
-@keyframes fade{
-    from{
-        opacity:0;
-        transform:translateY(10px);
-    }
-    to{
-        opacity:1;
-        transform:translateY(0);
-    }
-}
-
-.result h3{
-    font-size:16px;
-    color:#6b7280;
     text-align:center;
-    margin-bottom:10px;
 }
 
 .gpa-value{
-    font-size:72px;
-    text-align:center;
+    font-size:70px;
     font-weight:900;
     color:#16a34a;
-    line-height:1;
 }
 
 .letter{
-    text-align:center;
-    font-size:26px;
-    font-weight:800;
+    font-size:28px;
     margin-top:10px;
+    font-weight:bold;
 }
 
 .progress{
-    margin-top:22px;
-    height:18px;
+    margin-top:20px;
     background:#d1d5db;
     border-radius:999px;
+    height:16px;
     overflow:hidden;
 }
 
@@ -355,27 +239,30 @@ body{
 }
 
 .insight{
-    margin-top:24px;
+    margin-top:20px;
     background:white;
-    border-radius:18px;
-    padding:20px;
-    border:1px solid #dbeafe;
+    padding:18px;
+    border-radius:16px;
 }
 
-.insight h4{
-    color:#7c3aed;
-    margin-bottom:10px;
+/* ================= INPUTS ================= */
+
+.input-box{
+    width:100%;
+    padding:14px;
+    border:2px solid #e5e7eb;
+    border-radius:14px;
+    margin-bottom:15px;
+    font-size:15px;
 }
 
-/* ========================= */
-/* TRUST */
-/* ========================= */
+/* ================= TRUST ================= */
 
 .trust{
-    margin-top:28px;
+    margin-top:30px;
     display:grid;
     grid-template-columns:repeat(3,1fr);
-    gap:18px;
+    gap:20px;
 }
 
 .trust-card{
@@ -383,73 +270,15 @@ body{
     padding:22px;
     border-radius:20px;
     text-align:center;
-    box-shadow:0 8px 20px rgba(0,0,0,0.06);
+    box-shadow:0 6px 20px rgba(0,0,0,0.06);
 }
 
-.trust-card h5{
-    margin-top:10px;
-    font-size:16px;
-}
-
-.trust-card p{
-    margin-top:6px;
-    color:#6b7280;
-    font-size:14px;
-}
-
-/* ========================= */
-/* GPA TABLE */
-/* ========================= */
-
-.scale-table{
-    margin-top:26px;
-    background:white;
-    border-radius:20px;
-    overflow:hidden;
-    box-shadow:0 8px 20px rgba(0,0,0,0.05);
-}
-
-.scale-table table{
-    width:100%;
-    border-collapse:collapse;
-}
-
-.scale-table th{
-    background:#2563eb;
-    color:white;
-    padding:16px;
-    text-align:left;
-}
-
-.scale-table td{
-    padding:16px;
-    border-bottom:1px solid #e5e7eb;
-}
-
-/* ========================= */
-/* FOOTER */
-/* ========================= */
-
-.footer{
-    margin-top:34px;
-    text-align:center;
-    color:#9ca3af;
-    font-size:13px;
-    line-height:1.7;
-}
-
-/* ========================= */
-/* MOBILE */
-/* ========================= */
+/* ================= MOBILE ================= */
 
 @media(max-width:768px){
 
     .hero h1{
-        font-size:28px;
-    }
-
-    .card{
-        padding:22px;
+        font-size:30px;
     }
 
     .gpa-row{
@@ -465,7 +294,7 @@ body{
     }
 
     .gpa-value{
-        font-size:56px;
+        font-size:55px;
     }
 }
 
@@ -483,15 +312,11 @@ body{
         <button onclick="window.print()">🖨 Print</button>
     </div>
 
-    <h1>🎓 High School GPA Calculator</h1>
+    <h1>🎓 Ultimate GPA Calculator</h1>
 
     <p>
-        GPA Calculator • Final Grade • Semester Compare • Study Planner
+        GPA Calculator • Final Grade • Study Planner • Semester Compare
     </p>
-
-    <div class="hero-badge">
-        🔥 Trusted by students worldwide • 100% Free
-    </div>
 
 </section>
 
@@ -502,82 +327,227 @@ body{
     <!-- TABS -->
 
     <div class="tabs">
-        <button class="active">📊 GPA Calculator</button>
-        <button>🎯 Final Grade</button>
-        <button>📅 Study Planner</button>
-        <button>📈 Semester Compare</button>
+
+        <button class="tab-btn active"
+        onclick="showTab('gpa', this)">
+            📊 GPA Calculator
+        </button>
+
+        <button class="tab-btn"
+        onclick="showTab('final', this)">
+            🎯 Final Grade
+        </button>
+
+        <button class="tab-btn"
+        onclick="showTab('study', this)">
+            📅 Study Planner
+        </button>
+
+        <button class="tab-btn"
+        onclick="showTab('semester', this)">
+            📈 Semester Compare
+        </button>
+
     </div>
 
-    <!-- CARD -->
+    <!-- GPA TAB -->
 
-    <div class="card">
+    <div id="gpa" class="tab-content">
 
-        <h2>Calculate Your GPA</h2>
+        <div class="card">
 
-        <p class="subtitle">
-            Add your classes below to instantly calculate your GPA.
-        </p>
+            <h2>Calculate Your GPA</h2>
 
-        <!-- TOGGLE -->
+            <p class="subtitle">
+                Add your classes below.
+            </p>
 
-        <div class="toggle-group">
-            <button class="toggle-btn active"
-            onclick="setScale('unweighted',this)">
-                Unweighted (4.0)
-            </button>
+            <div class="toggle-group">
 
-            <button class="toggle-btn"
-            onclick="setScale('weighted',this)">
-                Weighted (5.0)
-            </button>
+                <button class="toggle-btn active"
+                onclick="setScale('unweighted',this)">
+                    Unweighted
+                </button>
+
+                <button class="toggle-btn"
+                onclick="setScale('weighted',this)">
+                    Weighted
+                </button>
+
+            </div>
+
+            <div id="gpaRows"></div>
+
+            <div class="actions">
+
+                <button class="btn btn-secondary"
+                onclick="addRow()">
+                    + Add Class
+                </button>
+
+                <button class="btn btn-primary"
+                onclick="calculateGPA()">
+                    Calculate GPA
+                </button>
+
+            </div>
+
+            <div class="result" id="result">
+
+                <div class="gpa-value" id="gpaValue">
+                    4.00
+                </div>
+
+                <div class="letter" id="letterGrade">
+                    A
+                </div>
+
+                <div class="progress">
+                    <div class="progress-bar"
+                    id="progressBar"></div>
+                </div>
+
+                <div class="insight" id="insightText">
+                    Amazing work!
+                </div>
+
+            </div>
+
         </div>
 
-        <!-- ROWS -->
+    </div>
 
-        <div id="gpaRows"></div>
+    <!-- FINAL GRADE -->
 
-        <!-- BUTTONS -->
+    <div id="final"
+    class="tab-content"
+    style="display:none;">
 
-        <div class="actions">
+        <div class="card">
 
-            <button class="btn btn-secondary"
-            onclick="addRow()">
-                + Add Class
-            </button>
+            <h2>🎯 Final Grade Calculator</h2>
+
+            <p class="subtitle">
+                Calculate the score you need on your final exam.
+            </p>
+
+            <input type="number"
+            id="currentGrade"
+            class="input-box"
+            placeholder="Current Grade %">
+
+            <input type="number"
+            id="desiredGrade"
+            class="input-box"
+            placeholder="Desired Final Grade %">
+
+            <input type="number"
+            id="finalWorth"
+            class="input-box"
+            placeholder="Final Exam Worth %">
 
             <button class="btn btn-primary"
-            onclick="calculateGPA()">
-                Calculate My GPA ✨
+            onclick="calculateFinalGrade()">
+                Calculate
             </button>
+
+            <div class="result"
+            id="finalResult">
+
+                <div class="gpa-value"
+                id="neededScore">
+                    90%
+                </div>
+
+                <div class="insight">
+                    Score needed on your final exam.
+                </div>
+
+            </div>
 
         </div>
 
-        <!-- RESULT -->
+    </div>
 
-        <div class="result" id="result">
+    <!-- STUDY TAB -->
 
-            <h3>Your GPA</h3>
+    <div id="study"
+    class="tab-content"
+    style="display:none;">
 
-            <div class="gpa-value" id="gpaValue">
-                4.00
+        <div class="card">
+
+            <h2>📅 Study Planner</h2>
+
+            <p class="subtitle">
+                Create a daily study goal.
+            </p>
+
+            <input type="text"
+            id="studySubject"
+            class="input-box"
+            placeholder="Subject">
+
+            <input type="number"
+            id="studyHours"
+            class="input-box"
+            placeholder="Hours to Study">
+
+            <button class="btn btn-primary"
+            onclick="generateStudyPlan()">
+                Generate Plan
+            </button>
+
+            <div class="result"
+            id="studyResult">
+
+                <div class="insight"
+                id="studyPlan">
+                    Study plan appears here.
+                </div>
+
             </div>
 
-            <div class="letter" id="letterGrade">
-                A
-            </div>
+        </div>
 
-            <div class="progress">
-                <div class="progress-bar"
-                id="progressBar"></div>
-            </div>
+    </div>
 
-            <div class="insight">
+    <!-- SEMESTER TAB -->
 
-                <h4>🤖 Smart Insight</h4>
+    <div id="semester"
+    class="tab-content"
+    style="display:none;">
 
-                <p id="insightText">
-                    Excellent performance! Keep maintaining strong study habits.
-                </p>
+        <div class="card">
+
+            <h2>📈 Semester Comparison</h2>
+
+            <p class="subtitle">
+                Compare your semester GPAs.
+            </p>
+
+            <input type="number"
+            id="semester1"
+            class="input-box"
+            placeholder="Semester 1 GPA">
+
+            <input type="number"
+            id="semester2"
+            class="input-box"
+            placeholder="Semester 2 GPA">
+
+            <button class="btn btn-primary"
+            onclick="compareSemester()">
+                Compare
+            </button>
+
+            <div class="result"
+            id="semesterResult">
+
+                <div class="insight"
+                id="semesterText">
+                    Semester comparison appears here.
+                </div>
 
             </div>
 
@@ -590,87 +560,19 @@ body{
     <div class="trust">
 
         <div class="trust-card">
-            🎓
-            <h5>Weighted & Unweighted</h5>
-            <p>
-                Supports all major GPA scales used in high schools.
-            </p>
+            <h3>🎓 Accurate</h3>
+            <p>Supports weighted and unweighted GPA.</p>
         </div>
 
         <div class="trust-card">
-            ⚡
-            <h5>Instant Results</h5>
-            <p>
-                Calculate your GPA in seconds with real-time feedback.
-            </p>
+            <h3>⚡ Fast</h3>
+            <p>Instant calculations and results.</p>
         </div>
 
         <div class="trust-card">
-            🔒
-            <h5>100% Free</h5>
-            <p>
-                No signup required. Unlimited calculations anytime.
-            </p>
+            <h3>🔒 Free</h3>
+            <p>No signup required.</p>
         </div>
-
-    </div>
-
-    <!-- GPA SCALE -->
-
-    <div class="scale-table">
-
-        <table>
-
-            <thead>
-                <tr>
-                    <th>Letter Grade</th>
-                    <th>GPA Points</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                <tr>
-                    <td>A</td>
-                    <td>4.0</td>
-                </tr>
-
-                <tr>
-                    <td>B+</td>
-                    <td>3.3</td>
-                </tr>
-
-                <tr>
-                    <td>B</td>
-                    <td>3.0</td>
-                </tr>
-
-                <tr>
-                    <td>C</td>
-                    <td>2.0</td>
-                </tr>
-
-                <tr>
-                    <td>D</td>
-                    <td>1.0</td>
-                </tr>
-
-                <tr>
-                    <td>F</td>
-                    <td>0.0</td>
-                </tr>
-            </tbody>
-
-        </table>
-
-    </div>
-
-    <!-- FOOTER -->
-
-    <div class="footer">
-
-        This GPA calculator is for informational purposes only.<br>
-
-        Always confirm grading policies with your school counselor or district.
 
     </div>
 
@@ -678,35 +580,49 @@ body{
 
 <script>
 
-/* ========================= */
-/* GLOBALS */
-/* ========================= */
+/* ================= TABS ================= */
+
+function showTab(tabId, button){
+
+    document.querySelectorAll(".tab-content")
+    .forEach(tab=>{
+        tab.style.display = "none";
+    });
+
+    document.querySelectorAll(".tab-btn")
+    .forEach(btn=>{
+        btn.classList.remove("active");
+    });
+
+    document.getElementById(tabId)
+    .style.display = "block";
+
+    button.classList.add("active");
+}
+
+/* ================= GPA ================= */
 
 let scale = "unweighted";
 
 const gradeMap = {
-    "A":4.0,
+    "A":4,
     "A-":3.7,
     "B+":3.3,
-    "B":3.0,
+    "B":3,
     "B-":2.7,
     "C+":2.3,
-    "C":2.0,
-    "C-":1.7,
-    "D+":1.3,
-    "D":1.0,
-    "F":0.0
+    "C":2,
+    "D":1,
+    "F":0
 };
-
-/* ========================= */
-/* ADD ROW */
-/* ========================= */
 
 function addRow(){
 
-    const container = document.getElementById("gpaRows");
+    const rows =
+    document.getElementById("gpaRows");
 
-    const row = document.createElement("div");
+    const row =
+    document.createElement("div");
 
     row.className = "gpa-row";
 
@@ -716,9 +632,7 @@ function addRow(){
         placeholder="Class Name">
 
         <select class="grade">
-
             <option value="">Grade</option>
-
             <option>A</option>
             <option>A-</option>
             <option>B+</option>
@@ -726,16 +640,12 @@ function addRow(){
             <option>B-</option>
             <option>C+</option>
             <option>C</option>
-            <option>C-</option>
-            <option>D+</option>
             <option>D</option>
             <option>F</option>
-
         </select>
 
         <input type="number"
-        class="credits"
-        placeholder="Credits"
+        class="credit"
         value="1"
         min="1">
 
@@ -746,34 +656,24 @@ function addRow(){
 
     `;
 
-    container.appendChild(row);
+    rows.appendChild(row);
 }
-
-/* ========================= */
-/* STARTER ROWS */
-/* ========================= */
 
 for(let i=0;i<4;i++){
     addRow();
 }
-
-/* ========================= */
-/* GPA SCALE */
-/* ========================= */
 
 function setScale(type,btn){
 
     scale = type;
 
     document.querySelectorAll(".toggle-btn")
-    .forEach(b=>b.classList.remove("active"));
+    .forEach(button=>{
+        button.classList.remove("active");
+    });
 
     btn.classList.add("active");
 }
-
-/* ========================= */
-/* GPA CALC */
-/* ========================= */
 
 function calculateGPA(){
 
@@ -781,7 +681,7 @@ function calculateGPA(){
     document.querySelectorAll(".grade");
 
     const credits =
-    document.querySelectorAll(".credits");
+    document.querySelectorAll(".credit");
 
     let totalPoints = 0;
     let totalCredits = 0;
@@ -789,9 +689,10 @@ function calculateGPA(){
     for(let i=0;i<grades.length;i++){
 
         const grade = grades[i].value;
-        const credit = parseFloat(credits[i].value);
+        const credit =
+        parseFloat(credits[i].value);
 
-        if(!grade || !credit) continue;
+        if(!grade) continue;
 
         let points = gradeMap[grade];
 
@@ -804,7 +705,7 @@ function calculateGPA(){
     }
 
     if(totalCredits === 0){
-        alert("Please enter at least one class.");
+        alert("Please enter grades.");
         return;
     }
 
@@ -816,19 +717,19 @@ function calculateGPA(){
 
     if(gpa >= 3.7){
         letter = "A";
-        insight = "🌟 Outstanding performance! You're doing amazing academically.";
+        insight = "🌟 Excellent academic performance!";
     }
-    else if(gpa >= 3.0){
+    else if(gpa >= 3){
         letter = "B";
-        insight = "👏 Strong GPA! Keep staying consistent with your study habits.";
+        insight = "👏 Great job!";
     }
-    else if(gpa >= 2.0){
+    else if(gpa >= 2){
         letter = "C";
-        insight = "📚 You're passing, but there’s room for improvement.";
+        insight = "📚 Keep improving!";
     }
     else{
         letter = "D/F";
-        insight = "⚠️ Consider extra study support and focus on weak subjects.";
+        insight = "⚠️ Focus more on weak subjects.";
     }
 
     document.getElementById("result")
@@ -843,19 +744,114 @@ function calculateGPA(){
     document.getElementById("insightText")
     .innerText = insight;
 
-    const maxScale =
-    scale === "weighted" ? 5 : 4;
-
     const width =
-    (gpa / maxScale) * 100;
+    (gpa / (scale === "weighted" ? 5 : 4))
+    * 100;
 
     document.getElementById("progressBar")
     .style.width = width + "%";
 }
 
-/* ========================= */
-/* DARK MODE */
-/* ========================= */
+/* ================= FINAL GRADE ================= */
+
+function calculateFinalGrade(){
+
+    const current =
+    parseFloat(
+    document.getElementById("currentGrade").value);
+
+    const desired =
+    parseFloat(
+    document.getElementById("desiredGrade").value);
+
+    const worth =
+    parseFloat(
+    document.getElementById("finalWorth").value);
+
+    if(!current || !desired || !worth){
+        alert("Please fill all fields.");
+        return;
+    }
+
+    const needed =
+    ((desired - (current * (100-worth)/100))
+    / (worth/100)).toFixed(1);
+
+    document.getElementById("finalResult")
+    .style.display = "block";
+
+    document.getElementById("neededScore")
+    .innerText = needed + "%";
+}
+
+/* ================= STUDY PLAN ================= */
+
+function generateStudyPlan(){
+
+    const subject =
+    document.getElementById("studySubject").value;
+
+    const hours =
+    document.getElementById("studyHours").value;
+
+    if(!subject || !hours){
+        alert("Enter subject and hours.");
+        return;
+    }
+
+    document.getElementById("studyResult")
+    .style.display = "block";
+
+    document.getElementById("studyPlan")
+    .innerHTML = `
+        📚 Study <b>${subject}</b> for
+        <b>${hours} hour(s)</b> today.<br><br>
+        ✅ 25 min focus sessions<br>
+        ✅ 5 min breaks<br>
+        ✅ Review notes before sleep
+    `;
+}
+
+/* ================= SEMESTER ================= */
+
+function compareSemester(){
+
+    const s1 =
+    parseFloat(
+    document.getElementById("semester1").value);
+
+    const s2 =
+    parseFloat(
+    document.getElementById("semester2").value);
+
+    if(!s1 || !s2){
+        alert("Enter both GPAs.");
+        return;
+    }
+
+    let text = "";
+
+    if(s2 > s1){
+        text =
+        `📈 Improvement of ${(s2-s1).toFixed(2)} GPA points!`;
+    }
+    else if(s1 > s2){
+        text =
+        `📉 GPA dropped by ${(s1-s2).toFixed(2)} points.`;
+    }
+    else{
+        text =
+        `⚖️ Both semesters are equal.`;
+    }
+
+    document.getElementById("semesterResult")
+    .style.display = "block";
+
+    document.getElementById("semesterText")
+    .innerText = text;
+}
+
+/* ================= DARK MODE ================= */
 
 function toggleDark(){
 
@@ -863,19 +859,26 @@ function toggleDark(){
 
     if(document.body.classList.contains("dark")){
 
-        document.body.style.background = "#0f172a";
-        document.body.style.color = "white";
+        document.body.style.background =
+        "#0f172a";
 
-        document.querySelectorAll(".card,.trust-card,.scale-table,.insight")
+        document.body.style.color =
+        "white";
+
+        document.querySelectorAll(
+        ".card,.trust-card,.insight")
         .forEach(el=>{
-            el.style.background = "#1e293b";
-            el.style.color = "white";
+
+            el.style.background =
+            "#1e293b";
+
+            el.style.color =
+            "white";
         });
 
     }else{
 
         location.reload();
-
     }
 }
 
