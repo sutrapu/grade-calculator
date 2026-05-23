@@ -1,0 +1,462 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>High School Grade Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+        .gradient-bg { background: linear-gradient(135deg, #1e3a5f 0%, #2d6a9f 50%, #4a90d9 100%); }
+        .tab-active { background: white; color: #1e3a5f; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .tab-inactive { background: transparent; color: rgba(255,255,255,0.7); }
+        .card { background: white; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+        .fade-in { animation: fadeIn 0.3s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .result-card { background: linear-gradient(135deg, #f0f7ff 0%, #e8f0fe 100%); }
+        .grade-a { color: #16a34a; }
+        .grade-b { color: #2563eb; }
+        .grade-c { color: #d97706; }
+        .grade-d { color: #ea580c; }
+        .grade-f { color: #dc2626; }
+        input[type="number"]::-webkit-inner-spin-button { opacity: 1; }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+
+    <!-- Header -->
+    <div class="gradient-bg p-6 pb-16 text-white text-center">
+        <h1 class="text-2xl md:text-3xl font-bold mb-1">🎓 High School Grade Calculator</h1>
+        <p class="text-sm opacity-80">GPA • Final Grade • Class Grade Calculator</p>
+    </div>
+
+    <!-- Tab Navigation -->
+    <div class="max-w-3xl mx-auto -mt-8 px-4">
+        <div class="flex justify-center bg-slate-700 p-1.5 rounded-xl shadow-lg mb-6">
+            <button onclick="switchTab('gpa')" id="tab-gpa" class="tab-active flex-1 py-2.5 px-3 rounded-lg font-semibold text-sm transition-all">📊 GPA</button>
+            <button onclick="switchTab('final')" id="tab-final" class="tab-inactive flex-1 py-2.5 px-3 rounded-lg font-semibold text-sm transition-all">🎯 Final Grade</button>
+            <button onclick="switchTab('class')" id="tab-class" class="tab-inactive flex-1 py-2.5 px-3 rounded-lg font-semibold text-sm transition-all">📝 Class Grade</button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="max-w-3xl mx-auto px-4 pb-12">
+
+        <!-- ===================== -->
+        <!-- TAB 1: GPA CALCULATOR -->
+        <!-- ===================== -->
+        <div id="section-gpa" class="card p-6 fade-in">
+            <h2 class="text-lg font-bold text-gray-800 mb-1">GPA Calculator</h2>
+            <p class="text-sm text-gray-500 mb-5">Enter all your classes to calculate your overall GPA</p>
+
+            <!-- GPA Scale Toggle -->
+            <div class="flex gap-2 mb-5">
+                <button onclick="setGPAScale('unweighted')" id="btn-unweighted" class="px-4 py-1.5 rounded-full text-xs font-bold bg-blue-100 text-blue-700 border-2 border-blue-300">Unweighted (4.0)</button>
+                <button onclick="setGPAScale('weighted')" id="btn-weighted" class="px-4 py-1.5 rounded-full text-xs font-bold bg-gray-100 text-gray-500 border-2 border-gray-200">Weighted (5.0)</button>
+            </div>
+
+            <div id="gpa-rows" class="space-y-3 mb-5">
+                <!-- Rows injected by JS -->
+            </div>
+
+            <div class="flex gap-3">
+                <button onclick="addGPARow()" class="flex-1 bg-gray-100 text-gray-700 font-semibold py-3 rounded-xl hover:bg-gray-200 transition-all text-sm">+ Add Class</button>
+                <button onclick="calculateGPA()" class="flex-1 bg-blue-600 text-white font-semibold py-3 rounded-xl hover:bg-blue-700 shadow-lg transition-all text-sm border-none">Calculate GPA ✨</button>
+            </div>
+
+            <div id="gpa-result" class="hidden mt-6 fade-in"></div>
+        </div>
+
+        <!-- ============================== -->
+        <!-- TAB 2: FINAL GRADE CALCULATOR -->
+        <!-- ============================== -->
+        <div id="section-final" class="card p-6 fade-in hidden">
+            <h2 class="text-lg font-bold text-gray-800 mb-1">Final Grade Calculator</h2>
+            <p class="text-sm text-gray-500 mb-5">"What do I need on my final exam to get the grade I want?"</p>
+
+            <div class="space-y-4 mb-6">
+                <div>
+                    <label class="text-sm font-semibold text-gray-600 mb-1 block">📌 My Current Grade (%)</label>
+                    <input type="number" id="current-grade" placeholder="e.g. 85" class="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 outline-none text-lg" min="0" max="150">
+                </div>
+                <div>
+                    <label class="text-sm font-semibold text-gray-600 mb-1 block">🎯 Grade I Want in the Class (%)</label>
+                    <input type="number" id="desired-grade" placeholder="e.g. 90" class="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 outline-none text-lg" min="0" max="100">
+                    <div class="flex gap-2 mt-2">
+                        <button onclick="setDesired(90)" class="px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700 hover:bg-green-200">A (90%)</button>
+                        <button onclick="setDesired(80)" class="px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-700 hover:bg-blue-200">B (80%)</button>
+                        <button onclick="setDesired(70)" class="px-3 py-1 rounded-full text-xs font-bold bg-yellow-100 text-yellow-700 hover:bg-yellow-200">C (70%)</button>
+                        <button onclick="setDesired(60)" class="px-3 py-1 rounded-full text-xs font-bold bg-orange-100 text-orange-700 hover:bg-orange-200">D (60%)</button>
+                    </div>
+                </div>
+                <div>
+                    <label class="text-sm font-semibold text-gray-600 mb-1 block">⚖️ Final Exam Weight (%)</label>
+                    <input type="number" id="final-weight" placeholder="e.g. 20" class="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 outline-none text-lg" min="1" max="100">
+                    <div class="flex gap-2 mt-2">
+                        <button onclick="setWeight(10)" class="px-3 py-1 rounded-full text-xs font-bold bg-gray-100 text-gray-600 hover:bg-gray-200">10%</button>
+                        <button onclick="setWeight(15)" class="px-3 py-1 rounded-full text-xs font-bold bg-gray-100 text-gray-600 hover:bg-gray-200">15%</button>
+                        <button onclick="setWeight(20)" class="px-3 py-1 rounded-full text-xs font-bold bg-gray-100 text-gray-600 hover:bg-gray-200">20%</button>
+                        <button onclick="setWeight(25)" class="px-3 py-1 rounded-full text-xs font-bold bg-gray-100 text-gray-600 hover:bg-gray-200">25%</button>
+                        <button onclick="setWeight(30)" class="px-3 py-1 rounded-full text-xs font-bold bg-gray-100 text-gray-600 hover:bg-gray-200">30%</button>
+                    </div>
+                </div>
+            </div>
+
+            <button onclick="calculateFinal()" class="w-full bg-blue-600 text-white font-semibold py-3 rounded-xl hover:bg-blue-700 shadow-lg transition-all text-sm border-none">Calculate What I Need 🎯</button>
+
+            <div id="final-result" class="hidden mt-6 fade-in"></div>
+        </div>
+
+        <!-- =============================== -->
+        <!-- TAB 3: CLASS GRADE CALCULATOR   -->
+        <!-- =============================== -->
+        <div id="section-class" class="card p-6 fade-in hidden">
+            <h2 class="text-lg font-bold text-gray-800 mb-1">Class Grade Calculator</h2>
+            <p class="text-sm text-gray-500 mb-5">Calculate your current grade using weighted categories</p>
+
+            <div id="class-rows" class="space-y-3 mb-5">
+                <!-- Rows injected by JS -->
+            </div>
+
+            <div class="flex gap-3">
+                <button onclick="addClassRow()" class="flex-1 bg-gray-100 text-gray-700 font-semibold py-3 rounded-xl hover:bg-gray-200 transition-all text-sm">+ Add Category</button>
+                <button onclick="calculateClass()" class="flex-1 bg-blue-600 text-white font-semibold py-3 rounded-xl hover:bg-blue-700 shadow-lg transition-all text-sm border-none">Calculate Grade ✨</button>
+            </div>
+
+            <div id="class-result" class="hidden mt-6 fade-in"></div>
+        </div>
+
+        <!-- Disclaimer (always visible) -->
+        <div class="mt-6 text-[11px] text-gray-400 text-center leading-tight px-4">
+            <strong>Disclaimer:</strong> This tool and its automated recommendations are for informational, motivational, and self-assessment purposes only. They do not constitute official academic counseling, guarantee any specific academic outcome, or replace guidance from certified school counselors or teachers. Always consult your school's official grading policies.
+        </div>
+    </div>
+
+    <script>
+        // ============ GLOBAL STATE ============
+        let gpaScale = 'unweighted';
+
+        const gradeMap = {
+            'A+': 4.0, 'A': 4.0, 'A-': 3.7,
+            'B+': 3.3, 'B': 3.0, 'B-': 2.7,
+            'C+': 2.3, 'C': 2.0, 'C-': 1.7,
+            'D+': 1.3, 'D': 1.0, 'D-': 0.7, 'F': 0.0
+        };
+
+        const weightedBonus = { 'Regular': 0, 'Honors': 0.5, 'AP/IB': 1.0 };
+
+        // ============ TAB SWITCHING ============
+        function switchTab(tab) {
+            ['gpa', 'final', 'class'].forEach(t => {
+                document.getElementById('section-' + t).classList.add('hidden');
+                document.getElementById('tab-' + t).className = 'tab-inactive flex-1 py-2.5 px-3 rounded-lg font-semibold text-sm transition-all';
+            });
+            document.getElementById('section-' + tab).classList.remove('hidden');
+            document.getElementById('tab-' + tab).className = 'tab-active flex-1 py-2.5 px-3 rounded-lg font-semibold text-sm transition-all';
+        }
+
+        // ============ GPA CALCULATOR ============
+        function setGPAScale(scale) {
+            gpaScale = scale;
+            document.getElementById('btn-unweighted').className = scale === 'unweighted'
+                ? 'px-4 py-1.5 rounded-full text-xs font-bold bg-blue-100 text-blue-700 border-2 border-blue-300'
+                : 'px-4 py-1.5 rounded-full text-xs font-bold bg-gray-100 text-gray-500 border-2 border-gray-200';
+            document.getElementById('btn-weighted').className = scale === 'weighted'
+                ? 'px-4 py-1.5 rounded-full text-xs font-bold bg-blue-100 text-blue-700 border-2 border-blue-300'
+                : 'px-4 py-1.5 rounded-full text-xs font-bold bg-gray-100 text-gray-500 border-2 border-gray-200';
+
+            // Rebuild rows to show/hide class type
+            const container = document.getElementById('gpa-rows');
+            const count = container.children.length || 3;
+            container.innerHTML = '';
+            for (let i = 0; i < count; i++) addGPARow();
+        }
+
+        function addGPARow() {
+            const container = document.getElementById('gpa-rows');
+            const row = document.createElement('div');
+            row.className = 'flex gap-2 items-center fade-in';
+
+            let classTypeHTML = '';
+            if (gpaScale === 'weighted') {
+                classTypeHTML = `
+                    <select class="gpa-type p-3 border rounded-lg bg-white text-sm outline-blue-500">
+                        <option value="Regular">Regular</option>
+                        <option value="Honors">Honors</option>
+                        <option value="AP/IB">AP/IB</option>
+                    </select>`;
+            }
+
+            row.innerHTML = `
+                <input type="text" placeholder="Class name" class="p-3 border rounded-lg w-full text-sm outline-blue-500">
+                <select class="gpa-grade p-3 border rounded-lg bg-white text-sm outline-blue-500">
+                    <option value="">Grade</option>
+                    ${Object.keys(gradeMap).map(g => `<option value="${g}">${g}</option>`).join('')}
+                </select>
+                <input type="number" placeholder="Credits" class="gpa-credits p-3 border rounded-lg w-20 text-sm outline-blue-500" min="0.5" step="0.5" value="1">
+                ${classTypeHTML}
+                <button onclick="this.parentElement.remove()" class="text-red-400 hover:text-red-600 font-bold px-1 text-lg">✕</button>
+            `;
+            container.appendChild(row);
+        }
+
+        function calculateGPA() {
+            const grades = document.querySelectorAll('.gpa-grade');
+            const credits = document.querySelectorAll('.gpa-credits');
+            const types = document.querySelectorAll('.gpa-type');
+
+            let totalPoints = 0, totalCredits = 0;
+
+            for (let i = 0; i < grades.length; i++) {
+                const g = grades[i].value;
+                const c = parseFloat(credits[i].value);
+                if (!g || isNaN(c)) continue;
+
+                let points = gradeMap[g];
+                if (gpaScale === 'weighted' && types[i]) {
+                    points += weightedBonus[types[i].value] || 0;
+                }
+                totalPoints += points * c;
+                totalCredits += c;
+            }
+
+            if (totalCredits === 0) return alert("Please enter at least one class with a grade and credits.");
+
+            const gpa = (totalPoints / totalCredits).toFixed(2);
+            const letterGrade = gpaToLetter(gpa);
+            const colorClass = getGradeColor(letterGrade);
+            const insight = getGPAInsight(gpa);
+
+            document.getElementById('gpa-result').innerHTML = `
+                <div class="result-card p-5 rounded-xl border border-blue-100">
+                    <div class="text-center mb-4">
+                        <p class="text-sm text-gray-500 font-semibold">${gpaScale === 'weighted' ? 'Weighted' : 'Unweighted'} GPA</p>
+                        <div class="text-5xl font-bold ${colorClass} mt-1">${gpa}</div>
+                        <div class="text-lg font-semibold ${colorClass} mt-1">${letterGrade}</div>
+                        <p class="text-xs text-gray-400 mt-1">${totalCredits} total credits</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg border border-purple-100 shadow-sm relative">
+                        <div class="absolute -top-3 left-4 bg-purple-100 text-purple-700 text-xs font-bold px-3 py-1 rounded-full border border-purple-200">🤖 Smart Insight</div>
+                        <p class="text-gray-700 mt-2 leading-relaxed text-sm">${insight}</p>
+                    </div>
+                </div>`;
+            document.getElementById('gpa-result').classList.remove('hidden');
+        }
+
+        // ============ FINAL GRADE CALCULATOR ============
+        function setDesired(val) { document.getElementById('desired-grade').value = val; }
+        function setWeight(val) { document.getElementById('final-weight').value = val; }
+
+        function calculateFinal() {
+            const current = parseFloat(document.getElementById('current-grade').value);
+            const desired = parseFloat(document.getElementById('desired-grade').value);
+            const weight = parseFloat(document.getElementById('final-weight').value);
+
+            if (isNaN(current) || isNaN(desired) || isNaN(weight)) return alert("Please fill in all three fields.");
+            if (weight <= 0 || weight > 100) return alert("Final exam weight must be between 1 and 100.");
+
+            const w = weight / 100;
+            const needed = (desired - (1 - w) * current) / w;
+            const neededRounded = needed.toFixed(1);
+
+            let emoji, message, colorClass;
+
+            if (needed <= 0) {
+                emoji = "🏆";
+                message = "You've already secured this grade! Even if you score 0 on the final, you'll still pass with the grade you want. But don't slack off — finish strong!";
+                colorClass = "grade-a";
+            } else if (needed <= 60) {
+                emoji = "😎";
+                message = `Very achievable! A score of ${neededRounded}% on your final is well within reach. Keep reviewing your notes and you'll be fine.`;
+                colorClass = "grade-a";
+            } else if (needed <= 80) {
+                emoji = "💪";
+                message = `You need a solid ${neededRounded}% on your final. This is definitely doable with focused studying. Start reviewing early, prioritize weak topics, and do practice problems.`;
+                colorClass = "grade-b";
+            } else if (needed <= 100) {
+                emoji = "📚";
+                message = `You'll need a strong ${neededRounded}% on your final. This is challenging but possible. Create a detailed study schedule, attend review sessions, and consider forming a study group.`;
+                colorClass = "grade-c";
+            } else {
+                emoji = "⚠️";
+                message = `You would need ${neededRounded}%, which is over 100%. Unfortunately, this grade may not be achievable through the final alone. Talk to your teacher about extra credit opportunities or focus on securing the next best grade.`;
+                colorClass = "grade-f";
+            }
+
+            const insight = getFinalInsight(needed, current, desired);
+
+            document.getElementById('final-result').innerHTML = `
+                <div class="result-card p-5 rounded-xl border border-blue-100">
+                    <div class="text-center mb-4">
+                        <p class="text-sm text-gray-500 font-semibold">You need to score</p>
+                        <div class="text-5xl font-bold ${colorClass} mt-1">${needed <= 0 ? '0' : neededRounded}%</div>
+                        <p class="text-sm text-gray-500 mt-1">on your final exam</p>
+                        <div class="text-3xl mt-2">${emoji}</div>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg border border-purple-100 shadow-sm relative">
+                        <div class="absolute -top-3 left-4 bg-purple-100 text-purple-700 text-xs font-bold px-3 py-1 rounded-full border border-purple-200">🤖 Smart Insight</div>
+                        <p class="text-gray-700 mt-2 leading-relaxed text-sm">${message}</p>
+                        <p class="text-gray-600 mt-3 leading-relaxed text-sm">${insight}</p>
+                    </div>
+                </div>`;
+            document.getElementById('final-result').classList.remove('hidden');
+        }
+
+        // ============ CLASS GRADE CALCULATOR ============
+        function addClassRow() {
+            const container = document.getElementById('class-rows');
+            const row = document.createElement('div');
+            row.className = 'fade-in bg-gray-50 p-3 rounded-xl border';
+
+            row.innerHTML = `
+                <div class="flex gap-2 items-center mb-2">
+                    <input type="text" placeholder="Category (e.g. Tests)" class="class-cat p-2 border rounded-lg w-full text-sm outline-blue-500">
+                    <input type="number" placeholder="Weight %" class="class-weight p-2 border rounded-lg w-24 text-sm outline-blue-500" min="0" max="100">
+                    <button onclick="this.parentElement.parentElement.remove()" class="text-red-400 hover:text-red-600 font-bold px-1">✕</button>
+                </div>
+                <div class="flex gap-2">
+                    <input type="number" placeholder="Your score" class="class-score p-2 border rounded-lg w-full text-sm outline-blue-500" min="0">
+                    <input type="number" placeholder="Out of" class="class-total p-2 border rounded-lg w-full text-sm outline-blue-500" min="1" value="100">
+                </div>
+            `;
+            container.appendChild(row);
+        }
+
+        function calculateClass() {
+            const cats = document.querySelectorAll('.class-cat');
+            const weights = document.querySelectorAll('.class-weight');
+            const scores = document.querySelectorAll('.class-score');
+            const totals = document.querySelectorAll('.class-total');
+
+            let weightedSum = 0, totalWeight = 0;
+            let breakdown = [];
+
+            for (let i = 0; i < cats.length; i++) {
+                const w = parseFloat(weights[i].value);
+                const s = parseFloat(scores[i].value);
+                const t = parseFloat(totals[i].value);
+                if (isNaN(w) || isNaN(s) || isNaN(t) || t === 0) continue;
+
+                const pct = (s / t) * 100;
+                weightedSum += pct * (w / 100);
+                totalWeight += w;
+                breakdown.push({ name: cats[i].value || `Category ${i+1}`, pct: pct.toFixed(1), weight: w });
+            }
+
+            if (totalWeight === 0) return alert("Please enter at least one category with weight and scores.");
+
+            const finalGrade = (weightedSum / (totalWeight / 100)).toFixed(2);
+            const letter = percentToLetter(finalGrade);
+            const colorClass = getGradeColor(letter);
+            const insight = getClassInsight(finalGrade);
+
+            let breakdownHTML = breakdown.map(b =>
+                `<div class="flex justify-between text-sm py-1 border-b border-gray-100">
+                    <span class="text-gray-600">${b.name} <span class="text-gray-400">(${b.weight}%)</span></span>
+                    <span class="font-semibold ${getGradeColor(percentToLetter(b.pct))}">${b.pct}%</span>
+                </div>`
+            ).join('');
+
+            document.getElementById('class-result').innerHTML = `
+                <div class="result-card p-5 rounded-xl border border-blue-100">
+                    <div class="text-center mb-4">
+                        <p class="text-sm text-gray-500 font-semibold">Your Current Grade</p>
+                        <div class="text-5xl font-bold ${colorClass} mt-1">${finalGrade}%</div>
+                        <div class="text-lg font-semibold ${colorClass} mt-1">${letter}</div>
+                    </div>
+                    <div class="mb-4 bg-white p-3 rounded-lg border">${breakdownHTML}</div>
+                    <div class="bg-white p-4 rounded-lg border border-purple-100 shadow-sm relative">
+                        <div class="absolute -top-3 left-4 bg-purple-100 text-purple-700 text-xs font-bold px-3 py-1 rounded-full border border-purple-200">🤖 Smart Insight</div>
+                        <p class="text-gray-700 mt-2 leading-relaxed text-sm">${insight}</p>
+                    </div>
+                </div>`;
+            document.getElementById('class-result').classList.remove('hidden');
+        }
+
+        // ============ HELPER FUNCTIONS ============
+        function gpaToLetter(gpa) {
+            if (gpa >= 3.85) return 'A';
+            if (gpa >= 3.5) return 'A-';
+            if (gpa >= 3.15) return 'B+';
+            if (gpa >= 2.85) return 'B';
+            if (gpa >= 2.5) return 'B-';
+            if (gpa >= 2.15) return 'C+';
+            if (gpa >= 1.85) return 'C';
+            if (gpa >= 1.5) return 'C-';
+            if (gpa >= 1.15) return 'D+';
+            if (gpa >= 0.85) return 'D';
+            return 'F';
+        }
+
+        function percentToLetter(pct) {
+            if (pct >= 93) return 'A';
+            if (pct >= 90) return 'A-';
+            if (pct >= 87) return 'B+';
+            if (pct >= 83) return 'B';
+            if (pct >= 80) return 'B-';
+            if (pct >= 77) return 'C+';
+            if (pct >= 73) return 'C';
+            if (pct >= 70) return 'C-';
+            if (pct >= 67) return 'D+';
+            if (pct >= 63) return 'D';
+            if (pct >= 60) return 'D-';
+            return 'F';
+        }
+
+        function getGradeColor(letter) {
+            if (letter.startsWith('A')) return 'grade-a';
+            if (letter.startsWith('B')) return 'grade-b';
+            if (letter.startsWith('C')) return 'grade-c';
+            if (letter.startsWith('D')) return 'grade-d';
+            return 'grade-f';
+        }
+
+        // ============ SMART INSIGHTS ============
+        function getGPAInsight(gpa) {
+            if (gpa >= 3.8) return "🌟 Outstanding! You're in the top academic bracket. You're highly competitive for selective universities and merit scholarships. Keep pushing with AP/IB courses and strong extracurriculars to stand out even more. Consider reaching out to college admissions counselors early.";
+            if (gpa >= 3.3) return "💪 Great work! Your GPA shows strong academic performance. To move into the top tier, identify 1-2 classes where you're close to the next grade level and focus extra effort there. Also, leadership in extracurriculars can strengthen your college applications significantly.";
+            if (gpa >= 2.7) return "📈 You have a solid foundation. To improve, try visiting your teachers during office hours, forming study groups, and breaking large assignments into smaller daily tasks. An upward trend in your GPA is something colleges love to see — it shows growth and determination.";
+            if (gpa >= 2.0) return "📋 You're passing, but there's significant room for improvement. Consider meeting with your school counselor to create a structured study plan. Focus on time management, reducing distractions during study time, and never hesitate to ask for help. Every point matters!";
+            return "🚨 Your GPA needs immediate attention. Please talk to your teachers and school counselor right away. Prioritize completing all assignments, attend tutoring sessions, and focus on building strong daily study habits. A turnaround is absolutely possible with consistent effort.";
+        }
+
+        function getFinalInsight(needed, current, desired) {
+            if (needed > 100) return "💡 Strategy tip: Talk to your teacher about any extra credit opportunities. Also consider whether aiming for the next lower grade (like a B instead of an A) might be more realistic and less stressful.";
+            if (needed > 85) return "💡 Study strategy: Start preparing at least 2 weeks before the exam. Use active recall (practice tests) instead of passive reading. Focus 70% of your study time on your weakest topics.";
+            if (needed > 60) return "💡 You're in a great position! Review your class notes, redo homework problems you got wrong, and get a good night's sleep before the exam. Consistency beats cramming.";
+            return "💡 You're sitting in an excellent position! Use the remaining time to reinforce your understanding and help classmates study — teaching others is one of the best ways to solidify your own knowledge.";
+        }
+
+        function getClassInsight(grade) {
+            if (grade >= 93) return "🌟 Excellent! You're earning an A in this class. Maintain your current study habits and stay consistent. If you want to go above and beyond, look for extra credit or advanced topics to explore.";
+            if (grade >= 85) return "💪 Strong performance! You're close to an A. Look at which category is pulling your average down the most and dedicate extra focus there. Even small improvements in your weakest category can push you over the top.";
+            if (grade >= 75) return "📈 Decent work! Focus on the categories with the highest weight — improvements there will have the biggest impact on your overall grade. Practice problems and review sessions can help boost test scores significantly.";
+            if (grade >= 65) return "📋 You're passing, but you need to step it up. Make a plan to improve in the heaviest-weighted categories first. Visit your teacher for extra help and make sure you're completing every assignment — even partial credit adds up.";
+            return "🚨 Your grade is in a critical zone. Meet with your teacher immediately to discuss your options. Focus on turning in all remaining assignments, attending every class, and seeking tutoring. Small consistent efforts can lead to a big turnaround.";
+        }
+
+        // ============ INITIALIZE ============
+        function init() {
+            // Add default rows for GPA
+            for (let i = 0; i < 4; i++) addGPARow();
+            // Add default rows for Class Grade
+            const defaults = [
+                { cat: 'Tests/Exams', weight: 40 },
+                { cat: 'Homework', weight: 25 },
+                { cat: 'Quizzes', weight: 20 },
+                { cat: 'Participation', weight: 15 }
+            ];
+            defaults.forEach(d => {
+                addClassRow();
+                const rows = document.getElementById('class-rows').children;
+                const last = rows[rows.length - 1];
+                last.querySelector('.class-cat').value = d.cat;
+                last.querySelector('.class-weight').value = d.weight;
+            });
+        }
+
+        init();
+    </script>
+</body>
+</html>
