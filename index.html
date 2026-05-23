@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,27 +20,79 @@
         .grade-d { color: #ea580c; }
         .grade-f { color: #dc2626; }
         input[type="number"]::-webkit-inner-spin-button { opacity: 1; }
+        .tab-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+        .tab-scroll::-webkit-scrollbar { display: none; }
+        .progress-bar { transition: width 0.8s ease-in-out; }
+        .streak-fire { animation: pulse 1s infinite; }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+        .gpa-gauge { position: relative; width: 160px; height: 80px; margin: 0 auto; }
+        .tooltip { position: relative; display: inline-block; }
+        .tooltip .tooltiptext { visibility: hidden; background: #1e3a5f; color: #fff; text-align: center;
+            border-radius: 8px; padding: 6px 10px; position: absolute; z-index: 10; bottom: 125%; left: 50%;
+            transform: translateX(-50%); white-space: nowrap; font-size: 11px; opacity: 0; transition: opacity 0.2s; }
+        .tooltip:hover .tooltiptext { visibility: visible; opacity: 1; }
+        .dark-mode { background: #0f172a !important; color: #e2e8f0 !important; }
+        .dark-mode .card { background: #1e293b !important; color: #e2e8f0 !important; }
+        .dark-mode input, .dark-mode select { background: #334155 !important; color: #e2e8f0 !important; border-color: #475569 !important; }
+        .dark-mode .bg-gray-50 { background: #1e293b !important; }
+        .dark-mode .result-card { background: linear-gradient(135deg, #1e3a5f 0%, #1e3a7f 100%) !important; }
+        .dark-mode .bg-white { background: #1e293b !important; }
+        .dark-mode .text-gray-800 { color: #e2e8f0 !important; }
+        .dark-mode .text-gray-600 { color: #cbd5e1 !important; }
+        .dark-mode .text-gray-500 { color: #94a3b8 !important; }
+        .dark-mode .border { border-color: #475569 !important; }
+        .dark-mode .bg-gray-100 { background: #334155 !important; }
+        .dark-mode .text-gray-700 { color: #cbd5e1 !important; }
+        @media print {
+            .no-print { display: none !important; }
+            .card { box-shadow: none; border: 1px solid #ddd; }
+            body { background: white; }
+        }
     </style>
 </head>
-<body class="bg-gray-50 min-h-screen">
+<body class="bg-gray-50 min-h-screen" id="app-body">
 
     <!-- Header -->
-    <div class="gradient-bg p-6 pb-16 text-white text-center">
+    <div class="gradient-bg p-6 pb-20 text-white text-center relative no-print">
+        <div class="absolute top-4 right-4 flex gap-2">
+            <!-- Dark Mode Toggle -->
+            <button onclick="toggleDarkMode()" id="dark-btn"
+                class="bg-white bg-opacity-20 hover:bg-opacity-30 text-white text-xs font-bold px-3 py-1.5 rounded-full transition-all">
+                🌙 Dark
+            </button>
+            <!-- Print Button -->
+            <button onclick="window.print()"
+                class="bg-white bg-opacity-20 hover:bg-opacity-30 text-white text-xs font-bold px-3 py-1.5 rounded-full transition-all">
+                🖨️ Print
+            </button>
+        </div>
         <h1 class="text-2xl md:text-3xl font-bold mb-1">🎓 High School Grade Calculator</h1>
-        <p class="text-sm opacity-80">GPA • Final Grade • Class Grade Calculator</p>
+        <p class="text-sm opacity-80">GPA • Final Grade • Class Grade • GPA Goal • Study Planner • Semester Compare</p>
+
+        <!-- Study Streak -->
+        <div class="mt-3 inline-flex items-center gap-2 bg-white bg-opacity-20 rounded-full px-4 py-1.5">
+            <span class="streak-fire text-lg">🔥</span>
+            <span class="text-xs font-bold">Study Streak: <span id="streak-count">0</span> days</span>
+            <button onclick="incrementStreak()" class="bg-white text-blue-800 text-xs font-bold px-2 py-0.5 rounded-full hover:bg-blue-50">+1</button>
+        </div>
     </div>
 
     <!-- Tab Navigation -->
-    <div class="max-w-3xl mx-auto -mt-8 px-4">
-        <div class="flex justify-center bg-slate-700 p-1.5 rounded-xl shadow-lg mb-6">
-            <button onclick="switchTab('gpa')" id="tab-gpa" class="tab-active flex-1 py-2.5 px-3 rounded-lg font-semibold text-sm transition-all">📊 GPA</button>
-            <button onclick="switchTab('final')" id="tab-final" class="tab-inactive flex-1 py-2.5 px-3 rounded-lg font-semibold text-sm transition-all">🎯 Final Grade</button>
-            <button onclick="switchTab('class')" id="tab-class" class="tab-inactive flex-1 py-2.5 px-3 rounded-lg font-semibold text-sm transition-all">📝 Class Grade</button>
+    <div class="max-w-4xl mx-auto -mt-10 px-4 no-print">
+        <div class="tab-scroll">
+            <div class="flex bg-slate-700 p-1.5 rounded-xl shadow-lg mb-6 min-w-max">
+                <button onclick="switchTab('gpa')" id="tab-gpa" class="tab-active py-2.5 px-3 rounded-lg font-semibold text-xs transition-all whitespace-nowrap">📊 GPA</button>
+                <button onclick="switchTab('final')" id="tab-final" class="tab-inactive py-2.5 px-3 rounded-lg font-semibold text-xs transition-all whitespace-nowrap">🎯 Final Grade</button>
+                <button onclick="switchTab('class')" id="tab-class" class="tab-inactive py-2.5 px-3 rounded-lg font-semibold text-xs transition-all whitespace-nowrap">📝 Class Grade</button>
+                <button onclick="switchTab('goal')" id="tab-goal" class="tab-inactive py-2.5 px-3 rounded-lg font-semibold text-xs transition-all whitespace-nowrap">🏆 GPA Goal</button>
+                <button onclick="switchTab('study')" id="tab-study" class="tab-inactive py-2.5 px-3 rounded-lg font-semibold text-xs transition-all whitespace-nowrap">📅 Study Planner</button>
+                <button onclick="switchTab('compare')" id="tab-compare" class="tab-inactive py-2.5 px-3 rounded-lg font-semibold text-xs transition-all whitespace-nowrap">📈 Semester Compare</button>
+            </div>
         </div>
     </div>
 
     <!-- Main Content -->
-    <div class="max-w-3xl mx-auto px-4 pb-12">
+    <div class="max-w-4xl mx-auto px-4 pb-12">
 
         <!-- ===================== -->
         <!-- TAB 1: GPA CALCULATOR -->
@@ -50,20 +101,20 @@
             <h2 class="text-lg font-bold text-gray-800 mb-1">GPA Calculator</h2>
             <p class="text-sm text-gray-500 mb-5">Enter all your classes to calculate your overall GPA</p>
 
-            <!-- GPA Scale Toggle -->
-            <div class="flex gap-2 mb-5">
-                <button onclick="setGPAScale('unweighted')" id="btn-unweighted" class="px-4 py-1.5 rounded-full text-xs font-bold bg-blue-100 text-blue-700 border-2 border-blue-300">Unweighted (4.0)</button>
-                <button onclick="setGPAScale('weighted')" id="btn-weighted" class="px-4 py-1.5 rounded-full text-xs font-bold bg-gray-100 text-gray-500 border-2 border-gray-200">Weighted (5.0)</button>
+            <div class="flex gap-2 mb-5 flex-wrap">
+                <button onclick="setGPAScale('unweighted')" id="btn-unweighted"
+                    class="px-4 py-1.5 rounded-full text-xs font-bold bg-blue-100 text-blue-700 border-2 border-blue-300">Unweighted (4.0)</button>
+                <button onclick="setGPAScale('weighted')" id="btn-weighted"
+                    class="px-4 py-1.5 rounded-full text-xs font-bold bg-gray-100 text-gray-500 border-2 border-gray-200">Weighted (5.0)</button>
             </div>
 
-            <div id="gpa-rows" class="space-y-3 mb-5">
-                <!-- Rows injected by JS -->
-            </div>
+            <div id="gpa-rows" class="space-y-3 mb-5"></div>
 
-            <div class="flex gap-3">
+            <div class="flex gap-3 mb-3">
                 <button onclick="addGPARow()" class="flex-1 bg-gray-100 text-gray-700 font-semibold py-3 rounded-xl hover:bg-gray-200 transition-all text-sm">+ Add Class</button>
                 <button onclick="calculateGPA()" class="flex-1 bg-blue-600 text-white font-semibold py-3 rounded-xl hover:bg-blue-700 shadow-lg transition-all text-sm border-none">Calculate GPA ✨</button>
             </div>
+            <button onclick="clearSection('gpa')" class="w-full bg-red-50 text-red-400 font-semibold py-2 rounded-xl hover:bg-red-100 transition-all text-xs border border-red-100">🗑️ Clear All</button>
 
             <div id="gpa-result" class="hidden mt-6 fade-in"></div>
         </div>
@@ -78,22 +129,27 @@
             <div class="space-y-4 mb-6">
                 <div>
                     <label class="text-sm font-semibold text-gray-600 mb-1 block">📌 My Current Grade (%)</label>
-                    <input type="number" id="current-grade" placeholder="e.g. 85" class="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 outline-none text-lg" min="0" max="150">
+                    <input type="number" id="current-grade" placeholder="e.g. 85"
+                        class="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 outline-none text-lg" min="0" max="150">
                 </div>
                 <div>
                     <label class="text-sm font-semibold text-gray-600 mb-1 block">🎯 Grade I Want in the Class (%)</label>
-                    <input type="number" id="desired-grade" placeholder="e.g. 90" class="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 outline-none text-lg" min="0" max="100">
-                    <div class="flex gap-2 mt-2">
-                        <button onclick="setDesired(90)" class="px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700 hover:bg-green-200">A (90%)</button>
-                        <button onclick="setDesired(80)" class="px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-700 hover:bg-blue-200">B (80%)</button>
-                        <button onclick="setDesired(70)" class="px-3 py-1 rounded-full text-xs font-bold bg-yellow-100 text-yellow-700 hover:bg-yellow-200">C (70%)</button>
+                    <input type="number" id="desired-grade" placeholder="e.g. 90"
+                        class="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 outline-none text-lg" min="0" max="100">
+                    <div class="flex gap-2 mt-2 flex-wrap">
+                        <button onclick="setDesired(93)" class="px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700 hover:bg-green-200">A (93%)</button>
+                        <button onclick="setDesired(90)" class="px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700 hover:bg-green-200">A- (90%)</button>
+                        <button onclick="setDesired(83)" class="px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-700 hover:bg-blue-200">B (83%)</button>
+                        <button onclick="setDesired(80)" class="px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-700 hover:bg-blue-200">B- (80%)</button>
+                        <button onclick="setDesired(73)" class="px-3 py-1 rounded-full text-xs font-bold bg-yellow-100 text-yellow-700 hover:bg-yellow-200">C (73%)</button>
                         <button onclick="setDesired(60)" class="px-3 py-1 rounded-full text-xs font-bold bg-orange-100 text-orange-700 hover:bg-orange-200">D (60%)</button>
                     </div>
                 </div>
                 <div>
                     <label class="text-sm font-semibold text-gray-600 mb-1 block">⚖️ Final Exam Weight (%)</label>
-                    <input type="number" id="final-weight" placeholder="e.g. 20" class="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 outline-none text-lg" min="1" max="100">
-                    <div class="flex gap-2 mt-2">
+                    <input type="number" id="final-weight" placeholder="e.g. 20"
+                        class="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 outline-none text-lg" min="1" max="100">
+                    <div class="flex gap-2 mt-2 flex-wrap">
                         <button onclick="setWeight(10)" class="px-3 py-1 rounded-full text-xs font-bold bg-gray-100 text-gray-600 hover:bg-gray-200">10%</button>
                         <button onclick="setWeight(15)" class="px-3 py-1 rounded-full text-xs font-bold bg-gray-100 text-gray-600 hover:bg-gray-200">15%</button>
                         <button onclick="setWeight(20)" class="px-3 py-1 rounded-full text-xs font-bold bg-gray-100 text-gray-600 hover:bg-gray-200">20%</button>
@@ -104,7 +160,6 @@
             </div>
 
             <button onclick="calculateFinal()" class="w-full bg-blue-600 text-white font-semibold py-3 rounded-xl hover:bg-blue-700 shadow-lg transition-all text-sm border-none">Calculate What I Need 🎯</button>
-
             <div id="final-result" class="hidden mt-6 fade-in"></div>
         </div>
 
@@ -115,27 +170,151 @@
             <h2 class="text-lg font-bold text-gray-800 mb-1">Class Grade Calculator</h2>
             <p class="text-sm text-gray-500 mb-5">Calculate your current grade using weighted categories</p>
 
-            <div id="class-rows" class="space-y-3 mb-5">
-                <!-- Rows injected by JS -->
-            </div>
+            <div id="class-rows" class="space-y-3 mb-5"></div>
 
-            <div class="flex gap-3">
+            <div class="flex gap-3 mb-3">
                 <button onclick="addClassRow()" class="flex-1 bg-gray-100 text-gray-700 font-semibold py-3 rounded-xl hover:bg-gray-200 transition-all text-sm">+ Add Category</button>
                 <button onclick="calculateClass()" class="flex-1 bg-blue-600 text-white font-semibold py-3 rounded-xl hover:bg-blue-700 shadow-lg transition-all text-sm border-none">Calculate Grade ✨</button>
             </div>
+            <button onclick="clearSection('class')" class="w-full bg-red-50 text-red-400 font-semibold py-2 rounded-xl hover:bg-red-100 transition-all text-xs border border-red-100">🗑️ Clear All</button>
 
             <div id="class-result" class="hidden mt-6 fade-in"></div>
         </div>
 
-        <!-- Disclaimer (always visible) -->
+        <!-- ========================= -->
+        <!-- TAB 4: GPA GOAL PLANNER  -->
+        <!-- ========================= -->
+        <div id="section-goal" class="card p-6 fade-in hidden">
+            <h2 class="text-lg font-bold text-gray-800 mb-1">🏆 GPA Goal Planner</h2>
+            <p class="text-sm text-gray-500 mb-5">Find out what grades you need to hit your GPA target</p>
+
+            <div class="space-y-4 mb-6">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="text-sm font-semibold text-gray-600 mb-1 block">Current GPA</label>
+                        <input type="number" id="goal-current-gpa" placeholder="e.g. 3.2" step="0.01" min="0" max="5"
+                            class="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 outline-none">
+                    </div>
+                    <div>
+                        <label class="text-sm font-semibold text-gray-600 mb-1 block">Credits Earned</label>
+                        <input type="number" id="goal-credits-earned" placeholder="e.g. 60" min="0"
+                            class="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 outline-none">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="text-sm font-semibold text-gray-600 mb-1 block">Target GPA</label>
+                        <input type="number" id="goal-target-gpa" placeholder="e.g. 3.5" step="0.01" min="0" max="4"
+                            class="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 outline-none">
+                        <div class="flex gap-1 mt-2 flex-wrap">
+                            <button onclick="document.getElementById('goal-target-gpa').value='4.0'" class="px-2 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700">4.0</button>
+                            <button onclick="document.getElementById('goal-target-gpa').value='3.7'" class="px-2 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700">3.7</button>
+                            <button onclick="document.getElementById('goal-target-gpa').value='3.5'" class="px-2 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-700">3.5</button>
+                            <button onclick="document.getElementById('goal-target-gpa').value='3.0'" class="px-2 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-700">3.0</button>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="text-sm font-semibold text-gray-600 mb-1 block">Credits Remaining</label>
+                        <input type="number" id="goal-credits-remaining" placeholder="e.g. 60" min="1"
+                            class="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 outline-none">
+                    </div>
+                </div>
+            </div>
+
+            <button onclick="calculateGoal()" class="w-full bg-blue-600 text-white font-semibold py-3 rounded-xl hover:bg-blue-700 shadow-lg transition-all text-sm border-none">Calculate What I Need 🏆</button>
+            <div id="goal-result" class="hidden mt-6 fade-in"></div>
+        </div>
+
+        <!-- ========================= -->
+        <!-- TAB 5: STUDY PLANNER     -->
+        <!-- ========================= -->
+        <div id="section-study" class="card p-6 fade-in hidden">
+            <h2 class="text-lg font-bold text-gray-800 mb-1">📅 Smart Study Planner</h2>
+            <p class="text-sm text-gray-500 mb-5">Plan your study sessions before your exam</p>
+
+            <div class="space-y-4 mb-6">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="text-sm font-semibold text-gray-600 mb-1 block">📚 Subject / Exam Name</label>
+                        <input type="text" id="study-subject" placeholder="e.g. AP Chemistry"
+                            class="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 outline-none text-sm">
+                    </div>
+                    <div>
+                        <label class="text-sm font-semibold text-gray-600 mb-1 block">📅 Exam Date</label>
+                        <input type="date" id="study-date"
+                            class="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 outline-none text-sm">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="text-sm font-semibold text-gray-600 mb-1 block">📊 Current Grade in Class (%)</label>
+                        <input type="number" id="study-grade" placeholder="e.g. 78" min="0" max="100"
+                            class="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 outline-none">
+                    </div>
+                    <div>
+                        <label class="text-sm font-semibold text-gray-600 mb-1 block">⏰ Hours Available Per Day</label>
+                        <input type="number" id="study-hours" placeholder="e.g. 2" min="0.5" max="12" step="0.5"
+                            class="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 outline-none">
+                    </div>
+                </div>
+                <div>
+                    <label class="text-sm font-semibold text-gray-600 mb-1 block">😰 Difficulty Level</label>
+                    <div class="flex gap-2 flex-wrap">
+                        <button onclick="setDifficulty('easy')" id="diff-easy"
+                            class="px-4 py-2 rounded-full text-xs font-bold bg-green-100 text-green-700 border-2 border-green-300 diff-btn">😊 Easy</button>
+                        <button onclick="setDifficulty('medium')" id="diff-medium"
+                            class="px-4 py-2 rounded-full text-xs font-bold bg-gray-100 text-gray-500 border-2 border-gray-200 diff-btn">😐 Medium</button>
+                        <button onclick="setDifficulty('hard')" id="diff-hard"
+                            class="px-4 py-2 rounded-full text-xs font-bold bg-gray-100 text-gray-500 border-2 border-gray-200 diff-btn">😓 Hard</button>
+                        <button onclick="setDifficulty('veryhard')" id="diff-veryhard"
+                            class="px-4 py-2 rounded-full text-xs font-bold bg-gray-100 text-gray-500 border-2 border-gray-200 diff-btn">🤯 Very Hard</button>
+                    </div>
+                </div>
+            </div>
+
+            <button onclick="generateStudyPlan()" class="w-full bg-blue-600 text-white font-semibold py-3 rounded-xl hover:bg-blue-700 shadow-lg transition-all text-sm border-none">Generate My Study Plan 📅</button>
+            <div id="study-result" class="hidden mt-6 fade-in"></div>
+
+            <!-- Saved Plans -->
+            <div id="saved-plans-section" class="mt-6 hidden">
+                <h3 class="text-sm font-bold text-gray-700 mb-3">📌 Saved Study Plans</h3>
+                <div id="saved-plans-list" class="space-y-2"></div>
+            </div>
+        </div>
+
+        <!-- ============================ -->
+        <!-- TAB 6: SEMESTER COMPARISON   -->
+        <!-- ============================ -->
+        <div id="section-compare" class="card p-6 fade-in hidden">
+            <h2 class="text-lg font-bold text-gray-800 mb-1">📈 Semester GPA Comparison</h2>
+            <p class="text-sm text-gray-500 mb-5">Track your GPA progress across multiple semesters</p>
+
+            <div id="semester-rows" class="space-y-3 mb-5"></div>
+
+            <div class="flex gap-3 mb-3">
+                <button onclick="addSemesterRow()" class="flex-1 bg-gray-100 text-gray-700 font-semibold py-3 rounded-xl hover:bg-gray-200 transition-all text-sm">+ Add Semester</button>
+                <button onclick="calculateCompare()" class="flex-1 bg-blue-600 text-white font-semibold py-3 rounded-xl hover:bg-blue-700 shadow-lg transition-all text-sm border-none">Compare 📈</button>
+            </div>
+
+            <div id="compare-result" class="hidden mt-6 fade-in"></div>
+        </div>
+
+        <!-- Disclaimer -->
         <div class="mt-6 text-[11px] text-gray-400 text-center leading-tight px-4">
-            <strong>Disclaimer:</strong> This tool and its automated recommendations are for informational, motivational, and self-assessment purposes only. They do not constitute official academic counseling, guarantee any specific academic outcome, or replace guidance from certified school counselors or teachers. Always consult your school's official grading policies.
+            <strong>Disclaimer:</strong> This tool and its automated recommendations are for informational, motivational, and self-assessment purposes only.
+            They do not constitute official academic counseling, guarantee any specific academic outcome, or replace guidance from certified school counselors or teachers.
+            Always consult your school's official grading policies.
         </div>
     </div>
 
     <script>
         // ============ GLOBAL STATE ============
         let gpaScale = 'unweighted';
+        let studyDifficulty = 'medium';
+        let darkMode = false;
+        let streak = parseInt(localStorage.getItem('studyStreak') || '0');
+        let lastStreakDate = localStorage.getItem('lastStreakDate') || '';
+        let savedPlans = JSON.parse(localStorage.getItem('savedPlans') || '[]');
 
         const gradeMap = {
             'A+': 4.0, 'A': 4.0, 'A-': 3.7,
@@ -143,17 +322,60 @@
             'C+': 2.3, 'C': 2.0, 'C-': 1.7,
             'D+': 1.3, 'D': 1.0, 'D-': 0.7, 'F': 0.0
         };
-
         const weightedBonus = { 'Regular': 0, 'Honors': 0.5, 'AP/IB': 1.0 };
 
+        // ============ DARK MODE ============
+        function toggleDarkMode() {
+            darkMode = !darkMode;
+            document.getElementById('app-body').classList.toggle('dark-mode', darkMode);
+            document.getElementById('dark-btn').textContent = darkMode ? '☀️ Light' : '🌙 Dark';
+            localStorage.setItem('darkMode', darkMode);
+        }
+
+        // ============ STREAK ============
+        function incrementStreak() {
+            const today = new Date().toDateString();
+            if (lastStreakDate === today) {
+                alert("✅ You already logged your study session today! Come back tomorrow.");
+                return;
+            }
+            const yesterday = new Date(Date.now() - 86400000).toDateString();
+            if (lastStreakDate === yesterday) {
+                streak++;
+            } else if (lastStreakDate !== today) {
+                streak = 1;
+            }
+            lastStreakDate = today;
+            localStorage.setItem('studyStreak', streak);
+            localStorage.setItem('lastStreakDate', lastStreakDate);
+            document.getElementById('streak-count').textContent = streak;
+            if (streak >= 7) alert(`🔥 ${streak}-day streak! You're on fire! Keep it up!`);
+            else alert(`✅ Study session logged! Keep it up! 🔥`);
+        }
+
         // ============ TAB SWITCHING ============
+        const allTabs = ['gpa', 'final', 'class', 'goal', 'study', 'compare'];
         function switchTab(tab) {
-            ['gpa', 'final', 'class'].forEach(t => {
+            allTabs.forEach(t => {
                 document.getElementById('section-' + t).classList.add('hidden');
-                document.getElementById('tab-' + t).className = 'tab-inactive flex-1 py-2.5 px-3 rounded-lg font-semibold text-sm transition-all';
+                document.getElementById('tab-' + t).className = 'tab-inactive py-2.5 px-3 rounded-lg font-semibold text-xs transition-all whitespace-nowrap';
             });
             document.getElementById('section-' + tab).classList.remove('hidden');
-            document.getElementById('tab-' + tab).className = 'tab-active flex-1 py-2.5 px-3 rounded-lg font-semibold text-sm transition-all';
+            document.getElementById('tab-' + tab).className = 'tab-active py-2.5 px-3 rounded-lg font-semibold text-xs transition-all whitespace-nowrap';
+        }
+
+        // ============ CLEAR SECTIONS ============
+        function clearSection(section) {
+            if (!confirm('Clear all entries?')) return;
+            if (section === 'gpa') {
+                document.getElementById('gpa-rows').innerHTML = '';
+                document.getElementById('gpa-result').classList.add('hidden');
+                for (let i = 0; i < 4; i++) addGPARow();
+            } else if (section === 'class') {
+                document.getElementById('class-rows').innerHTML = '';
+                document.getElementById('class-result').classList.add('hidden');
+                initClassDefaults();
+            }
         }
 
         // ============ GPA CALCULATOR ============
@@ -165,36 +387,28 @@
             document.getElementById('btn-weighted').className = scale === 'weighted'
                 ? 'px-4 py-1.5 rounded-full text-xs font-bold bg-blue-100 text-blue-700 border-2 border-blue-300'
                 : 'px-4 py-1.5 rounded-full text-xs font-bold bg-gray-100 text-gray-500 border-2 border-gray-200';
-
-            // Rebuild rows to show/hide class type
-            const container = document.getElementById('gpa-rows');
-            const count = container.children.length || 3;
-            container.innerHTML = '';
+            const count = document.getElementById('gpa-rows').children.length || 4;
+            document.getElementById('gpa-rows').innerHTML = '';
             for (let i = 0; i < count; i++) addGPARow();
         }
 
         function addGPARow() {
             const container = document.getElementById('gpa-rows');
             const row = document.createElement('div');
-            row.className = 'flex gap-2 items-center fade-in';
-
-            let classTypeHTML = '';
-            if (gpaScale === 'weighted') {
-                classTypeHTML = `
-                    <select class="gpa-type p-3 border rounded-lg bg-white text-sm outline-blue-500">
-                        <option value="Regular">Regular</option>
-                        <option value="Honors">Honors</option>
-                        <option value="AP/IB">AP/IB</option>
-                    </select>`;
-            }
-
+            row.className = 'flex gap-2 items-center fade-in flex-wrap';
+            let classTypeHTML = gpaScale === 'weighted' ? `
+                <select class="gpa-type p-2 border rounded-lg bg-white text-sm outline-blue-500">
+                    <option value="Regular">Regular</option>
+                    <option value="Honors">Honors</option>
+                    <option value="AP/IB">AP/IB</option>
+                </select>` : '';
             row.innerHTML = `
-                <input type="text" placeholder="Class name" class="p-3 border rounded-lg w-full text-sm outline-blue-500">
-                <select class="gpa-grade p-3 border rounded-lg bg-white text-sm outline-blue-500">
+                <input type="text" placeholder="Class name" class="p-2 border rounded-lg flex-1 min-w-24 text-sm outline-blue-500">
+                <select class="gpa-grade p-2 border rounded-lg bg-white text-sm outline-blue-500">
                     <option value="">Grade</option>
                     ${Object.keys(gradeMap).map(g => `<option value="${g}">${g}</option>`).join('')}
                 </select>
-                <input type="number" placeholder="Credits" class="gpa-credits p-3 border rounded-lg w-20 text-sm outline-blue-500" min="0.5" step="0.5" value="1">
+                <input type="number" placeholder="Credits" class="gpa-credits p-2 border rounded-lg w-20 text-sm outline-blue-500" min="0.5" step="0.5" value="1">
                 ${classTypeHTML}
                 <button onclick="this.parentElement.remove()" class="text-red-400 hover:text-red-600 font-bold px-1 text-lg">✕</button>
             `;
@@ -205,28 +419,41 @@
             const grades = document.querySelectorAll('.gpa-grade');
             const credits = document.querySelectorAll('.gpa-credits');
             const types = document.querySelectorAll('.gpa-type');
-
-            let totalPoints = 0, totalCredits = 0;
+            let totalPoints = 0, totalCredits = 0, classBreakdown = [];
 
             for (let i = 0; i < grades.length; i++) {
                 const g = grades[i].value;
                 const c = parseFloat(credits[i].value);
                 if (!g || isNaN(c)) continue;
-
                 let points = gradeMap[g];
-                if (gpaScale === 'weighted' && types[i]) {
-                    points += weightedBonus[types[i].value] || 0;
-                }
+                if (gpaScale === 'weighted' && types[i]) points += weightedBonus[types[i].value] || 0;
                 totalPoints += points * c;
                 totalCredits += c;
+                const nameInput = grades[i].parentElement.querySelector('input[type="text"]');
+                classBreakdown.push({ name: nameInput ? nameInput.value || `Class ${i+1}` : `Class ${i+1}`, grade: g, points: points.toFixed(1), credits: c });
             }
 
             if (totalCredits === 0) return alert("Please enter at least one class with a grade and credits.");
-
             const gpa = (totalPoints / totalCredits).toFixed(2);
             const letterGrade = gpaToLetter(gpa);
             const colorClass = getGradeColor(letterGrade);
             const insight = getGPAInsight(gpa);
+            const maxScale = gpaScale === 'weighted' ? 5.0 : 4.0;
+            const barWidth = Math.min((parseFloat(gpa) / maxScale) * 100, 100).toFixed(1);
+
+            let breakdownHTML = classBreakdown.map(b =>
+                `<div class="flex justify-between items-center text-xs py-1 border-b border-gray-100">
+                    <span class="text-gray-600 font-medium">${b.name}</span>
+                    <div class="flex gap-2 items-center">
+                        <span class="font-bold ${getGradeColor(b.grade)}">${b.grade}</span>
+                        <span class="text-gray-400">${b.points} pts</span>
+                        <span class="text-gray-400">${b.credits} cr</span>
+                    </div>
+                </div>`
+            ).join('');
+
+            // College readiness badge
+            const badge = getCollegeReadinessBadge(parseFloat(gpa));
 
             document.getElementById('gpa-result').innerHTML = `
                 <div class="result-card p-5 rounded-xl border border-blue-100">
@@ -235,13 +462,49 @@
                         <div class="text-5xl font-bold ${colorClass} mt-1">${gpa}</div>
                         <div class="text-lg font-semibold ${colorClass} mt-1">${letterGrade}</div>
                         <p class="text-xs text-gray-400 mt-1">${totalCredits} total credits</p>
+                        <div class="mt-3 inline-block bg-white px-3 py-1 rounded-full text-xs font-bold border ${badge.borderClass} ${badge.textClass}">${badge.text}</div>
                     </div>
+
+                    <!-- GPA Progress Bar -->
+                    <div class="mb-4">
+                        <div class="flex justify-between text-xs text-gray-400 mb-1">
+                            <span>0.0</span><span>${maxScale.toFixed(1)}</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-4 overflow-hidden">
+                            <div class="progress-bar h-4 rounded-full ${getBarColor(parseFloat(gpa))}" style="width: ${barWidth}%"></div>
+                        </div>
+                        <p class="text-center text-xs text-gray-400 mt-1">${gpa} / ${maxScale.toFixed(1)}</p>
+                    </div>
+
+                    <!-- Class Breakdown -->
+                    ${classBreakdown.length > 0 ? `
+                    <div class="mb-4 bg-white p-3 rounded-lg border">
+                        <p class="text-xs font-bold text-gray-500 mb-2">📋 Class Breakdown</p>
+                        ${breakdownHTML}
+                    </div>` : ''}
+
                     <div class="bg-white p-4 rounded-lg border border-purple-100 shadow-sm relative">
                         <div class="absolute -top-3 left-4 bg-purple-100 text-purple-700 text-xs font-bold px-3 py-1 rounded-full border border-purple-200">🤖 Smart Insight</div>
                         <p class="text-gray-700 mt-2 leading-relaxed text-sm">${insight}</p>
                     </div>
                 </div>`;
             document.getElementById('gpa-result').classList.remove('hidden');
+        }
+
+        function getCollegeReadinessBadge(gpa) {
+            if (gpa >= 3.8) return { text: '🏅 Highly Competitive for Top Universities', borderClass: 'border-green-300', textClass: 'text-green-700' };
+            if (gpa >= 3.5) return { text: '🎓 Competitive for Most Universities', borderClass: 'border-blue-300', textClass: 'text-blue-700' };
+            if (gpa >= 3.0) return { text: '📘 Meets Most College Requirements', borderClass: 'border-yellow-300', textClass: 'text-yellow-700' };
+            if (gpa >= 2.5) return { text: '📋 May Qualify for Community College', borderClass: 'border-orange-300', textClass: 'text-orange-700' };
+            return { text: '⚠️ Needs Improvement for College Admission', borderClass: 'border-red-300', textClass: 'text-red-700' };
+        }
+
+        function getBarColor(gpa) {
+            if (gpa >= 3.5) return 'bg-green-500';
+            if (gpa >= 3.0) return 'bg-blue-500';
+            if (gpa >= 2.5) return 'bg-yellow-500';
+            if (gpa >= 2.0) return 'bg-orange-500';
+            return 'bg-red-500';
         }
 
         // ============ FINAL GRADE CALCULATOR ============
@@ -252,7 +515,6 @@
             const current = parseFloat(document.getElementById('current-grade').value);
             const desired = parseFloat(document.getElementById('desired-grade').value);
             const weight = parseFloat(document.getElementById('final-weight').value);
-
             if (isNaN(current) || isNaN(desired) || isNaN(weight)) return alert("Please fill in all three fields.");
             if (weight <= 0 || weight > 100) return alert("Final exam weight must be between 1 and 100.");
 
@@ -260,31 +522,34 @@
             const needed = (desired - (1 - w) * current) / w;
             const neededRounded = needed.toFixed(1);
 
-            let emoji, message, colorClass;
+            // Show what you'd get for different final exam scores
+            const scenarios = [50, 60, 70, 80, 90, 100].map(score => {
+                const result = ((1 - w) * current + w * score).toFixed(1);
+                const letter = percentToLetter(result);
+                return { score, result, letter };
+            });
 
+            let emoji, message, colorClass;
             if (needed <= 0) {
-                emoji = "🏆";
-                message = "You've already secured this grade! Even if you score 0 on the final, you'll still pass with the grade you want. But don't slack off — finish strong!";
-                colorClass = "grade-a";
+                emoji = "🏆"; message = "You've already secured this grade! Even a 0 on the final won't drop you below your target. Finish strong!"; colorClass = "grade-a";
             } else if (needed <= 60) {
-                emoji = "😎";
-                message = `Very achievable! A score of ${neededRounded}% on your final is well within reach. Keep reviewing your notes and you'll be fine.`;
-                colorClass = "grade-a";
+                emoji = "😎"; message = `Very achievable! A score of ${neededRounded}% is well within reach. Review your notes and you'll be fine.`; colorClass = "grade-a";
             } else if (needed <= 80) {
-                emoji = "💪";
-                message = `You need a solid ${neededRounded}% on your final. This is definitely doable with focused studying. Start reviewing early, prioritize weak topics, and do practice problems.`;
-                colorClass = "grade-b";
+                emoji = "💪"; message = `You need a solid ${neededRounded}%. Focused studying will get you there. Start reviewing early and prioritize weak topics.`; colorClass = "grade-b";
             } else if (needed <= 100) {
-                emoji = "📚";
-                message = `You'll need a strong ${neededRounded}% on your final. This is challenging but possible. Create a detailed study schedule, attend review sessions, and consider forming a study group.`;
-                colorClass = "grade-c";
+                emoji = "📚"; message = `You'll need a strong ${neededRounded}%. Create a study schedule, attend review sessions, and form a study group.`; colorClass = "grade-c";
             } else {
-                emoji = "⚠️";
-                message = `You would need ${neededRounded}%, which is over 100%. Unfortunately, this grade may not be achievable through the final alone. Talk to your teacher about extra credit opportunities or focus on securing the next best grade.`;
-                colorClass = "grade-f";
+                emoji = "⚠️"; message = `You would need ${neededRounded}%, which exceeds 100%. Talk to your teacher about extra credit or aim for the next best grade.`; colorClass = "grade-f";
             }
 
             const insight = getFinalInsight(needed, current, desired);
+
+            let scenarioHTML = scenarios.map(s =>
+                `<div class="flex justify-between items-center py-1 border-b border-gray-100 text-xs">
+                    <span class="text-gray-500">If I score <strong>${s.score}%</strong> on final</span>
+                    <span class="font-bold ${getGradeColor(s.letter)}">${s.result}% (${s.letter})</span>
+                </div>`
+            ).join('');
 
             document.getElementById('final-result').innerHTML = `
                 <div class="result-card p-5 rounded-xl border border-blue-100">
@@ -294,6 +559,13 @@
                         <p class="text-sm text-gray-500 mt-1">on your final exam</p>
                         <div class="text-3xl mt-2">${emoji}</div>
                     </div>
+
+                    <!-- What-If Scenarios -->
+                    <div class="mb-4 bg-white p-3 rounded-lg border">
+                        <p class="text-xs font-bold text-gray-500 mb-2">🔮 What-If Scenarios</p>
+                        ${scenarioHTML}
+                    </div>
+
                     <div class="bg-white p-4 rounded-lg border border-purple-100 shadow-sm relative">
                         <div class="absolute -top-3 left-4 bg-purple-100 text-purple-700 text-xs font-bold px-3 py-1 rounded-full border border-purple-200">🤖 Smart Insight</div>
                         <p class="text-gray-700 mt-2 leading-relaxed text-sm">${message}</p>
@@ -308,7 +580,6 @@
             const container = document.getElementById('class-rows');
             const row = document.createElement('div');
             row.className = 'fade-in bg-gray-50 p-3 rounded-xl border';
-
             row.innerHTML = `
                 <div class="flex gap-2 items-center mb-2">
                     <input type="text" placeholder="Category (e.g. Tests)" class="class-cat p-2 border rounded-lg w-full text-sm outline-blue-500">
@@ -328,35 +599,42 @@
             const weights = document.querySelectorAll('.class-weight');
             const scores = document.querySelectorAll('.class-score');
             const totals = document.querySelectorAll('.class-total');
-
-            let weightedSum = 0, totalWeight = 0;
-            let breakdown = [];
+            let weightedSum = 0, totalWeight = 0, breakdown = [];
 
             for (let i = 0; i < cats.length; i++) {
                 const w = parseFloat(weights[i].value);
                 const s = parseFloat(scores[i].value);
                 const t = parseFloat(totals[i].value);
                 if (isNaN(w) || isNaN(s) || isNaN(t) || t === 0) continue;
-
                 const pct = (s / t) * 100;
                 weightedSum += pct * (w / 100);
                 totalWeight += w;
-                breakdown.push({ name: cats[i].value || `Category ${i+1}`, pct: pct.toFixed(1), weight: w });
+                breakdown.push({ name: cats[i].value || `Category ${i+1}`, pct: pct.toFixed(1), weight: w, score: s, total: t });
             }
 
             if (totalWeight === 0) return alert("Please enter at least one category with weight and scores.");
-
             const finalGrade = (weightedSum / (totalWeight / 100)).toFixed(2);
             const letter = percentToLetter(finalGrade);
             const colorClass = getGradeColor(letter);
             const insight = getClassInsight(finalGrade);
+            const barWidth = Math.min(parseFloat(finalGrade), 100).toFixed(1);
 
-            let breakdownHTML = breakdown.map(b =>
-                `<div class="flex justify-between text-sm py-1 border-b border-gray-100">
-                    <span class="text-gray-600">${b.name} <span class="text-gray-400">(${b.weight}%)</span></span>
-                    <span class="font-semibold ${getGradeColor(percentToLetter(b.pct))}">${b.pct}%</span>
-                </div>`
-            ).join('');
+            // Find best and worst performing categories
+            const sortedBreakdown = [...breakdown].sort((a, b) => parseFloat(b.pct) - parseFloat(a.pct));
+
+            let breakdownHTML = breakdown.map(b => {
+                const pctNum = parseFloat(b.pct);
+                const barW = Math.min(pctNum, 100).toFixed(1);
+                return `<div class="mb-2">
+                    <div class="flex justify-between text-xs mb-0.5">
+                        <span class="text-gray-600 font-medium">${b.name} <span class="text-gray-400">(${b.weight}%)</span></span>
+                        <span class="font-bold ${getGradeColor(percentToLetter(b.pct))}">${b.score}/${b.total} = ${b.pct}%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="h-2 rounded-full ${getBarColor(pctNum * 0.04)}" style="width:${barW}%"></div>
+                    </div>
+                </div>`;
+            }).join('');
 
             document.getElementById('class-result').innerHTML = `
                 <div class="result-card p-5 rounded-xl border border-blue-100">
@@ -365,7 +643,30 @@
                         <div class="text-5xl font-bold ${colorClass} mt-1">${finalGrade}%</div>
                         <div class="text-lg font-semibold ${colorClass} mt-1">${letter}</div>
                     </div>
-                    <div class="mb-4 bg-white p-3 rounded-lg border">${breakdownHTML}</div>
+
+                    <!-- Grade Bar -->
+                    <div class="mb-4">
+                        <div class="w-full bg-gray-200 rounded-full h-4 overflow-hidden">
+                            <div class="progress-bar h-4 rounded-full ${getBarColor(parseFloat(finalGrade) * 0.04)}" style="width:${barWidth}%"></div>
+                        </div>
+                        <div class="flex justify-between text-xs text-gray-400 mt-1">
+                            <span>0%</span><span>100%</span>
+                        </div>
+                    </div>
+
+                    <!-- Breakdown with bars -->
+                    <div class="mb-4 bg-white p-3 rounded-lg border">
+                        <p class="text-xs font-bold text-gray-500 mb-3">📊 Category Breakdown</p>
+                        ${breakdownHTML}
+                    </div>
+
+                    ${sortedBreakdown.length > 1 ? `
+                    <div class="mb-4 bg-green-50 p-3 rounded-lg border border-green-100">
+                        <p class="text-xs font-bold text-green-700">💡 Focus Tips</p>
+                        <p class="text-xs text-gray-600 mt-1">✅ Strongest: <strong>${sortedBreakdown[0].name}</strong> (${sortedBreakdown[0].pct}%)</p>
+                        <p class="text-xs text-gray-600 mt-0.5">📈 Needs work: <strong>${sortedBreakdown[sortedBreakdown.length-1].name}</strong> (${sortedBreakdown[sortedBreakdown.length-1].pct}%)</p>
+                    </div>` : ''}
+
                     <div class="bg-white p-4 rounded-lg border border-purple-100 shadow-sm relative">
                         <div class="absolute -top-3 left-4 bg-purple-100 text-purple-700 text-xs font-bold px-3 py-1 rounded-full border border-purple-200">🤖 Smart Insight</div>
                         <p class="text-gray-700 mt-2 leading-relaxed text-sm">${insight}</p>
@@ -374,34 +675,386 @@
             document.getElementById('class-result').classList.remove('hidden');
         }
 
+        // ============ GPA GOAL PLANNER ============
+        function calculateGoal() {
+            const currentGPA = parseFloat(document.getElementById('goal-current-gpa').value);
+            const creditsEarned = parseFloat(document.getElementById('goal-credits-earned').value);
+            const targetGPA = parseFloat(document.getElementById('goal-target-gpa').value);
+            const creditsRemaining = parseFloat(document.getElementById('goal-credits-remaining').value);
+
+            if (isNaN(currentGPA) || isNaN(creditsEarned) || isNaN(targetGPA) || isNaN(creditsRemaining))
+                return alert("Please fill in all fields.");
+            if (targetGPA > 4.0) return alert("Target GPA cannot exceed 4.0 (unweighted).");
+
+            const totalCredits = creditsEarned + creditsRemaining;
+            const currentPoints = currentGPA * creditsEarned;
+            const neededPoints = targetGPA * totalCredits;
+            const requiredPoints = neededPoints - currentPoints;
+            const requiredGPA = requiredPoints / creditsRemaining;
+
+            let message, colorClass, emoji;
+            if (requiredGPA <= 0) {
+                emoji = "🏆"; message = "Amazing! You've already exceeded your target GPA. Focus on maintaining it!"; colorClass = "grade-a";
+            } else if (requiredGPA <= 2.5) {
+                emoji = "😊"; message = `A ${requiredGPA.toFixed(2)} GPA in remaining credits is very achievable with consistent effort.`; colorClass = "grade-a";
+            } else if (requiredGPA <= 3.0) {
+                emoji = "💪"; message = `You need a ${requiredGPA.toFixed(2)} GPA. This is doable! Focus on study habits and consistency.`; colorClass = "grade-b";
+            } else if (requiredGPA <= 3.5) {
+                emoji = "📚"; message = `You need a ${requiredGPA.toFixed(2)} GPA. Challenging but achievable with dedicated effort and smart studying.`; colorClass = "grade-c";
+            } else if (requiredGPA <= 4.0) {
+                emoji = "🔥"; message = `You need a ${requiredGPA.toFixed(2)} GPA — nearly straight A's! This requires exceptional dedication.`; colorClass = "grade-d";
+            } else {
+                emoji = "⚠️"; message = `Unfortunately, your target GPA of ${targetGPA} may not be mathematically achievable with ${creditsRemaining} credits remaining. Consider adjusting your target.`; colorClass = "grade-f";
+            }
+
+            // What GPA can I realistically achieve?
+            const scenarios = [2.0, 2.5, 3.0, 3.5, 4.0].map(gpaTry => {
+                const finalGPA = ((currentGPA * creditsEarned + gpaTry * creditsRemaining) / totalCredits).toFixed(2);
+                return { try: gpaTry, result: finalGPA };
+            });
+
+            let scenarioHTML = scenarios.map(s =>
+                `<div class="flex justify-between text-xs py-1 border-b border-gray-100">
+                    <span class="text-gray-500">If I average <strong>${s.try.toFixed(1)} GPA</strong> in remaining credits</span>
+                    <span class="font-bold ${getGradeColor(gpaToLetter(s.result))}">${s.result} GPA</span>
+                </div>`
+            ).join('');
+
+            document.getElementById('goal-result').innerHTML = `
+                <div class="result-card p-5 rounded-xl border border-blue-100">
+                    <div class="text-center mb-4">
+                        <p class="text-sm text-gray-500 font-semibold">Required GPA in Remaining Credits</p>
+                        <div class="text-5xl font-bold ${colorClass} mt-1">${requiredGPA <= 0 ? '✓' : requiredGPA.toFixed(2)}</div>
+                        <div class="text-3xl mt-2">${emoji}</div>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-3 mb-4 text-center">
+                        <div class="bg-white p-3 rounded-lg border">
+                            <p class="text-xs text-gray-400">Current GPA</p>
+                            <p class="font-bold text-gray-800">${currentGPA}</p>
+                        </div>
+                        <div class="bg-white p-3 rounded-lg border">
+                            <p class="text-xs text-gray-400">Target GPA</p>
+                            <p class="font-bold text-blue-600">${targetGPA}</p>
+                        </div>
+                        <div class="bg-white p-3 rounded-lg border">
+                            <p class="text-xs text-gray-400">Gap</p>
+                            <p class="font-bold ${targetGPA > currentGPA ? 'text-red-500' : 'text-green-500'}">${(targetGPA - currentGPA).toFixed(2)}</p>
+                        </div>
+                    </div>
+
+                    <div class="mb-4 bg-white p-3 rounded-lg border">
+                        <p class="text-xs font-bold text-gray-500 mb-2">🔮 Projection Scenarios</p>
+                        ${scenarioHTML}
+                    </div>
+
+                    <div class="bg-white p-4 rounded-lg border border-purple-100 shadow-sm relative">
+                        <div class="absolute -top-3 left-4 bg-purple-100 text-purple-700 text-xs font-bold px-3 py-1 rounded-full border border-purple-200">🤖 Smart Insight</div>
+                        <p class="text-gray-700 mt-2 leading-relaxed text-sm">${message}</p>
+                    </div>
+                </div>`;
+            document.getElementById('goal-result').classList.remove('hidden');
+        }
+
+        // ============ STUDY PLANNER ============
+        let studyDiff = 'medium';
+        function setDifficulty(level) {
+            studyDiff = level;
+            document.querySelectorAll('.diff-btn').forEach(b => {
+                b.className = 'px-4 py-2 rounded-full text-xs font-bold bg-gray-100 text-gray-500 border-2 border-gray-200 diff-btn';
+            });
+            document.getElementById('diff-' + level).className = 'px-4 py-2 rounded-full text-xs font-bold bg-blue-100 text-blue-700 border-2 border-blue-300 diff-btn';
+        }
+
+        function generateStudyPlan() {
+            const subject = document.getElementById('study-subject').value || 'Your Exam';
+            const examDateStr = document.getElementById('study-date').value;
+            const currentGrade = parseFloat(document.getElementById('study-grade').value);
+            const hoursPerDay = parseFloat(document.getElementById('study-hours').value);
+
+            if (!examDateStr) return alert("Please enter your exam date.");
+            if (isNaN(hoursPerDay) || hoursPerDay <= 0) return alert("Please enter valid hours per day.");
+
+            const examDate = new Date(examDateStr);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            const daysLeft = Math.ceil((examDate - today) / (1000 * 60 * 60 * 24));
+
+            if (daysLeft <= 0) return alert("Please enter a future exam date.");
+
+            const diffMultiplier = { easy: 0.7, medium: 1.0, hard: 1.4, veryhard: 1.8 }[studyDiff] || 1.0;
+            const diffLabel = { easy: '😊 Easy', medium: '😐 Medium', hard: '😓 Hard', veryhard: '🤯 Very Hard' }[studyDiff];
+
+            const totalHours = (hoursPerDay * daysLeft * diffMultiplier).toFixed(1);
+
+            // Generate day-by-day plan
+            const studyPhases = generateStudyPhases(daysLeft, hoursPerDay, currentGrade);
+
+            let planHTML = studyPhases.map((phase, i) => {
+                const phaseDate = new Date(today);
+                phaseDate.setDate(today.getDate() + phase.startDay);
+                const endDate = new Date(today);
+                endDate.setDate(today.getDate() + phase.endDay);
+                return `
+                <div class="flex gap-3 items-start mb-3">
+                    <div class="bg-blue-100 text-blue-700 text-lg font-bold w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0">${phase.emoji}</div>
+                    <div class="flex-1">
+                        <p class="text-sm font-bold text-gray-800">${phase.name}</p>
+                        <p class="text-xs text-gray-500">${formatDate(phaseDate)} – ${formatDate(endDate)} (${phase.endDay - phase.startDay + 1} days)</p>
+                        <p class="text-xs text-gray-600 mt-0.5">${phase.activities}</p>
+                    </div>
+                </div>`;
+            }).join('');
+
+            // Study tips based on difficulty
+            const tips = getStudyTips(studyDiff, currentGrade);
+
+            document.getElementById('study-result').innerHTML = `
+                <div class="result-card p-5 rounded-xl border border-blue-100">
+                    <div class="text-center mb-4">
+                        <p class="text-2xl font-bold text-gray-800">${subject}</p>
+                        <div class="flex justify-center gap-4 mt-3">
+                            <div class="text-center">
+                                <p class="text-3xl font-bold text-blue-600">${daysLeft}</p>
+                                <p class="text-xs text-gray-500">Days Left</p>
+                            </div>
+                            <div class="text-center">
+                                <p class="text-3xl font-bold text-purple-600">${totalHours}</p>
+                                <p class="text-xs text-gray-500">Study Hours</p>
+                            </div>
+                            <div class="text-center">
+                                <p class="text-3xl font-bold text-green-600">${hoursPerDay}</p>
+                                <p class="text-xs text-gray-500">Hrs/Day</p>
+                            </div>
+                        </div>
+                        <div class="mt-2 inline-block bg-white px-3 py-1 rounded-full text-xs font-bold border border-blue-200 text-blue-700">${diffLabel}</div>
+                    </div>
+
+                    <!-- Study Plan Phases -->
+                    <div class="bg-white p-4 rounded-lg border mb-4">
+                        <p class="text-xs font-bold text-gray-500 mb-3">📅 Your Study Schedule</p>
+                        ${planHTML}
+                    </div>
+
+                    <!-- Study Tips -->
+                    <div class="bg-white p-4 rounded-lg border border-green-100 mb-4">
+                        <p class="text-xs font-bold text-green-700 mb-2">💡 Recommended Study Techniques</p>
+                        ${tips.map(t => `<p class="text-xs text-gray-600 mb-1">• ${t}</p>`).join('')}
+                    </div>
+
+                    <button onclick="savePlan('${subject}', ${daysLeft}, ${hoursPerDay}, '${examDateStr}')"
+                        class="w-full bg-green-600 text-white font-semibold py-2 rounded-xl hover:bg-green-700 transition-all text-xs border-none">
+                        💾 Save This Plan
+                    </button>
+                </div>`;
+            document.getElementById('study-result').classList.remove('hidden');
+        }
+
+        function generateStudyPhases(daysLeft, hoursPerDay, grade) {
+            const phases = [];
+            if (daysLeft <= 2) {
+                phases.push({ emoji: '🔥', name: 'Intense Review', startDay: 0, endDay: daysLeft - 1, activities: 'Focus on key formulas, past exams, and your weakest topics. No new material!' });
+            } else if (daysLeft <= 5) {
+                phases.push({ emoji: '📖', name: 'Content Review', startDay: 0, endDay: Math.floor(daysLeft * 0.5), activities: 'Review all major topics, re-read notes, summarize key concepts.' });
+                phases.push({ emoji: '✍️', name: 'Practice & Test Prep', startDay: Math.floor(daysLeft * 0.5) + 1, endDay: daysLeft - 2, activities: 'Practice problems, past papers, and flashcards.' });
+                phases.push({ emoji: '🛌', name: 'Final Review + Rest', startDay: daysLeft - 1, endDay: daysLeft - 1, activities: 'Light review only. Rest well, eat well, and stay confident!' });
+            } else {
+                const third = Math.floor(daysLeft / 3);
+                phases.push({ emoji: '📚', name: 'Foundation Building', startDay: 0, endDay: third - 1, activities: 'Read through all notes, create mind maps, identify weak areas.' });
+                phases.push({ emoji: '✍️', name: 'Active Practice', startDay: third, endDay: third * 2 - 1, activities: 'Practice problems, past exams, flashcards, and study groups.' });
+                phases.push({ emoji: '🔁', name: 'Review & Strengthen', startDay: third * 2, endDay: daysLeft - 2, activities: 'Focus on weak areas, timed practice tests, re-do missed problems.' });
+                phases.push({ emoji: '🛌', name: 'Final Prep', startDay: daysLeft - 1, endDay: daysLeft - 1, activities: 'Quick review of key formulas. Rest well tonight!' });
+            }
+            return phases;
+        }
+
+        function getStudyTips(difficulty, grade) {
+            const baseTips = [
+                '🍅 Use the Pomodoro Technique: 25 min study, 5 min break',
+                '🧠 Practice active recall instead of passive re-reading',
+                '📝 Rewrite your notes in your own words',
+                '👥 Form a study group for accountability'
+            ];
+            if (difficulty === 'hard' || difficulty === 'veryhard') {
+                return [...baseTips,
+                    '📊 Create a concept map connecting all major topics',
+                    '⏱️ Do timed practice exams under real conditions',
+                    '🎯 Focus 60% of time on your weakest topics',
+                    '💬 Visit your teacher during office hours'
+                ];
+            }
+            if (grade < 70) {
+                return [...baseTips,
+                    '📋 Start from Chapter 1 and build your foundation',
+                    '🙋 Ask your teacher for extra help immediately',
+                    '📱 Use free resources: Khan Academy, YouTube tutorials'
+                ];
+            }
+            return baseTips;
+        }
+
+        function formatDate(date) {
+            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        }
+
+        function savePlan(subject, days, hours, date) {
+            const plan = { subject, days, hours, date, saved: new Date().toLocaleDateString() };
+            savedPlans.push(plan);
+            localStorage.setItem('savedPlans', JSON.stringify(savedPlans));
+            renderSavedPlans();
+            alert(`✅ Plan saved for "${subject}"!`);
+        }
+
+        function renderSavedPlans() {
+            if (savedPlans.length === 0) return;
+            document.getElementById('saved-plans-section').classList.remove('hidden');
+            document.getElementById('saved-plans-list').innerHTML = savedPlans.map((p, i) =>
+                `<div class="flex justify-between items-center bg-gray-50 p-3 rounded-lg border text-xs">
+                    <div>
+                        <p class="font-bold text-gray-700">${p.subject}</p>
+                        <p class="text-gray-400">Exam: ${p.date} • ${p.hours} hrs/day • Saved: ${p.saved}</p>
+                    </div>
+                    <button onclick="deletePlan(${i})" class="text-red-400 hover:text-red-600 font-bold">✕</button>
+                </div>`
+            ).join('');
+        }
+
+        function deletePlan(i) {
+            savedPlans.splice(i, 1);
+            localStorage.setItem('savedPlans', JSON.stringify(savedPlans));
+            renderSavedPlans();
+        }
+
+        // ============ SEMESTER COMPARE ============
+        function addSemesterRow() {
+            const container = document.getElementById('semester-rows');
+            const count = container.children.length + 1;
+            const row = document.createElement('div');
+            row.className = 'flex gap-2 items-center fade-in';
+            row.innerHTML = `
+                <input type="text" placeholder="Semester ${count}" class="sem-name p-2 border rounded-lg flex-1 text-sm outline-blue-500" value="Semester ${count}">
+                <input type="number" placeholder="GPA" step="0.01" min="0" max="5" class="sem-gpa p-2 border rounded-lg w-24 text-sm outline-blue-500">
+                <input type="number" placeholder="Credits" min="1" class="sem-credits p-2 border rounded-lg w-20 text-sm outline-blue-500">
+                <button onclick="this.parentElement.remove()" class="text-red-400 hover:text-red-600 font-bold px-1 text-lg">✕</button>
+            `;
+            container.appendChild(row);
+        }
+
+        function calculateCompare() {
+            const names = document.querySelectorAll('.sem-name');
+            const gpas = document.querySelectorAll('.sem-gpa');
+            const credits = document.querySelectorAll('.sem-credits');
+
+            let semesters = [], totalPoints = 0, totalCredits = 0;
+
+            for (let i = 0; i < gpas.length; i++) {
+                const g = parseFloat(gpas[i].value);
+                const c = parseFloat(credits[i].value);
+                if (isNaN(g) || isNaN(c)) continue;
+                semesters.push({ name: names[i].value || `Semester ${i+1}`, gpa: g, credits: c });
+                totalPoints += g * c;
+                totalCredits += c;
+            }
+
+            if (semesters.length === 0) return alert("Please enter at least one semester.");
+
+            const cumulativeGPA = (totalPoints / totalCredits).toFixed(2);
+            const maxGPA = Math.max(...semesters.map(s => s.gpa));
+            const minGPA = Math.min(...semesters.map(s => s.gpa));
+            const trend = semesters.length > 1
+                ? (semesters[semesters.length - 1].gpa - semesters[0].gpa).toFixed(2)
+                : null;
+
+            let chartHTML = semesters.map(s => {
+                const barH = Math.min((s.gpa / 4.0) * 100, 100).toFixed(0);
+                const colorClass = getBarColor(s.gpa / 4 * 3.5);
+                return `
+                <div class="flex flex-col items-center flex-1">
+                    <p class="text-xs font-bold ${getGradeColor(gpaToLetter(s.gpa.toFixed(2)))}">${s.gpa}</p>
+                    <div class="w-full flex flex-col justify-end" style="height:80px;">
+                        <div class="w-full ${colorClass} rounded-t-lg" style="height:${barH}%"></div>
+                    </div>
+                    <p class="text-xs text-gray-500 text-center mt-1 leading-tight">${s.name}</p>
+                </div>`;
+            }).join('');
+
+            document.getElementById('compare-result').innerHTML = `
+                <div class="result-card p-5 rounded-xl border border-blue-100">
+                    <!-- Stats Row -->
+                    <div class="grid grid-cols-3 gap-3 mb-5 text-center">
+                        <div class="bg-white p-3 rounded-lg border">
+                            <p class="text-xs text-gray-400">Cumulative GPA</p>
+                            <p class="text-xl font-bold ${getGradeColor(gpaToLetter(cumulativeGPA))}">${cumulativeGPA}</p>
+                        </div>
+                        <div class="bg-white p-3 rounded-lg border">
+                            <p class="text-xs text-gray-400">Best Semester</p>
+                            <p class="text-xl font-bold grade-a">${maxGPA.toFixed(2)}</p>
+                        </div>
+                        <div class="bg-white p-3 rounded-lg border">
+                            <p class="text-xs text-gray-400">Trend</p>
+                            <p class="text-xl font-bold ${trend > 0 ? 'grade-a' : trend < 0 ? 'grade-f' : 'grade-c'}">
+                                ${trend !== null ? (trend > 0 ? '📈 +' : trend < 0 ? '📉 ' : '➡️ ') + trend : '—'}
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Bar Chart -->
+                    <div class="bg-white p-4 rounded-lg border mb-4">
+                        <p class="text-xs font-bold text-gray-500 mb-3">📊 GPA by Semester</p>
+                        <div class="flex gap-2 items-end">
+                            ${chartHTML}
+                        </div>
+                        <div class="flex justify-between text-xs text-gray-300 mt-1 border-t pt-1">
+                            <span>0.0</span><span>4.0</span>
+                        </div>
+                    </div>
+
+                    <!-- Semester List -->
+                    <div class="bg-white p-3 rounded-lg border mb-4">
+                        ${semesters.map(s => `
+                            <div class="flex justify-between items-center py-1 border-b border-gray-50 text-xs">
+                                <span class="font-medium text-gray-700">${s.name}</span>
+                                <div class="flex gap-3">
+                                    <span class="font-bold ${getGradeColor(gpaToLetter(s.gpa.toFixed(2)))}">${s.gpa.toFixed(2)} GPA</span>
+                                    <span class="text-gray-400">${s.credits} credits</span>
+                                </div>
+                            </div>`).join('')}
+                    </div>
+
+                    <div class="bg-white p-4 rounded-lg border border-purple-100 shadow-sm relative">
+                        <div class="absolute -top-3 left-4 bg-purple-100 text-purple-700 text-xs font-bold px-3 py-1 rounded-full border border-purple-200">🤖 Smart Insight</div>
+                        <p class="text-gray-700 mt-2 leading-relaxed text-sm">${getCompareInsight(parseFloat(cumulativeGPA), trend, semesters)}</p>
+                    </div>
+                </div>`;
+            document.getElementById('compare-result').classList.remove('hidden');
+        }
+
+        function getCompareInsight(cumGPA, trend, semesters) {
+            if (trend > 0.5) return `🚀 Excellent upward trend! Your GPA has improved by ${trend} points. You're building great momentum. Keep this trajectory and you'll reach your goals.`;
+            if (trend > 0) return `📈 Good improvement! A ${trend} point increase shows you're moving in the right direction. Stay consistent and look for opportunities to push your GPA higher.`;
+            if (trend < -0.5) return `⚠️ Your GPA has dropped by ${Math.abs(trend)} points. Identify what changed and address it now. Meet with your counselor and review your study habits.`;
+            if (trend < 0) return `📉 Slight dip of ${Math.abs(trend)} points. This is manageable! Reflect on any challenges you faced and make a plan to recover next semester.`;
+            if (semesters.length === 1) return `This is your first recorded semester. Keep tracking your progress to see your growth over time!`;
+            return `➡️ Consistent performance with a ${cumGPA} cumulative GPA. Consistency is great — now push yourself to new heights!`;
+        }
+
         // ============ HELPER FUNCTIONS ============
         function gpaToLetter(gpa) {
-            if (gpa >= 3.85) return 'A';
-            if (gpa >= 3.5) return 'A-';
-            if (gpa >= 3.15) return 'B+';
-            if (gpa >= 2.85) return 'B';
-            if (gpa >= 2.5) return 'B-';
-            if (gpa >= 2.15) return 'C+';
-            if (gpa >= 1.85) return 'C';
-            if (gpa >= 1.5) return 'C-';
-            if (gpa >= 1.15) return 'D+';
-            if (gpa >= 0.85) return 'D';
+            if (gpa >= 3.85) return 'A'; if (gpa >= 3.5) return 'A-';
+            if (gpa >= 3.15) return 'B+'; if (gpa >= 2.85) return 'B';
+            if (gpa >= 2.5) return 'B-'; if (gpa >= 2.15) return 'C+';
+            if (gpa >= 1.85) return 'C'; if (gpa >= 1.5) return 'C-';
+            if (gpa >= 1.15) return 'D+'; if (gpa >= 0.85) return 'D';
             return 'F';
         }
 
         function percentToLetter(pct) {
-            if (pct >= 93) return 'A';
-            if (pct >= 90) return 'A-';
-            if (pct >= 87) return 'B+';
-            if (pct >= 83) return 'B';
-            if (pct >= 80) return 'B-';
-            if (pct >= 77) return 'C+';
-            if (pct >= 73) return 'C';
-            if (pct >= 70) return 'C-';
-            if (pct >= 67) return 'D+';
-            if (pct >= 63) return 'D';
-            if (pct >= 60) return 'D-';
-            return 'F';
+            if (pct >= 93) return 'A'; if (pct >= 90) return 'A-';
+            if (pct >= 87) return 'B+'; if (pct >= 83) return 'B';
+            if (pct >= 80) return 'B-'; if (pct >= 77) return 'C+';
+            if (pct >= 73) return 'C'; if (pct >= 70) return 'C-';
+            if (pct >= 67) return 'D+'; if (pct >= 63) return 'D';
+            if (pct >= 60) return 'D-'; return 'F';
         }
 
         function getGradeColor(letter) {
@@ -414,33 +1067,30 @@
 
         // ============ SMART INSIGHTS ============
         function getGPAInsight(gpa) {
-            if (gpa >= 3.8) return "🌟 Outstanding! You're in the top academic bracket. You're highly competitive for selective universities and merit scholarships. Keep pushing with AP/IB courses and strong extracurriculars to stand out even more. Consider reaching out to college admissions counselors early.";
-            if (gpa >= 3.3) return "💪 Great work! Your GPA shows strong academic performance. To move into the top tier, identify 1-2 classes where you're close to the next grade level and focus extra effort there. Also, leadership in extracurriculars can strengthen your college applications significantly.";
-            if (gpa >= 2.7) return "📈 You have a solid foundation. To improve, try visiting your teachers during office hours, forming study groups, and breaking large assignments into smaller daily tasks. An upward trend in your GPA is something colleges love to see — it shows growth and determination.";
-            if (gpa >= 2.0) return "📋 You're passing, but there's significant room for improvement. Consider meeting with your school counselor to create a structured study plan. Focus on time management, reducing distractions during study time, and never hesitate to ask for help. Every point matters!";
-            return "🚨 Your GPA needs immediate attention. Please talk to your teachers and school counselor right away. Prioritize completing all assignments, attend tutoring sessions, and focus on building strong daily study habits. A turnaround is absolutely possible with consistent effort.";
+            if (gpa >= 3.8) return "🌟 Outstanding! You're highly competitive for selective universities and merit scholarships. Keep pushing with AP/IB courses and strong extracurriculars.";
+            if (gpa >= 3.3) return "💪 Great work! To move into the top tier, identify 1-2 classes where you're close to the next grade and focus extra effort there.";
+            if (gpa >= 2.7) return "📈 Solid foundation! Visit teachers during office hours, form study groups, and break large assignments into smaller daily tasks. An upward GPA trend impresses colleges!";
+            if (gpa >= 2.0) return "📋 You're passing, but there's significant room for improvement. Meet with your school counselor to create a structured study plan. Every point matters!";
+            return "🚨 Immediate attention needed. Talk to your teachers and counselor right away. Prioritize assignments, attend tutoring, and build strong daily study habits.";
         }
 
         function getFinalInsight(needed, current, desired) {
-            if (needed > 100) return "💡 Strategy tip: Talk to your teacher about any extra credit opportunities. Also consider whether aiming for the next lower grade (like a B instead of an A) might be more realistic and less stressful.";
-            if (needed > 85) return "💡 Study strategy: Start preparing at least 2 weeks before the exam. Use active recall (practice tests) instead of passive reading. Focus 70% of your study time on your weakest topics.";
-            if (needed > 60) return "💡 You're in a great position! Review your class notes, redo homework problems you got wrong, and get a good night's sleep before the exam. Consistency beats cramming.";
-            return "💡 You're sitting in an excellent position! Use the remaining time to reinforce your understanding and help classmates study — teaching others is one of the best ways to solidify your own knowledge.";
+            if (needed > 100) return "💡 Tip: Ask your teacher about extra credit opportunities. Also consider whether aiming for the next lower grade is more realistic.";
+            if (needed > 85) return "💡 Start preparing at least 2 weeks early. Use active recall (practice tests) not passive reading. Focus 70% of time on your weakest topics.";
+            if (needed > 60) return "💡 You're in a great position! Review notes, redo problems you got wrong, and get a good night's sleep before the exam.";
+            return "💡 Excellent position! Use the remaining time to reinforce understanding and help classmates — teaching others solidifies your own knowledge.";
         }
 
         function getClassInsight(grade) {
-            if (grade >= 93) return "🌟 Excellent! You're earning an A in this class. Maintain your current study habits and stay consistent. If you want to go above and beyond, look for extra credit or advanced topics to explore.";
-            if (grade >= 85) return "💪 Strong performance! You're close to an A. Look at which category is pulling your average down the most and dedicate extra focus there. Even small improvements in your weakest category can push you over the top.";
-            if (grade >= 75) return "📈 Decent work! Focus on the categories with the highest weight — improvements there will have the biggest impact on your overall grade. Practice problems and review sessions can help boost test scores significantly.";
-            if (grade >= 65) return "📋 You're passing, but you need to step it up. Make a plan to improve in the heaviest-weighted categories first. Visit your teacher for extra help and make sure you're completing every assignment — even partial credit adds up.";
-            return "🚨 Your grade is in a critical zone. Meet with your teacher immediately to discuss your options. Focus on turning in all remaining assignments, attending every class, and seeking tutoring. Small consistent efforts can lead to a big turnaround.";
+            if (grade >= 93) return "🌟 Excellent A! Maintain your study habits and stay consistent. Look for extra credit or advanced topics to explore.";
+            if (grade >= 85) return "💪 Strong performance! Look at which category pulls your average down most and dedicate extra focus there.";
+            if (grade >= 75) return "📈 Focus on the highest-weighted categories — improvements there have the biggest impact. Practice problems and review sessions help.";
+            if (grade >= 65) return "📋 Make a plan to improve in the heaviest-weighted categories first. Visit your teacher for extra help and complete every assignment.";
+            return "🚨 Critical zone. Meet with your teacher immediately. Focus on all remaining assignments, attending every class, and seeking tutoring.";
         }
 
         // ============ INITIALIZE ============
-        function init() {
-            // Add default rows for GPA
-            for (let i = 0; i < 4; i++) addGPARow();
-            // Add default rows for Class Grade
+        function initClassDefaults() {
             const defaults = [
                 { cat: 'Tests/Exams', weight: 40 },
                 { cat: 'Homework', weight: 25 },
@@ -454,6 +1104,31 @@
                 last.querySelector('.class-cat').value = d.cat;
                 last.querySelector('.class-weight').value = d.weight;
             });
+        }
+
+        function init() {
+            // Restore dark mode
+            if (localStorage.getItem('darkMode') === 'true') toggleDarkMode();
+
+            // Restore streak
+            document.getElementById('streak-count').textContent = streak;
+
+            // Init tabs
+            for (let i = 0; i < 4; i++) addGPARow();
+            initClassDefaults();
+
+            // Add 3 default semester rows
+            for (let i = 0; i < 3; i++) addSemesterRow();
+
+            // Set today's date as default for study planner
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('study-date').min = today;
+
+            // Render saved plans
+            renderSavedPlans();
+
+            // Set default difficulty
+            setDifficulty('medium');
         }
 
         init();
