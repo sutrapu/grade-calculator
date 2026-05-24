@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>High School Grade & GPA Calculator</title>
+<title>Ultimate High School Academic Dashboard & GPA Calculator</title>
 
 <style>
 *{
@@ -94,7 +94,7 @@ body{
 
 /* ================= CONTAINER ================= */
 .container{
-    max-width: 1100px;
+    max-width: 1150px;
     margin: auto;
     padding: 20px;
     margin-top: -80px;
@@ -110,7 +110,7 @@ body{
     display: flex;
     gap: 10px;
     overflow-x: auto;
-    margin-bottom: 25px;
+    margin-bottom: 15px;
 }
 
 .tab-btn{
@@ -128,6 +128,18 @@ body{
 .tab-btn.active{
     background: white;
     color: #111827;
+}
+
+/* ================= DYNAMIC TAB EXPLAINER ================= */
+.tab-explainer {
+    background: #e0f2fe;
+    color: #0369a1;
+    border-left: 5px solid #0284c7;
+    padding: 15px 20px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    font-size: 14px;
+    line-height: 1.5;
 }
 
 /* ================= CARD ================= */
@@ -200,9 +212,7 @@ body{
 .chip.orange { background: #ffedd5; color: #c2410c; }
 .chip.gray { background: #f3f4f6; color: #4b5563; }
 
-.chip:hover {
-    opacity: 0.85;
-}
+.chip:hover { opacity: 0.85; }
 
 /* ================= ROWS & INPUT GROUPS ================= */
 .rows-container {
@@ -212,7 +222,14 @@ body{
     margin-bottom: 20px;
 }
 
-.gpa-row, .class-row {
+.gpa-row {
+    display: grid;
+    grid-template-columns: 2fr 1.5fr 1fr 1fr auto auto;
+    gap: 10px;
+    align-items: center;
+}
+
+.class-row {
     display: grid;
     grid-template-columns: 2fr 1fr 1fr auto;
     gap: 10px;
@@ -236,6 +253,13 @@ body{
     border-color: #2563eb;
 }
 
+.sport-checkbox {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    accent-color: #2563eb;
+}
+
 .label-text {
     font-size: 14px;
     font-weight: bold;
@@ -249,6 +273,13 @@ body{
     grid-template-columns: 1fr 1fr;
     gap: 15px;
     margin-bottom: 15px;
+}
+
+.grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-bottom: 20px;
 }
 
 .delete-btn{
@@ -265,9 +296,33 @@ body{
     justify-content: center;
 }
 
-.delete-btn:hover {
-    background: #fca5a5;
+.delete-btn:hover { background: #fca5a5; }
+
+/* ================= CREDIT TRACKER TABLE ================= */
+.credit-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
 }
+
+.credit-table th, .credit-table td {
+    padding: 14px;
+    text-align: left;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.credit-table th { background: #f8fafc; font-weight: bold; }
+
+.status-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.status-badge.done { background: #dcfce7; color: #15803d; }
+.status-badge.pending { background: #ffedd5; color: #c2410c; }
 
 /* ================= BUTTONS ================= */
 .actions{
@@ -287,18 +342,9 @@ body{
     transition: background 0.2s;
 }
 
-.btn-primary{
-    background: #2563eb;
-    color: white;
-}
-
+.btn-primary{ background: #2563eb; color: white; }
 .btn-primary:hover { background: #1d4ed8; }
-
-.btn-secondary{
-    background: #e5e7eb;
-    color: #1f2937;
-}
-
+.btn-secondary{ background: #e5e7eb; color: #1f2937; }
 .btn-secondary:hover { background: #d1d5db; }
 
 .btn-clear {
@@ -308,7 +354,6 @@ body{
     border: 1px solid #fed7d7;
     margin-top: 15px;
 }
-
 .btn-clear:hover { background: #fff5f5; border-color: #e53e3e; }
 
 /* ================= RESULTS DISPLAY ================= */
@@ -322,14 +367,21 @@ body{
 }
 
 .gpa-value{
-    font-size: 70px;
+    font-size: 65px;
     font-weight: 900;
     color: #16a34a;
     line-height: 1;
 }
 
+.gpa-sub-label {
+    font-size: 14px;
+    color: #4b5563;
+    margin-top: 4px;
+    margin-bottom: 15px;
+}
+
 .letter{
-    font-size: 28px;
+    font-size: 24px;
     margin-top: 10px;
     font-weight: bold;
 }
@@ -359,6 +411,25 @@ body{
     text-align: left;
     line-height: 1.5;
 }
+
+/* ================= ELIGIBILITY BADGES ================= */
+.badge-container {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 15px;
+    flex-wrap: wrap;
+}
+
+.eligibility-badge {
+    padding: 8px 16px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: bold;
+}
+.eligibility-badge.eligible { background: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
+.eligibility-badge.warning { background: #fef9c3; color: #a16207; border: 1px solid #fef08a; }
+.eligibility-badge.danger { background: #fee2e2; color: #dc2626; border: 1px solid #fecaca; }
 
 /* ================= TRUST BADGES ================= */
 .trust{
@@ -390,42 +461,24 @@ body{
     text-align: justify;
 }
 
-.legal-disclaimer strong {
-    color: #4b5563;
-}
-
 /* ================= ANIMATIONS & UTILITIES ================= */
-.fade-in {
-    animation: fadeIn 0.3s ease-in-out;
-}
-
+.fade-in { animation: fadeIn 0.3s ease-in-out; }
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
 }
-
 .hidden { display: none !important; }
 
 /* ================= DARK MODE ================= */
-body.dark {
-    background: #0f172a;
-    color: #f8fafc;
+body.dark { background: #0f172a; color: #f8fafc; }
+body.dark .card, body.dark .trust-card, body.dark .insight, body.dark th {
+    background: #1e293b; color: #f8fafc; border-color: #334155; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
 }
-
-body.dark .card, body.dark .trust-card, body.dark .insight {
-    background: #1e293b;
-    color: #f8fafc;
-    border-color: #334155;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-}
-
+body.dark .tab-explainer { background: #0c4a6e; color: #e0f2fe; border-left-color: #38bdf8; }
 body.dark .gpa-row input, body.dark .gpa-row select,
 body.dark .class-row input, body.dark .input-box {
-    background: #334155;
-    border-color: #475569;
-    color: white;
+    background: #334155; border-color: #475569; color: white;
 }
-
 body.dark .label-text { color: #cbd5e1; }
 body.dark .subtitle { color: #94a3b8; }
 body.dark .btn-secondary { background: #334155; color: white; }
@@ -433,24 +486,21 @@ body.dark .btn-secondary:hover { background: #475569; }
 body.dark .toggle-btn { background: #334155; color: #cbd5e1; }
 body.dark .toggle-btn.active { background: #2563eb; color: white; }
 body.dark .legal-disclaimer { border-top-color: #334155; color: #94a3b8; }
-body.dark .legal-disclaimer strong { color: #cbd5e1; }
 
 /* ================= MOBILE ADAPTATION ================= */
 @media(max-width: 768px){
     .hero h1{ font-size: 30px; }
-    .gpa-row, .class-row{ grid-template-columns: 1fr; gap: 8px; }
-    .grid-2 { grid-template-columns: 1fr; gap: 0; }
+    .gpa-row { grid-template-columns: 1fr; gap: 8px; padding-bottom: 15px; border-bottom: 1px dashed #e5e7eb; }
+    .class-row { grid-template-columns: 1fr; gap: 8px; }
+    .grid-2, .grid-3 { grid-template-columns: 1fr; gap: 0; }
     .delete-btn { width: 100%; border-radius: 12px; height: 40px; }
     .actions{ flex-direction: column; }
     .trust{ grid-template-columns: 1fr; }
-    .gpa-value{ font-size: 55px; }
+    .gpa-value{ font-size: 48px; }
 }
 
-/* ================= PRINT HANDLING ================= */
 @media print {
-    .no-print, .hero-buttons, .tabs, .actions, .btn-clear, .delete-btn, .legal-disclaimer {
-        display: none !important;
-    }
+    .no-print, .hero-buttons, .tabs, .tab-explainer, .actions, .btn-clear, .delete-btn, .legal-disclaimer { display: none !important; }
     .container { margin-top: 0; }
     .card { box-shadow: none; padding: 0; margin-bottom: 40px; }
     .result { display: block !important; background: none; }
@@ -464,8 +514,8 @@ body.dark .legal-disclaimer strong { color: #cbd5e1; }
         <button onclick="toggleDark()">🌙 Dark</button>
         <button onclick="window.print()">🖨️ Print</button>
     </div>
-    <h1>🎓 High School Grade Calculator</h1>
-    <p>GPA • Final Grade • Class Grade • GPA Goal • Study Planner • Semester Compare</p>
+    <h1>🎓 High School Academic Dashboard</h1>
+    <p>GPA Engine • Grade Protect • NCAA Monitor • Graduation Credit Tracker • Study Planner</p>
     
     <div class="streak-container">
         <span>🔥 Study Streak: <span id="streak-count">0</span> days</span>
@@ -476,253 +526,352 @@ body.dark .legal-disclaimer strong { color: #cbd5e1; }
 <div class="container">
 
     <div class="tabs no-print">
-        <button class="tab-btn active" onclick="switchTab('gpa', this)">📊 GPA Calculator</button>
-        <button class="tab-btn" onclick="switchTab('final', this)">🎯 Final Grade</button>
-        <button class="tab-btn" onclick="switchTab('class', this)">📝 Class Grade</button>
-        <button class="tab-btn" onclick="switchTab('goal', this)">🏆 GPA Goal</button>
+        <button class="tab-btn active" onclick="switchTab('gpa', this)">📊 GPA & NCAA Tracker</button>
+        <button class="tab-btn" onclick="switchTab('final', this)">🎯 Final Grade Cushion</button>
+        <button class="tab-btn" onclick="switchTab('class', this)">📝 Class Grade Tracker</button>
+        <button class="tab-btn" onclick="switchTab('goal', this)">🏆 GPA Goal Planner</button>
+        <button class="tab-btn" onclick="switchTab('credits', this)">📜 Graduation Progress</button>
         <button class="tab-btn" onclick="switchTab('study', this)">📅 Study Planner</button>
         <button class="tab-btn" onclick="switchTab('semester', this)">📈 Semester Compare</button>
     </div>
 
+    <div id="dynamic-explainer" class="tab-explainer no-print">
+        <strong>💡 About this tool:</strong> Calculate your term GPA with custom weights (Regular vs AP). Optional: Add past high school history to see your new overall cumulative GPA, and check athletic core course eligibility benchmarks.
+    </div>
+
     <div id="section-gpa" class="tab-content fade-in">
         <div class="card">
-            <h2>Calculate Your GPA</h2>
-            <p class="subtitle">Enter all your classes to calculate your overall GPA.</p>
+            <h2>Calculate Your GPA & NCAA Eligibility</h2>
+            <p class="subtitle">Factor in custom course weighting configurations along with prior multi-term cumulative milestones.</p>
             
+            <fieldset style="border: 1px dashed #cbd5e1; border-radius: 16px; padding: 20px; margin-bottom: 25px;">
+                <legend style="padding: 0 10px; font-weight: bold; font-size: 14px; color: #2563eb;">🔗 Cumulative History Merger (Optional)</legend>
+                <div class="grid-2" style="margin-bottom: 0;">
+                    <div>
+                        <label class="label-text">Prior Cumulative GPA</label>
+                        <input type="number" id="priorGPA" class="input-box" placeholder="e.g. 3.45" step="0.01" min="0" max="5">
+                    </div>
+                    <div>
+                        <label class="label-text">Prior Earned Credits</label>
+                        <input type="number" id="priorCredits" class="input-box" placeholder="e.g. 32" step="0.5" min="0">
+                    </div>
+                </div>
+            </fieldset>
+
             <div class="toggle-group">
-                <button class="toggle-btn active" id="btn-unweighted" onclick="setScale('unweighted', this)">Unweighted (4.0)</button>
-                <button class="toggle-btn" id="btn-weighted" onclick="setScale('weighted', this)">Weighted (5.0)</button>
+                <button class="toggle-btn active" id="btn-unweighted" onclick="setScale('unweighted', this)">Unweighted Scale (4.0)</button>
+                <button class="toggle-btn" id="btn-weighted" onclick="setScale('weighted', this)">Weighted Scale (5.0)</button>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 2fr 1.5fr 1fr 1fr auto auto; gap:10px; padding: 0 10px 5px; font-size:12px; font-weight:bold; color:#6b7280;" class="no-print">
+                <div>Class Name</div>
+                <div>Course Type</div>
+                <div>Grade</div>
+                <div>Credits</div>
+                <div style="text-align: center;">NCAA?</div>
+                <div>Remove</div>
             </div>
 
             <div id="gpaRows" class="rows-container"></div>
 
             <div class="actions">
                 <button class="btn btn-secondary" onclick="addRow()">+ Add Class</button>
-                <button class="btn btn-primary" onclick="calculateGPA()">Calculate GPA ✨</button>
+                <button class="btn btn-primary" onclick="calculateGPA()">Run Evaluation Matrix ✨</button>
             </div>
-            <button class="btn btn-secondary btn-clear" onclick="clearSection('gpa')">🗑️ Clear All</button>
+            <button class="btn btn-secondary btn-clear" onclick="clearSection('gpa')">🗑️ Clear All Rows</button>
 
             <div class="result" id="gpa-result">
-                <div class="gpa-value" id="gpaValue">4.00</div>
-                <div class="letter" id="letterGrade">A</div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div>
+                        <div class="gpa-value" id="termGpaValue">0.00</div>
+                        <div class="gpa-sub-label">This Term GPA</div>
+                    </div>
+                    <div>
+                        <div class="gpa-value" id="cumulativeGpaValue" style="color: #2563eb;">0.00</div>
+                        <div class="gpa-sub-label">New Total Cumulative GPA</div>
+                    </div>
+                </div>
+                
+                <div class="letter" id="letterGrade">Bracket: -</div>
+                
+                <div class="badge-container">
+                    <div id="ncaaBadge" class="eligibility-badge warning">NCAA Status Matrix Evaluation Required</div>
+                </div>
+
                 <div class="progress">
                     <div class="progress-bar" id="progressBar"></div>
                 </div>
-                <div class="insight" id="insightText">Amazing work!</div>
+                <div class="insight" id="insightText"></div>
             </div>
         </div>
     </div>
 
     <div id="section-final" class="tab-content fade-in hidden">
         <div class="card">
-            <h2>🎯 Final Grade Calculator</h2>
-            <p class="subtitle">Determine the score you need on your final exam to hit your target class benchmark.</p>
+            <h2>🎯 Final Grade & Protection Cushion Calculator</h2>
+            <p class="subtitle">Determine exact score requirements on your upcoming final exam to lock in standard target ranges or protect your current standing floor boundaries.</p>
 
-            <div style="margin-bottom: 15px;">
-                <label class="label-text">📌 My Current Grade (%)</label>
-                <input type="number" id="currentGrade" class="input-box" placeholder="e.g. 85">
-            </div>
-
-            <div style="margin-bottom: 15px;">
-                <label class="label-text">🎯 Grade I Want in the Class (%)</label>
-                <input type="number" id="desiredGrade" class="input-box" placeholder="e.g. 90">
-                <div class="chip-group">
-                    <button class="chip green" onclick="setDesired(93)">A (93%)</button>
-                    <button class="chip green" onclick="setDesired(90)">A- (90%)</button>
-                    <button class="chip blue" onclick="setDesired(83)">B (83%)</button>
-                    <button class="chip blue" onclick="setDesired(80)">B- (80%)</button>
-                    <button class="chip yellow" onclick="setDesired(73)">C (73%)</button>
-                    <button class="chip orange" onclick="setDesired(60)">D (60%)</button>
+            <div class="grid-3">
+                <div>
+                    <label class="label-text">📌 My Current Grade (%)</label>
+                    <input type="number" id="currentGrade" class="input-box" placeholder="e.g. 88">
+                </div>
+                <div>
+                    <label class="label-text">🎯 Grade I Want in Class (%)</label>
+                    <input type="number" id="desiredGrade" class="input-box" placeholder="e.g. 90">
+                </div>
+                <div>
+                    <label class="label-text">⚖️ Final Exam Weight (%)</label>
+                    <input type="number" id="finalWorth" class="input-box" placeholder="e.g. 20">
                 </div>
             </div>
-
-            <div style="margin-bottom: 20px;">
-                <label class="label-text">⚖️ Final Exam Weight (%)</label>
-                <input type="number" id="finalWorth" class="input-box" placeholder="e.g. 20">
-                <div class="chip-group">
-                    <button class="chip gray" onclick="setWeight(10)">10%</button>
-                    <button class="chip gray" onclick="setWeight(15)">15%</button>
-                    <button class="chip gray" onclick="setWeight(20)">20%</button>
-                    <button class="chip gray" onclick="setWeight(25)">25%</button>
-                    <button class="chip gray" onclick="setWeight(30)">30%</button>
-                </div>
+            
+            <div class="chip-group">
+                <span style="font-size:12px; font-weight:bold; align-self:center; color:#4b5563;">Presets:</span>
+                <button class="chip green" onclick="setDesired(93)">A (93%)</button>
+                <button class="chip green" onclick="setDesired(90)">A- (90%)</button>
+                <button class="chip blue" onclick="setDesired(83)">B (83%)</button>
+                <button class="chip blue" onclick="setDesired(80)">B- (80%)</button>
+                <button class="chip gray" onclick="setWeight(10)">10% Exam</button>
+                <button class="chip gray" onclick="setWeight(15)">15% Exam</button>
+                <button class="chip gray" onclick="setWeight(20)">20% Exam</button>
             </div>
 
-            <button class="btn btn-primary" style="width:100%" onclick="calculateFinalGrade()">Calculate What I Need 🎯</button>
+            <button class="btn btn-primary" style="width:100%" onclick="calculateFinalGrade()">Calculate Target & Floor Bounds 🎯</button>
 
             <div class="result" id="finalResult">
-                <div class="gpa-value" id="neededScore">90%</div>
-                <div class="insight" id="finalInsight" style="text-align: center;">Score needed on your final exam.</div>
+                <div class="gpa-value" id="neededScore">--%</div>
+                <div class="insight" id="finalInsight" style="text-align: left; line-height:1.6;"></div>
             </div>
         </div>
     </div>
 
     <div id="section-class" class="tab-content fade-in hidden">
         <div class="card">
-            <h2>📝 Class Grade Calculator</h2>
-            <p class="subtitle">Calculate your overall grade dynamically using weighted course categories (e.g., Tests, Homework).</p>
+            <h2>📝 Class Category Grade Tracker</h2>
+            <p class="subtitle">Calculate your overall grade dynamically using weighted course metrics (e.g., Tests, Homework).</p>
 
             <div id="classRows" class="rows-container"></div>
 
             <div class="actions">
-                <button class="btn btn-secondary" onclick="addClassRow()">+ Add Category</button>
-                <button class="btn btn-primary" onclick="calculateClassGrade()">Calculate Grade ✨</button>
+                <button class="btn btn-secondary" onclick="addClassRow()">+ Add Category Row</button>
+                <button class="btn btn-primary" onclick="calculateClassGrade()">Calculate Class Grade ✨</button>
             </div>
-            <button class="btn btn-secondary btn-clear" onclick="clearSection('class')">🗑️ Clear All</button>
+            <button class="btn btn-secondary btn-clear" onclick="clearSection('class')">🗑️ Clear All Categories</button>
 
             <div class="result" id="classResult">
                 <div class="gpa-value" id="classGradeValue">0.0%</div>
-                <div class="insight" id="classInsight" style="text-align: center;">Your calculated current category breakdown.</div>
+                <div class="insight" id="classInsight" style="text-align: center;">Your calculated structural distribution metrics profile breakdown.</div>
             </div>
         </div>
     </div>
 
     <div id="section-goal" class="tab-content fade-in hidden">
         <div class="card">
-            <h2>🏆 GPA Goal Planner</h2>
-            <p class="subtitle">Find out exactly what benchmark grades you need down the line to match your target GPA goal.</p>
+            <h2>🏆 GPA Goal Planner Matrix</h2>
+            <p class="subtitle">Find out exactly what benchmarks are needed down the line to match your target configurations.</p>
 
             <div class="grid-2">
                 <div>
-                    <label class="label-text">Current GPA</label>
-                    <input type="number" id="goal-current-gpa" class="input-box" placeholder="e.g. 3.2" step="0.01">
+                    <label class="label-text">Current Cumulative GPA</label>
+                    <input type="number" id="goal-current-gpa" class="input-box" placeholder="e.g. 3.20" step="0.01">
                 </div>
                 <div>
-                    <label class="label-text">Credits Earned</label>
-                    <input type="number" id="goal-credits-earned" class="input-box" placeholder="e.g. 60">
+                    <label class="label-text">Credits Already Earned</label>
+                    <input type="number" id="goal-credits-earned" class="input-box" placeholder="e.g. 40">
                 </div>
             </div>
 
             <div class="grid-2">
                 <div>
-                    <label class="label-text">Target GPA</label>
-                    <input type="number" id="goal-target-gpa" class="input-box" placeholder="e.g. 3.5" step="0.01">
-                    <div class="chip-group">
-                        <button class="chip green" onclick="setGoalTarget('4.0')">4.0</button>
-                        <button class="chip green" onclick="setGoalTarget('3.7')">3.7</button>
-                        <button class="chip blue" onclick="setGoalTarget('3.5')">3.5</button>
-                        <button class="chip blue" onclick="setGoalTarget('3.0')">3.0</button>
-                    </div>
+                    <label class="label-text">Target Milestone GPA Goal</label>
+                    <input type="number" id="goal-target-gpa" class="input-box" placeholder="e.g. 3.50" step="0.01">
                 </div>
                 <div>
-                    <label class="label-text">Credits Remaining</label>
+                    <label class="label-text">Credits Remaining / In-Flight</label>
                     <input type="number" id="goal-credits-remaining" class="input-box" placeholder="e.g. 15">
                 </div>
             </div>
 
-            <button class="btn btn-primary" style="width:100%" onclick="calculateGPAGoal()">Calculate What I Need 🏆</button>
+            <button class="btn btn-primary" style="width:100%" onclick="calculateGPAGoal()">Calculate Goal Framework 🏆</button>
 
             <div class="result" id="goalResult">
                 <div class="gpa-value" id="goalRequiredValue">0.00</div>
-                <div class="insight" id="goalInsight" style="text-align: center;">Required structural GPA for your remaining workload terms.</div>
+                <div class="insight" id="goalInsight" style="text-align: center;">Required benchmark GPA matrix profile allocations.</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="section-credits" class="tab-content fade-in hidden">
+        <div class="card">
+            <h2>📜 District Graduation Core Credit Monitor</h2>
+            <p class="subtitle">Map your aggregate earned credits against standard structural graduation baseline frameworks to confirm distribution tracking metrics.</p>
+            
+            <table class="credit-table">
+                <thead>
+                    <tr>
+                        <th>Subject Category Space</th>
+                        <th>Standard Target Needs</th>
+                        <th>My Earned Units</th>
+                        <th>Status Monitor</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><b>📚 English Language Arts</b></td>
+                        <td>4.0 Credits</td>
+                        <td><input type="number" class="credit-input input-box" style="padding:8px;" value="2.0" step="0.5" id="cred-eng" onchange="calcGradProgress()"></td>
+                        <td><div id="badge-eng" class="status-badge pending">Tracking</div></td>
+                    </tr>
+                    <tr>
+                        <td><b>🧮 Mathematics Pathways</b></td>
+                        <td>4.0 Credits</td>
+                        <td><input type="number" class="credit-input input-box" style="padding:8px;" value="3.0" step="0.5" id="cred-math" onchange="calcGradProgress()"></td>
+                        <td><div id="badge-math" class="status-badge pending">Tracking</div></td>
+                    </tr>
+                    <tr>
+                        <td><b>🔬 Laboratory Sciences</b></td>
+                        <td>3.0 Credits</td>
+                        <td><input type="number" class="credit-input input-box" style="padding:8px;" value="2.0" step="0.5" id="cred-sci" onchange="calcGradProgress()"></td>
+                        <td><div id="badge-sci" class="status-badge pending">Tracking</div></td>
+                    </tr>
+                    <tr>
+                        <td><b>🗺️ Social Studies Core</b></td>
+                        <td>3.0 Credits</td>
+                        <td><input type="number" class="credit-input input-box" style="padding:8px;" value="1.5" step="0.5" id="cred-soc" onchange="calcGradProgress()"></td>
+                        <td><div id="badge-soc" class="status-badge pending">Tracking</div></td>
+                    </tr>
+                    <tr>
+                        <td><b>🎨 Electives & Tech tracks</b></td>
+                        <td>8.0 Credits</td>
+                        <td><input type="number" class="credit-input input-box" style="padding:8px;" value="4.0" step="0.5" id="cred-elec" onchange="calcGradProgress()"></td>
+                        <td><div id="badge-elec" class="status-badge pending">Tracking</div></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="result" id="gradResult" style="display:block; margin-top:20px;">
+                <div class="gpa-value" id="gradTotalValue" style="font-size:45px; color:#2563eb;">12.5 / 22.0</div>
+                <div class="gpa-sub-label">Total Graduation Credits Aggregated</div>
+                <div class="insight" id="gradInsightText" style="text-align: center;">Update items inside table arrays to automatically map pathway variables.</div>
             </div>
         </div>
     </div>
 
     <div id="section-study" class="tab-content fade-in hidden">
         <div class="card">
-            <h2>📅 Smart Study Planner</h2>
-            <p class="subtitle">Structure optimized, healthy study modules contextualized right down to test parameters and difficulty items.</p>
+            <h2>📅 Smart Study Planner Matrix</h2>
+            <p class="subtitle">Structure optimized study modules contextualized right down to diagnostic test vectors.</p>
 
             <div class="grid-2">
                 <div>
-                    <label class="label-text">📚 Subject / Exam Name</label>
+                    <label class="label-text">📚 Course / Exam Target Name</label>
                     <input type="text" id="studySubject" class="input-box" placeholder="e.g. AP Chemistry">
                 </div>
                 <div>
-                    <label class="label-text">📅 Exam Date</label>
+                    <label class="label-text">📅 Scheduled Exam Date Label</label>
                     <input type="date" id="studyDate" class="input-box">
                 </div>
             </div>
 
             <div class="grid-2">
                 <div>
-                    <label class="label-text">📊 Current Grade in Class (%)</label>
+                    <label class="label-text">📊 Current Class Standing Grade (%)</label>
                     <input type="number" id="studyGrade" class="input-box" placeholder="e.g. 78">
                 </div>
                 <div>
-                    <label class="label-text">⏰ Hours Available Per Day</label>
+                    <label class="label-text">⏰ Hours Disposable Per Day Block</label>
                     <input type="number" id="studyHours" class="input-box" placeholder="e.g. 2" step="0.5">
                 </div>
             </div>
 
             <div style="margin-bottom: 25px;">
-                <label class="label-text">😰 Difficulty Level</label>
+                <label class="label-text">😰 Class Parameters Complexity Level</label>
                 <div class="toggle-group" id="difficulty-group">
-                    <button class="toggle-btn active" id="diff-easy" onclick="setDifficulty('easy')">😊 Easy</button>
-                    <button class="toggle-btn" id="diff-medium" onclick="setDifficulty('medium')">😐 Medium</button>
-                    <button class="toggle-btn" id="diff-hard" onclick="setDifficulty('hard')">😓 Hard</button>
-                    <button class="toggle-btn" id="diff-veryhard" onclick="setDifficulty('veryhard')">🤯 Very Hard</button>
+                    <button class="toggle-btn active" id="diff-easy" onclick="setDifficulty('easy')">😊 Easy Mode</button>
+                    <button class="toggle-btn" id="diff-medium" onclick="setDifficulty('medium')">😐 Medium Tier</button>
+                    <button class="toggle-btn" id="diff-hard" onclick="setDifficulty('hard')">😓 Hard Mode</button>
+                    <button class="toggle-btn" id="diff-veryhard" onclick="setDifficulty('veryhard')">🤯 Intense Track</button>
                 </div>
             </div>
 
-            <button class="btn btn-primary" style="width:100%" onclick="generateStudyPlan()">Generate Smart Plan 📅</button>
+            <button class="btn btn-primary" style="width:100%" onclick="generateStudyPlan()">Generate Optimized Study Plan 📅</button>
 
             <div class="result" id="studyResult">
-                <div class="insight" id="studyPlan">Your customized planning matrix timeline outputs here.</div>
+                <div class="insight" id="studyPlan">Matrix results yield generation metrics structures here.</div>
             </div>
         </div>
     </div>
 
     <div id="section-semester" class="tab-content fade-in hidden">
         <div class="card">
-            <h2>📈 Semester Comparison</h2>
-            <p class="subtitle">Compare different dynamic benchmark tracking profiles directly to scale.</p>
+            <h2>📈 Multi-Term Performance Trend Analysis</h2>
+            <p class="subtitle">Audit vector changes relative across two distinct measurement points.</p>
 
             <div class="grid-2">
                 <div>
-                    <label class="label-text">Semester 1 GPA</label>
-                    <input type="number" id="semester1" class="input-box" placeholder="Semester 1 GPA" step="0.01">
+                    <label class="label-text">Term Profile Metric Point A (GPA)</label>
+                    <input type="number" id="semester1" class="input-box" placeholder="e.g. 3.40" step="0.01">
                 </div>
                 <div>
-                    <label class="label-text">Semester 2 GPA</label>
-                    <input type="number" id="semester2" class="input-box" placeholder="Semester 2 GPA" step="0.01">
+                    <label class="label-text">Term Profile Metric Point B (GPA)</label>
+                    <input type="number" id="semester2" class="input-box" placeholder="e.g. 3.65" step="0.01">
                 </div>
             </div>
 
-            <button class="btn btn-primary" style="width:100%" onclick="compareSemester()">Compare Performance 📈</button>
+            <button class="btn btn-primary" style="width:100%" onclick="compareSemester()">Compute Tracking Variances 📈</button>
 
             <div class="result" id="semesterResult">
-                <div class="insight" id="semesterText" style="text-align: center;">Performance trend evaluation shows here.</div>
+                <div class="insight" id="semesterText" style="text-align: center;">Variance tracking evaluations dump parameters configuration points right here.</div>
             </div>
         </div>
     </div>
 
     <div class="trust no-print">
         <div class="trust-card">
-            <h3>🎓 Accurate</h3>
-            <p>Supports fully weighted, course options, and unweighted metrics natively.</p>
+            <h3>🎓 Multi-Weight Competent</h3>
+            <p>Full support mapping Regular, Honors, and AP/IB tier point configurations natively.</p>
         </div>
         <div class="trust-card">
-            <h3>⚡ Fast</h3>
-            <p>Instant computations on client runtimes instantly.</p>
+            <h3>⚡ Safe Client Runtimes</h3>
+            <p>Executes entirely via client JavaScript sandbox boundaries without networking tracking traces.</p>
         </div>
         <div class="trust-card">
-            <h3>🔒 Free</h3>
-            <p>100% private. No external tracking metrics or registration paths.</p>
+            <h3>🏃 Athletic Compliance Ready</h3>
+            <p>Integrates core baseline assessments mirroring standard athletic eligibility criteria bounds.</p>
         </div>
     </div>
 
     <footer class="legal-disclaimer no-print">
-        <strong>Disclaimer:</strong> This application provides estimation calculations and planning tools based on standard high school weighting schemas. All calculations, outputs, and generated schedules are for informational and educational planning targets only. Actual GPA distributions, bracket calculations, final class eligibility thresholds, and official records are determined solely by your educational institution. No guarantees of final academic standing or institutional grade mapping results are made or implied by using this utility tool.
+        <strong>Disclaimer & Regulatory Statement Notice:</strong> This software utility framework calculates projections, estimations, and trend matrices matching common secondary institution evaluation structures (including global general weighted multi-tier allocations and core NCAA academic distribution paths). All generated evaluation parameters, core graduation compliance counts, and grading thresholds are intended purely for personal structural student goal modeling exercises. Absolute official calculations, credential audits, transcripts validation, sports league registration requirements, and grade designations must be verified with your targeted district counselor office or formal registrar. No representations of absolute compliance mapping values or official registration validity results are guaranteed.
     </footer>
 
 </div>
 
 <script>
-/* ================= GLOBAL CONFIGURATIONS ================= */
+/* ================= RUNTIME CONFIGURATION SETUPS ================= */
 let scale = "unweighted";
 let selectedDifficulty = "easy";
 const gradeMap = { "A": 4.0, "A-": 3.7, "B+": 3.3, "B": 3.0, "B-": 2.7, "C+": 2.3, "C": 2.0, "D": 1.0, "F": 0.0 };
 
-/* ================= COMPONENT INITIALIZATION ================= */
+// Object holding all explanations for the dynamic banner
+const tabExplanations = {
+    gpa: "<strong>💡 About this tool:</strong> Calculate your current term GPA with custom multi-tiered weights (Regular vs Honors vs AP). Optional: Add your past high school history values to see your new overall cumulative milestone, and check athletic core course eligibility benchmarks.",
+    final: "<strong>🎯 About this tool:</strong> Type in your current grade standing and target grade to find exactly what you need to score on the final exam. It also calculates your <b>Grade Protection Cushion</b>—the lowest possible score you can get without dropping down a full letter grade group.",
+    class: "<strong>📝 About this tool:</strong> Missing an official class grade summary? Break a single class down into its custom syllabus category chunks (e.g., Homework 20%, Tests 50%, Quizzes 30%) to accurately calculate your exact current course average percentage.",
+    goal: "<strong>🏆 About this tool:</strong> Reverse-engineer your graduation milestones. Tell the calculator what overall cumulative GPA you want to achieve, and it will calculate the exact average GPA score you must pull in across all remaining terms and credits.",
+    credits: "<strong>📜 About this tool:</strong> High school diplomas depend on meeting graduation group distribution allocations. Input your current earned credits by subject area to instantly track credit deficits against standard 22-credit academic pathways.",
+    study: "<strong>📅 About this tool:</strong> Map your upcoming exam timeline parameters. Input your test date, current class standing, and class difficulty, and the app balances a tailored countdown matrix outlining how many daily blocks to allocate.",
+    semester: "<strong>📈 About this tool:</strong> Compare two distinct reporting periods side-by-side. Useful for auditing historical vector shifts, identifying academic momentum drops, or validating positive upward grading curves."
+};
+
 document.addEventListener("DOMContentLoaded", () => {
     for(let i=0; i<4; i++) { addRow(); }
     for(let i=0; i<3; i++) { addClassRow(); }
     loadStreak();
+    calcGradProgress();
 });
 
-/* ================= TAB ENGINE NAVIGATION ================= */
 function switchTab(tabId, buttonElement) {
     document.querySelectorAll(".tab-content").forEach(el => el.classList.add("hidden"));
     document.querySelectorAll(".tab-btn").forEach(el => el.classList.remove("active"));
@@ -730,9 +879,14 @@ function switchTab(tabId, buttonElement) {
     const targetSection = document.getElementById("section-" + tabId);
     if(targetSection) targetSection.classList.remove("hidden");
     if(buttonElement) buttonElement.classList.add("active");
+
+    // Dynamic banner text generation script engine integration
+    const explainerBanner = document.getElementById("dynamic-explainer");
+    if (explainerBanner && tabExplanations[tabId]) {
+        explainerBanner.innerHTML = tabExplanations[tabId];
+    }
 }
 
-/* ================= STUDY STREAK LOGIC ================= */
 function loadStreak() {
     let count = localStorage.getItem("gpa_study_streak") || 0;
     document.getElementById("streak-count").innerText = count;
@@ -743,7 +897,7 @@ function incrementStreak() {
     document.getElementById("streak-count").innerText = count;
 }
 
-/* ================= TAB 1: GPA CALCULATION ENGINE ================= */
+/* ================= TAB 1: CORE ENGINE MATRICES (GPA + NCAA + HISTORY) ================= */
 function setScale(type, btn) {
     scale = type;
     document.querySelectorAll("#section-gpa .toggle-btn").forEach(b => b.classList.remove("active"));
@@ -755,68 +909,108 @@ function addRow() {
     const row = document.createElement("div");
     row.className = "gpa-row";
     row.innerHTML = `
-        <input type="text" placeholder="Class Name">
+        <input type="text" placeholder="e.g. AP Literature">
+        <select class="weight-type">
+            <option value="regular">Regular/CP (4.0 Max)</option>
+            <option value="honors">Honors (+0.5)</option>
+            <option value="ap">AP / IB / Dual (+1.0)</option>
+        </select>
         <select class="grade">
             <option value="">Grade</option>
-            <option>A</option>
-            <option>A-</option>
-            <option>B+</option>
-            <option>B</option>
-            <option>B-</option>
-            <option>C+</option>
-            <option>C</option>
-            <option>D</option>
-            <option>F</option>
+            <option>A</option><option>A-</option><option>B+</option>
+            <option>B</option><option>B-</option><option>C+</option>
+            <option>C</option><option>D</option><option>F</option>
         </select>
         <input type="number" class="credit" value="1" min="0.5" step="0.5">
+        <div style="text-align:center;"><input type="checkbox" class="sport-checkbox" checked></div>
         <button class="delete-btn" onclick="this.parentElement.remove()">✕</button>
     `;
     container.appendChild(row);
 }
 
 function calculateGPA() {
-    const grades = document.querySelectorAll(".grade");
-    const credits = document.querySelectorAll(".credit");
+    const rows = document.querySelectorAll(".gpa-row");
     let totalPoints = 0, totalCredits = 0;
+    let ncaaPoints = 0, ncaaCredits = 0;
+    let hasNcaaCourses = false;
 
-    for (let i = 0; i < grades.length; i++) {
-        const gradeVal = grades[i].value;
-        const creditVal = parseFloat(credits[i].value);
-        if (!gradeVal || isNaN(creditVal)) continue;
+    rows.forEach(row => {
+        const type = row.querySelector(".weight-type").value;
+        const gradeVal = row.querySelector(".grade").value;
+        const creditVal = parseFloat(row.querySelector(".credit").value);
+        const isNcaa = row.querySelector(".sport-checkbox").checked;
 
-        let points = gradeMap[gradeVal];
-        if (scale === "weighted" && gradeVal !== "F") {
-            points += 1.0; 
+        if (gradeVal && !isNaN(creditVal)) {
+            let points = gradeMap[gradeVal];
+            
+            if (scale === "weighted" && gradeVal !== "F") {
+                if (type === "honors") points += 0.5;
+                if (type === "ap") points += 1.0;
+            }
+            
+            totalPoints += points * creditVal;
+            totalCredits += creditVal;
+
+            if (isNcaa) {
+                hasNcaaCourses = true;
+                ncaaPoints += gradeMap[gradeVal] * creditVal;
+                ncaaCredits += creditVal;
+            }
         }
-        totalPoints += points * creditVal;
-        totalCredits += creditVal;
-    }
+    });
 
-    const displayResult = document.getElementById("gpa-result");
     if (totalCredits === 0) {
-        alert("Please enter a valid grade choice first.");
+        alert("Please map entry values into grade selections first.");
         return;
     }
 
-    const gpa = (totalPoints / totalCredits).toFixed(2);
-    let letter = "F", insight = "";
-
-    if (gpa >= 3.7) { letter = "A"; insight = "🌟 Excellent academic performance! Outstanding work."; }
-    else if (gpa >= 3.0) { letter = "B"; insight = "👏 Great job! Solid benchmarks achieved."; }
-    else if (gpa >= 2.0) { letter = "C"; insight = "📚 Keep improving! Focus on structural concepts."; }
-    else { letter = "D/F"; insight = "⚠️ Focus more on developing robust study routines."; }
-
-    document.getElementById("gpaValue").innerText = gpa;
-    document.getElementById("letterGrade").innerText = "Estimated Core Bracket: " + letter;
-    document.getElementById("insightText").innerText = insight;
+    const termGpa = totalPoints / totalCredits;
     
+    const priorGpaInput = parseFloat(document.getElementById("priorGPA").value);
+    const priorCreditsInput = parseFloat(document.getElementById("priorCredits").value);
+    let cumulativeGpa = termGpa;
+
+    if (!isNaN(priorGpaInput) && !isNaN(priorCreditsInput) && priorCreditsInput > 0) {
+        const currentPoints = termGpa * totalCredits;
+        const historicalPoints = priorGpaInput * priorCreditsInput;
+        cumulativeGpa = (currentPoints + historicalPoints) / (totalCredits + priorCreditsInput);
+    }
+
+    document.getElementById("termGpaValue").innerText = termGpa.toFixed(2);
+    document.getElementById("cumulativeGpaValue").innerText = cumulativeGpa.toFixed(2);
+
+    const ncaaBadge = document.getElementById("ncaaBadge");
+    if (hasNcaaCourses && ncaaCredits > 0) {
+        const finalNcaaGpa = ncaaPoints / ncaaCredits;
+        if (finalNcaaGpa >= 2.3) {
+            ncaaBadge.className = "eligibility-badge eligible";
+            ncaaBadge.innerText = `✅ NCAA Core Eligible Profile: ${finalNcaaGpa.toFixed(2)} Core GPA`;
+        } else if (finalNcaaGpa >= 2.0) {
+            ncaaBadge.className = "eligibility-badge warning";
+            ncaaBadge.innerText = `⚠️ NCAA Academic Warning Status: ${finalNcaaGpa.toFixed(2)} (Needs 2.3 for Division I status)`;
+        } else {
+            ncaaBadge.className = "eligibility-badge danger";
+            ncaaBadge.innerText = `🛑 NCAA Ineligible Core Score: ${finalNcaaGpa.toFixed(2)} (Below 2.0 threshold rules)`;
+        }
+    } else {
+        ncaaBadge.className = "eligibility-badge warning";
+        ncaaBadge.innerText = "No class items flagged for NCAA Core Sports Tracking validation bounds.";
+    }
+
     const maxScale = scale === "weighted" ? 5.0 : 4.0;
-    const progressPercent = Math.min((gpa / maxScale) * 100, 100);
-    document.getElementById("progressBar").style.width = progressPercent + "%";
-    displayResult.style.display = "block";
+    document.getElementById("progressBar").style.width = Math.min((termGpa / maxScale) * 100, 100) + "%";
+    
+    let bracket = "F";
+    if (termGpa >= 3.7) bracket = "A Range";
+    else if (termGpa >= 3.0) bracket = "B Range";
+    else if (termGpa >= 2.0) bracket = "C Range";
+    else bracket = "Passing/Deficient Track";
+    document.getElementById("letterGrade").innerText = "Current Calculated Term Bracket Structure: " + bracket;
+
+    document.getElementById("gpa-result").style.display = "block";
 }
 
-/* ================= TAB 2: FINAL GRADE ENGINE ================= */
+/* ================= TAB 2: GRADE PROTECT CUSHION CALCULATOR ================= */
 function setDesired(val) { document.getElementById("desiredGrade").value = val; }
 function setWeight(val) { document.getElementById("finalWorth").value = val; }
 
@@ -825,34 +1019,41 @@ function calculateFinalGrade() {
     const desired = parseFloat(document.getElementById("desiredGrade").value);
     const worth = parseFloat(document.getElementById("finalWorth").value);
 
-    if (isNaN(current) || isNaN(desired) || isNaN(worth)) {
-        alert("Please completely fill out all parameters.");
+    if (isNaN(current) || isNaN(desired) || isNaN(worth) || worth <= 0 || worth >= 100) {
+        alert("Please establish accurate percentage boundaries across calculation boxes.");
         return;
     }
 
-    const calculatedExamScore = ((desired - (current * (100 - worth) / 100)) / (worth / 100)).toFixed(1);
-    const resultBox = document.getElementById("finalResult");
-    const outputScore = document.getElementById("neededScore");
-    const outputInsight = document.getElementById("finalInsight");
+    const examNeeded = ((desired - (current * (100 - worth) / 100)) / (worth / 100)).toFixed(1);
+    
+    let structuralFloor = Math.floor(current / 10) * 10;
+    if (structuralFloor === current) structuralFloor = current - 10; 
+    if (structuralFloor < 60) structuralFloor = 60; 
 
-    outputScore.innerText = calculatedExamScore + "%";
-    if (calculatedExamScore > 100) {
-        outputInsight.innerText = "⚠️ You will need extra credit to achieve this target grade configuration.";
-    } else if (calculatedExamScore <= 0) {
-        outputInsight.innerText = "🎉 You already secured this bracket! You can get a 0% and pass.";
+    const floorExamScore = ((structuralFloor - (current * (100 - worth) / 100)) / (worth / 100)).toFixed(1);
+
+    const resultBox = document.getElementById("finalResult");
+    document.getElementById("neededScore").innerText = examNeeded + "%";
+    
+    let insightHtml = `Required score index targets on your exam to lock down a flat <b>${desired}%</b> class average total.<br><br>`;
+    
+    if (floorExamScore <= 0) {
+        insightHtml += `🔒 <b>Grade Cushion Protection Status:</b> Mathematically secure baseline. Your average current metrics mean you can get a <b>0.0%</b> on the exam block and still maintain your safe baseline grade cutoff framework of <b>${structuralFloor}%</b>.`;
     } else {
-        outputInsight.innerText = "Required score optimization strategy benchmark targets on the final exam block.";
+        insightHtml += `🔒 <b>Grade Floor Protection Warning:</b> To guard against falling a complete letter grade bracket below your current track, do not let your final exam grade score dip below <b>${floorExamScore}%</b>. Doing so maintains your <b>${structuralFloor}%</b> class minimum floor average.`;
     }
+
+    document.getElementById("finalInsight").innerHTML = insightHtml;
     resultBox.style.display = "block";
 }
 
-/* ================= TAB 3: CLASS GRADE CALCULATOR ================= */
+/* ================= TAB 3: CATEGORY WEIGHT TRACKER ================= */
 function addClassRow() {
     const container = document.getElementById("classRows");
     const row = document.createElement("div");
     row.className = "class-row";
     row.innerHTML = `
-        <input type="text" placeholder="Category (e.g. Tests)">
+        <input type="text" placeholder="Category Name (e.g. Tests)">
         <input type="number" class="cat-grade" placeholder="Grade %">
         <input type="number" class="cat-weight" placeholder="Weight %">
         <button class="delete-btn" onclick="this.parentElement.remove()">✕</button>
@@ -875,7 +1076,7 @@ function calculateClassGrade() {
     }
 
     if (totalWeightEntered === 0) {
-        alert("Please enter valid categories alongside percentages.");
+        alert("Please make certain category input parameters are allocated structural percentages.");
         return;
     }
 
@@ -886,44 +1087,76 @@ function calculateClassGrade() {
 
     const resultBox = document.getElementById("classResult");
     document.getElementById("classGradeValue").innerText = finalClassGrade.toFixed(1) + "%";
-    document.getElementById("classInsight").innerText = `Calculated base on a relative summation allocation total of ${totalWeightEntered}% weight input.`;
+    document.getElementById("classInsight").innerText = `Calculated profile metrics dynamically normalized relative against a combined weight allocation summary total of ${totalWeightEntered}%.`;
     resultBox.style.display = "block";
 }
 
-/* ================= TAB 4: GPA GOAL PLANNER ================= */
-function setGoalTarget(val) { document.getElementById("goal-target-gpa").value = val; }
-
+/* ================= TAB 4: GPA GOAL PLANNER MODULE ================= */
 function calculateGPAGoal() {
     const currentGPA = parseFloat(document.getElementById("goal-current-gpa").value);
     const creditsEarned = parseFloat(document.getElementById("goal-credits-earned").value);
     const targetGPA = parseFloat(document.getElementById("goal-target-gpa").value);
     const creditsRemaining = parseFloat(document.getElementById("goal-credits-remaining").value);
 
-    if (isNaN(currentGPA) || isNaN(creditsEarned) || isNaN(targetGPA) || isNaN(creditsRemaining)) {
-        alert("Please make sure all GPA data metrics are completely filled.");
+    if (isNaN(currentGPA) || isNaN(creditsEarned) || isNaN(targetGPA) || isNaN(creditsRemaining) || creditsRemaining <= 0) {
+        alert("Please ensure valid target criteria parameters are defined inside form locations.");
         return;
     }
 
     const targetTotalPoints = targetGPA * (creditsEarned + creditsRemaining);
     const currentTotalPoints = currentGPA * creditsEarned;
-    const requiredGPA = ((targetTotalPoints - currentTotalPoints) / creditsRemaining).toFixed(2);
+    const requiredGPA = (targetTotalPoints - currentTotalPoints) / creditsRemaining;
 
     const resultBox = document.getElementById("goalResult");
     const displayValue = document.getElementById("goalRequiredValue");
     const displayInsight = document.getElementById("goalInsight");
 
-    displayValue.innerText = requiredGPA;
+    displayValue.innerText = requiredGPA.toFixed(2);
     if (requiredGPA > 5.0 || requiredGPA < 0) {
-        displayInsight.innerText = "❌ Mathematically impossible within your designated remaining credits constraints.";
+        displayInsight.innerText = "❌ Incompatible criteria threshold configuration limits. This milestone cannot be achieved within remaining credit bounds.";
         displayValue.style.color = "#dc2626";
     } else {
-        displayInsight.innerText = `Average term target GPA matrix needed over your next upcoming ${creditsRemaining} working units.`;
+        displayInsight.innerText = `Average term GPA optimization score goals required over your upcoming ${creditsRemaining} working validation metrics units to force matching parameters values.`;
         displayValue.style.color = "#16a34a";
     }
     resultBox.style.display = "block";
 }
 
-/* ================= TAB 5: SMART STUDY PLANNER ================= */
+/* ================= TAB 5: GRADUATION PROGRESS MONITOR ================= */
+function calcGradProgress() {
+    const targets = { eng: 4.0, math: 4.0, sci: 3.0, soc: 3.0, elec: 8.0 };
+    let aggregateEarned = 0;
+    let aggregateTarget = 22.0;
+
+    for (let key in targets) {
+        const inputEl = document.getElementById(`cred-${key}`);
+        const badgeEl = document.getElementById(`badge-${key}`);
+        let currentVal = parseFloat(inputEl.value) || 0;
+        
+        if(currentVal < 0) currentVal = 0;
+        aggregateEarned += currentVal;
+
+        if (currentVal >= targets[key]) {
+            badgeEl.className = "status-badge done";
+            badgeEl.innerText = "✅ Met Category Requirements";
+        } else {
+            const remains = (targets[key] - currentVal).toFixed(1);
+            badgeEl.className = "status-badge pending";
+            badgeEl.innerText = `⏳ Needs ${remains} Credits`;
+        }
+    }
+
+    document.getElementById("gradTotalValue").innerText = `${aggregateEarned.toFixed(1)} / ${aggregateTarget.toFixed(1)} Credits`;
+    
+    const insightBox = document.getElementById("gradInsightText");
+    if (aggregateEarned >= aggregateTarget) {
+        insightBox.innerHTML = "🎉 <b>Pathway Verified:</b> Aggregate distribution matrices confirm structural fulfillment parameters across all target zones.";
+    } else {
+        insightBox.innerHTML = `Core mapping tracks require an additional aggregate sum of <b> ${(aggregateTarget - aggregateEarned).toFixed(1)} credits</b> distributed across outstanding profile buckets.`;
+    }
+}
+
+/* ================= TAB 6: SMART STUDY TIMELINE ================= */
 function setDifficulty(level) {
     selectedDifficulty = level;
     document.querySelectorAll("#difficulty-group .toggle-btn").forEach(b => b.classList.remove("active"));
@@ -943,11 +1176,10 @@ function generateStudyPlan() {
 
     const today = new Date();
     const examDate = new Date(examDateVal);
-    const diffTime = examDate - today;
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    const diffDays = Math.ceil((examDate - today) / (1000 * 60 * 60 * 24));
 
     if (diffDays < 0) {
-        alert("Exam date must point dynamically to a systematic date down the line!");
+        alert("Exam target windows must project dynamically down the timeline!");
         return;
     }
 
@@ -957,50 +1189,36 @@ function generateStudyPlan() {
     if (selectedDifficulty === "veryhard") intensityMod = 2.0;
     if (!isNaN(currentGrade) && currentGrade < 80) intensityMod += 0.2; 
 
-    const recommendedSessionBlocks = Math.ceil((dailyHours * intensityMod) * 2); 
-    
-    let strategyOverview = "";
-    if (selectedDifficulty === "easy") {
-        strategyOverview = "Focus predominantly on flashcards, vocabulary, and core definitions.";
-    } else if (selectedDifficulty === "medium") {
-        strategyOverview = "Integrate active practice test problems and chapter review summaries.";
-    } else {
-        strategyOverview = "Prioritize complex problem solving, complete mock essay configurations, and review missed quizzes.";
-    }
+    const blocks = Math.ceil((dailyHours * intensityMod) * 2); 
 
     const resultBox = document.getElementById("studyResult");
     document.getElementById("studyPlan").innerHTML = `
-        <h3 style="font-size:16px; margin-bottom:8px;">📅 Study Plan for <b>${subject}</b></h3>
-        ⏱️ <b>Time Remaining:</b> ${diffDays} day(s).<br>
-        🔥 <b>Intensity Load:</b> ${(intensityMod * 100).toFixed(0)}% focus index.<br>
-        🎯 <b>Daily Goal:</b> Study <b>${(dailyHours * intensityMod).toFixed(1)} hours/day</b> structured via <b>${recommendedSessionBlocks} split sessions</b>.<br><br>
-        💡 <b>Focus Strategy:</b> ${strategyOverview}
+        <h3 style="font-size:16px; margin-bottom:8px;">📅 Action Optimization Matrix: <b>${subject}</b></h3>
+        ⏱️ <b>Diagnostic Windows Remaining:</b> ${diffDays} calendar days.<br>
+        🔥 <b>Intensity Scaling Focus Index:</b> ${(intensityMod * 100).toFixed(0)}% runtime velocity index.<br>
+        🎯 <b>Daily Operations Mandate:</b> Budget <b>${(dailyHours * intensityMod).toFixed(1)} hours/day</b> partitioned across <b>${blocks} study modules</b>.
     `;
     resultBox.style.display = "block";
 }
 
-/* ================= TAB 6: SEMESTER COMPARE ================= */
+/* ================= TAB 7: TREND VARIANCE AUDITOR ENGINE ================= */
 function compareSemester() {
     const s1 = parseFloat(document.getElementById("semester1").value);
     const s2 = parseFloat(document.getElementById("semester2").value);
 
     if (isNaN(s1) || isNaN(s2)) {
-        alert("Please populate fields completely.");
+        alert("Please populate field parameters completely.");
         return;
     }
 
     let diff = (s2 - s1).toFixed(2);
-    let outputText = "";
-    if (s2 > s1) {
-        outputText = `📈 Upward performance spike of <b>+${diff}</b> GPA points! Keep up the brilliant momentum.`;
-    } else if (s1 > s2) {
-        outputText = `📉 GPA dropped by <b>${Math.abs(diff)}</b> tracking points. Audit your focus distribution constraints early.`;
-    } else {
-        outputText = `⚖️ Both semesters are exactly equal. Consistency maintained!`;
-    }
+    let out = "";
+    if (s2 > s1) out = `📈 Upward performance trend spike of <b>+${diff}</b> tracking points recorded! Excellent momentum shift.`;
+    else if (s1 > s2) out = `📉 Negative directional drift variance of <b>${diff}</b> points observed. Performance audit suggested.`;
+    else out = `⚖️ Equilibrium verified. Static consistency matched precisely across both measurement validation marks.`;
 
     const resultBox = document.getElementById("semesterResult");
-    document.getElementById("semesterText").innerHTML = outputText;
+    document.getElementById("semesterText").innerHTML = out;
     resultBox.style.display = "block";
 }
 
@@ -1016,9 +1234,7 @@ function clearSection(type) {
     }
 }
 
-function toggleDark() {
-    document.body.classList.toggle("dark");
-}
+function toggleDark() { document.body.classList.toggle("dark"); }
 </script>
 
 </body>
