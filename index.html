@@ -379,6 +379,21 @@ body{
 .trust-card h3 { margin-bottom: 5px; font-size: 18px; }
 .trust-card p { color: #6b7280; font-size: 14px; }
 
+/* ================= LEGAL DISCLAIMER ================= */
+.legal-disclaimer {
+    margin-top: 30px;
+    padding: 20px;
+    border-top: 1px solid #e5e7eb;
+    font-size: 12px;
+    color: #6b7280;
+    line-height: 1.6;
+    text-align: justify;
+}
+
+.legal-disclaimer strong {
+    color: #4b5563;
+}
+
 /* ================= ANIMATIONS & UTILITIES ================= */
 .fade-in {
     animation: fadeIn 0.3s ease-in-out;
@@ -417,6 +432,8 @@ body.dark .btn-secondary { background: #334155; color: white; }
 body.dark .btn-secondary:hover { background: #475569; }
 body.dark .toggle-btn { background: #334155; color: #cbd5e1; }
 body.dark .toggle-btn.active { background: #2563eb; color: white; }
+body.dark .legal-disclaimer { border-top-color: #334155; color: #94a3b8; }
+body.dark .legal-disclaimer strong { color: #cbd5e1; }
 
 /* ================= MOBILE ADAPTATION ================= */
 @media(max-width: 768px){
@@ -431,7 +448,7 @@ body.dark .toggle-btn.active { background: #2563eb; color: white; }
 
 /* ================= PRINT HANDLING ================= */
 @media print {
-    .no-print, .hero-buttons, .tabs, .actions, .btn-clear, .delete-btn {
+    .no-print, .hero-buttons, .tabs, .actions, .btn-clear, .delete-btn, .legal-disclaimer {
         display: none !important;
     }
     .container { margin-top: 0; }
@@ -686,17 +703,20 @@ body.dark .toggle-btn.active { background: #2563eb; color: white; }
         </div>
     </div>
 
+    <footer class="legal-disclaimer no-print">
+        <strong>Disclaimer:</strong> This application provides estimation calculations and planning tools based on standard high school weighting schemas. All calculations, outputs, and generated schedules are for informational and educational planning targets only. Actual GPA distributions, bracket calculations, final class eligibility thresholds, and official records are determined solely by your educational institution. No guarantees of final academic standing or institutional grade mapping results are made or implied by using this utility tool.
+    </footer>
+
 </div>
 
 <script>
-/* ================= GLOBAL MATRIX CONFIGURATIONS ================= */
+/* ================= GLOBAL CONFIGURATIONS ================= */
 let scale = "unweighted";
 let selectedDifficulty = "easy";
 const gradeMap = { "A": 4.0, "A-": 3.7, "B+": 3.3, "B": 3.0, "B-": 2.7, "C+": 2.3, "C": 2.0, "D": 1.0, "F": 0.0 };
 
-/* ================= COMPONENT INITIALIZATION WORKER ================= */
+/* ================= COMPONENT INITIALIZATION ================= */
 document.addEventListener("DOMContentLoaded", () => {
-    // Generate basic start setup blocks
     for(let i=0; i<4; i++) { addRow(); }
     for(let i=0; i<3; i++) { addClassRow(); }
     loadStreak();
@@ -766,7 +786,7 @@ function calculateGPA() {
 
         let points = gradeMap[gradeVal];
         if (scale === "weighted" && gradeVal !== "F") {
-            points += 1.0; // Standard high school weight boost for advanced work
+            points += 1.0; 
         }
         totalPoints += points * creditVal;
         totalCredits += creditVal;
@@ -774,7 +794,7 @@ function calculateGPA() {
 
     const displayResult = document.getElementById("gpa-result");
     if (totalCredits === 0) {
-        alert("Please enter a valid grade choice setup configuration block first.");
+        alert("Please enter a valid grade choice first.");
         return;
     }
 
@@ -806,7 +826,7 @@ function calculateFinalGrade() {
     const worth = parseFloat(document.getElementById("finalWorth").value);
 
     if (isNaN(current) || isNaN(desired) || isNaN(worth)) {
-        alert("Please completely fill out all parameters for testing calculations.");
+        alert("Please completely fill out all parameters.");
         return;
     }
 
@@ -819,7 +839,7 @@ function calculateFinalGrade() {
     if (calculatedExamScore > 100) {
         outputInsight.innerText = "⚠️ You will need extra credit to achieve this target grade configuration.";
     } else if (calculatedExamScore <= 0) {
-        outputInsight.innerText = "🎉 You already secured this bracket! You can mathematically get a 0% and pass.";
+        outputInsight.innerText = "🎉 You already secured this bracket! You can get a 0% and pass.";
     } else {
         outputInsight.innerText = "Required score optimization strategy benchmark targets on the final exam block.";
     }
@@ -855,11 +875,10 @@ function calculateClassGrade() {
     }
 
     if (totalWeightEntered === 0) {
-        alert("Please enter valid categories alongside structural percentages.");
+        alert("Please enter valid categories alongside percentages.");
         return;
     }
 
-    // Normalizing computation pass if structural elements under/overshoot standard 100% boundary scales
     let finalClassGrade = totalWeightedScore;
     if (totalWeightEntered !== 100) {
         finalClassGrade = (totalWeightedScore / totalWeightEntered) * 100;
@@ -898,7 +917,7 @@ function calculateGPAGoal() {
         displayInsight.innerText = "❌ Mathematically impossible within your designated remaining credits constraints.";
         displayValue.style.color = "#dc2626";
     } else {
-        displayInsight.innerText = `Average term target GPA matrix needed over your next upcoming ${creditsRemaining} working tracking units.`;
+        displayInsight.innerText = `Average term target GPA matrix needed over your next upcoming ${creditsRemaining} working units.`;
         displayValue.style.color = "#16a34a";
     }
     resultBox.style.display = "block";
@@ -942,28 +961,25 @@ function generateStudyPlan() {
     
     let strategyOverview = "";
     if (selectedDifficulty === "easy") {
-        strategyOverview = "Focus predominantly on active structural flashcard reviews and key term alignment definitions.";
+        strategyOverview = "Focus predominantly on flashcards, vocabulary, and core definitions.";
     } else if (selectedDifficulty === "medium") {
-        strategyOverview = "Integrate practice test problems and chapter-end evaluation sequences iteratively.";
+        strategyOverview = "Integrate active practice test problems and chapter review summaries.";
     } else {
-        strategyOverview = "Prioritize deeply structured multi-step problem spaces, write mock-response outlines, and seek immediate conceptual clarification.";
+        strategyOverview = "Prioritize complex problem solving, complete mock essay configurations, and review missed quizzes.";
     }
 
     const resultBox = document.getElementById("studyResult");
     document.getElementById("studyPlan").innerHTML = `
-        <h3>📅 Optimized Review Plan Matrix for <b>${subject}</b></h3><br>
-        ⏱️ <b>Preparation Timeline Window:</b> ${diffDays} day(s) active horizon.<br>
-        🔥 <b>Calculated Intensity Loading Factor:</b> ${(intensityMod * 100).toFixed(0)}% performance weighting index.<br>
-        🎯 <b>Daily Targeted Allocation Goal:</b> Study <b>${(dailyHours * intensityMod).toFixed(1)} hours/day</b> structured via <b>${recommendedSessionBlocks} split-Pomodoro segments</b> (25-min load / 5-min air).<br><br>
-        💡 <b>Dynamic Framework Focus Strategy:</b> ${strategyOverview}<br><br>
-        <div style="font-size:12px; opacity:0.8; border-top:1px solid #ddd; padding-top:8px;">
-           ✅ Review high-priority tracking errors right before sleep cycles to optimize neural retention paths.
-        </div>
+        <h3 style="font-size:16px; margin-bottom:8px;">📅 Study Plan for <b>${subject}</b></h3>
+        ⏱️ <b>Time Remaining:</b> ${diffDays} day(s).<br>
+        🔥 <b>Intensity Load:</b> ${(intensityMod * 100).toFixed(0)}% focus index.<br>
+        🎯 <b>Daily Goal:</b> Study <b>${(dailyHours * intensityMod).toFixed(1)} hours/day</b> structured via <b>${recommendedSessionBlocks} split sessions</b>.<br><br>
+        💡 <b>Focus Strategy:</b> ${strategyOverview}
     `;
     resultBox.style.display = "block";
 }
 
-/* ================= TAB 6: SEMESTER COMPARISON ================= */
+/* ================= TAB 6: SEMESTER COMPARE ================= */
 function compareSemester() {
     const s1 = parseFloat(document.getElementById("semester1").value);
     const s2 = parseFloat(document.getElementById("semester2").value);
@@ -976,11 +992,11 @@ function compareSemester() {
     let diff = (s2 - s1).toFixed(2);
     let outputText = "";
     if (s2 > s1) {
-        outputText = `📈 Upward performance spike of <b>+${diff}</b> GPA margin acceleration points! Keep up the brilliant operational trajectory.`;
+        outputText = `📈 Upward performance spike of <b>+${diff}</b> GPA points! Keep up the brilliant momentum.`;
     } else if (s1 > s2) {
-        outputText = `📉 Downward deviation vector detected of <b>${diff}</b> tracking points. Audit your resource distribution constraints early.`;
+        outputText = `📉 GPA dropped by <b>${Math.abs(diff)}</b> tracking points. Audit your focus distribution constraints early.`;
     } else {
-        outputText = `⚖️ Exact system equilibrium maintained across evaluating benchmark fields. Consistent profile stability verified.`;
+        outputText = `⚖️ Both semesters are exactly equal. Consistency maintained!`;
     }
 
     const resultBox = document.getElementById("semesterResult");
@@ -988,7 +1004,6 @@ function compareSemester() {
     resultBox.style.display = "block";
 }
 
-/* ================= CLEAR / RESET TOOLKIT ================= */
 function clearSection(type) {
     if (type === "gpa") {
         document.getElementById("gpaRows").innerHTML = "";
@@ -1001,7 +1016,6 @@ function clearSection(type) {
     }
 }
 
-/* ================= DARK MODE UTILITY WORKER ================= */
 function toggleDark() {
     document.body.classList.toggle("dark");
 }
