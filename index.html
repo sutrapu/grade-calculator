@@ -24,13 +24,15 @@
 }
 
 body {
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   background: var(--bg);
   color: var(--text);
   min-height: 100vh;
+  line-height: 1.6;      /* Generous breathing room for reading comfort */
   transition: background 0.3s, color 0.3s;
 }
-
 /* ── HEADER ── */
 .hero {
   background: linear-gradient(135deg, #1e1b4b 0%, #4f46e5 55%, #06b6d4 100%);
