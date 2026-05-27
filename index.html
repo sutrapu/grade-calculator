@@ -3,1239 +3,1220 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ultimate High School Academic Dashboard & GPA Calculator</title>
+<title>High School Academic Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 
 <style>
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #f0f4ff;
+  --surface: #ffffff;
+  --border: #e2e8f0;
+  --text: #1a1f36;
+  --muted: #64748b;
+  --accent: #4f46e5;
+  --accent2: #06b6d4;
+  --green: #10b981;
+  --yellow: #f59e0b;
+  --red: #ef4444;
+  --radius: 20px;
 }
 
-body{
-    font-family: Arial, sans-serif;
-    background: #f4f7fb;
-    color: #1f2937;
-    transition: background 0.3s, color 0.3s;
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  transition: background 0.3s, color 0.3s;
 }
 
-/* ================= HEADER ================= */
-.hero{
-    background: linear-gradient(135deg, #163c66, #2563eb, #60a5fa);
-    padding: 40px 20px 140px;
-    text-align: center;
-    position: relative;
+/* ── HEADER ── */
+.hero {
+  background: linear-gradient(135deg, #1e1b4b 0%, #4f46e5 55%, #06b6d4 100%);
+  padding: 48px 24px 130px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+.hero h1 {
+  font-family: 'Syne', sans-serif;
+  color: white;
+  font-size: clamp(26px, 5vw, 44px);
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  position: relative;
+}
+.hero p {
+  color: rgba(255,255,255,0.75);
+  margin-top: 8px;
+  font-size: 15px;
+  position: relative;
+}
+.hero-actions {
+  position: absolute;
+  top: 18px;
+  right: 20px;
+  display: flex;
+  gap: 8px;
+}
+.hero-actions button {
+  border: 1.5px solid rgba(255,255,255,0.4);
+  background: rgba(255,255,255,0.12);
+  color: white;
+  padding: 8px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  backdrop-filter: blur(6px);
+  transition: background 0.2s;
+}
+.hero-actions button:hover { background: rgba(255,255,255,0.25); }
+
+.streak-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: 999px;
+  padding: 8px 18px;
+  color: white;
+  margin-top: 18px;
+  font-size: 14px;
+  font-weight: 600;
+  position: relative;
+  backdrop-filter: blur(8px);
+}
+.streak-pill button {
+  background: white;
+  color: var(--accent);
+  border: none;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
 }
 
-.hero h1{
-    color: white;
-    font-size: 42px;
-    margin-bottom: 10px;
+/* ── LAYOUT ── */
+.container {
+  max-width: 1100px;
+  margin: -80px auto 60px;
+  padding: 0 20px;
+  position: relative;
+ z-index: 10;
 }
 
-.hero p{
-    color: rgba(255, 255, 255, 0.9);
+/* ── TABS ── */
+.tabs {
+  background: #1a1f36;
+  padding: 10px;
+  border-radius: 18px;
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  margin-bottom: 14px;
+  scrollbar-width: none;
+}
+.tabs::-webkit-scrollbar { display: none; }
+.tab-btn {
+  border: none;
+  background: transparent;
+  color: #94a3b8;
+  padding: 10px 16px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  font-size: 13.5px;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+.tab-btn.active { background: white; color: #1a1f36; }
+.tab-btn:hover:not(.active) { color: white; background: rgba(255,255,255,0.1); }
+
+/* ── EXPLAINER BANNER ── */
+.explainer {
+  background: #e0f2fe;
+  color: #0369a1;
+  border-left: 4px solid #0284c7;
+  border-radius: 14px;
+  padding: 14px 18px;
+  font-size: 14px;
+  line-height: 1.55;
+  margin-bottom: 20px;
 }
 
-.hero-buttons{
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    display: flex;
-    gap: 10px;
+/* ── CARD ── */
+.card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 28px 30px;
+  box-shadow: 0 4px 24px rgba(79,70,229,0.07);
+  margin-bottom: 22px;
+  border: 1px solid var(--border);
 }
-
-.hero-buttons button{
-    border: none;
-    padding: 10px 15px;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.2);
-    color: white;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background 0.2s;
+.card h2 {
+  font-family: 'Syne', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 4px;
 }
+.subtitle { color: var(--muted); font-size: 14px; margin-bottom: 22px; }
 
-.hero-buttons button:hover{
-    background: rgba(255, 255, 255, 0.35);
+/* ── FORM ELEMENTS ── */
+.label { display: block; font-size: 13px; font-weight: 600; color: var(--muted); margin-bottom: 6px; }
+.input {
+  width: 100%;
+  padding: 13px 15px;
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14.5px;
+  color: var(--text);
+  background: var(--surface);
+  outline: none;
+  transition: border-color 0.2s;
 }
+.input:focus { border-color: var(--accent); }
 
-/* ================= STREAK ================= */
-.streak-container {
-    margin-top: 15px;
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 999px;
-    padding: 8px 16px;
-    color: white;
-}
+select.input { cursor: pointer; }
 
-.streak-container span {
-    font-size: 14px;
-    font-weight: bold;
-}
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-bottom: 14px; }
 
-.streak-btn {
-    border: none;
-    background: white;
-    color: #2563eb;
-    padding: 4px 10px;
-    border-radius: 999px;
-    font-weight: bold;
-    cursor: pointer;
-    font-size: 12px;
-}
-
-.streak-btn:hover {
-    background: #eff6ff;
-}
-
-/* ================= CONTAINER ================= */
-.container{
-    max-width: 1150px;
-    margin: auto;
-    padding: 20px;
-    margin-top: -80px;
-    position: relative;
-    z-index: 10;
-}
-
-/* ================= TABS ================= */
-.tabs{
-    background: #111827;
-    padding: 12px;
-    border-radius: 18px;
-    display: flex;
-    gap: 10px;
-    overflow-x: auto;
-    margin-bottom: 15px;
-}
-
-.tab-btn{
-    border: none;
-    background: transparent;
-    color: #d1d5db;
-    padding: 12px 18px;
-    border-radius: 12px;
-    cursor: pointer;
-    font-weight: bold;
-    white-space: nowrap;
-    transition: all 0.2s;
-}
-
-.tab-btn.active{
-    background: white;
-    color: #111827;
-}
-
-/* ================= DYNAMIC TAB EXPLAINER ================= */
-.tab-explainer {
-    background: #e0f2fe;
-    color: #0369a1;
-    border-left: 5px solid #0284c7;
-    padding: 15px 20px;
-    border-radius: 12px;
-    margin-bottom: 25px;
-    font-size: 14px;
-    line-height: 1.5;
-}
-
-/* ================= CARD ================= */
-.card{
-    background: white;
-    border-radius: 24px;
-    padding: 30px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-    margin-bottom: 25px;
-}
-
-.card h2{
-    margin-bottom: 5px;
-    font-size: 30px;
-}
-
-.subtitle{
-    color: #6b7280;
-    margin-bottom: 25px;
-    font-size: 14px;
-}
-
-/* ================= TOGGLE / CHIPS ================= */
-.toggle-group{
-    display: flex;
-    gap: 10px;
-    margin-bottom: 25px;
-    flex-wrap: wrap;
-}
-
-.toggle-btn{
-    border: none;
-    padding: 12px 20px;
-    border-radius: 999px;
-    background: #e5e7eb;
-    color: #4b5563;
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 14px;
-    transition: all 0.2s;
-}
-
-.toggle-btn.active{
-    background: #2563eb;
-    color: white;
-}
-
-.chip-group {
-    display: flex;
-    gap: 8px;
-    margin-top: 8px;
-    margin-bottom: 15px;
-    flex-wrap: wrap;
-}
-
-.chip {
-    border: none;
-    padding: 6px 14px;
-    border-radius: 999px;
-    font-size: 12px;
-    font-weight: bold;
-    cursor: pointer;
-    background: #e5e7eb;
-    color: #4b5563;
-}
-
-.chip.green { background: #dcfce7; color: #15803d; }
-.chip.blue { background: #dbeafe; color: #1d4ed8; }
-.chip.yellow { background: #fef9c3; color: #a16207; }
-.chip.orange { background: #ffedd5; color: #c2410c; }
-.chip.gray { background: #f3f4f6; color: #4b5563; }
-
-.chip:hover { opacity: 0.85; }
-
-/* ================= ROWS & INPUT GROUPS ================= */
-.rows-container {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    margin-bottom: 20px;
-}
-
+/* ── GPA ROWS ── */
+.rows-wrap { display: flex; flex-direction: column; gap: 12px; margin-bottom: 18px; }
 .gpa-row {
-    display: grid;
-    grid-template-columns: 2fr 1.5fr 1fr 1fr auto auto;
-    gap: 10px;
-    align-items: center;
+  display: grid;
+  grid-template-columns: 2fr 1.4fr 1fr 0.8fr 36px 36px;
+  gap: 10px;
+  align-items: center;
 }
-
 .class-row {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr auto;
-    gap: 10px;
-    align-items: center;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 36px;
+  gap: 10px;
+  align-items: center;
+}
+.col-labels {
+  display: grid;
+  grid-template-columns: 2fr 1.4fr 1fr 0.8fr 36px 36px;
+  gap: 10px;
+  padding: 0 2px 6px;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-.gpa-row input, .gpa-row select,
-.class-row input, .input-box {
-    width: 100%;
-    padding: 14px;
-    border: 2px solid #e5e7eb;
-    border-radius: 14px;
-    font-size: 15px;
-    outline: none;
-    background: white;
-    color: #1f2937;
+.ncaa-check {
+  width: 18px; height: 18px;
+  cursor: pointer;
+  accent-color: var(--accent);
+  display: block;
+  margin: auto;
 }
 
-.gpa-row input:focus, .gpa-row select:focus,
-.class-row input:focus, .input-box:focus {
-    border-color: #2563eb;
+.del-btn {
+  width: 34px; height: 34px;
+  border: none;
+  border-radius: 50%;
+  background: #fee2e2;
+  color: #dc2626;
+  cursor: pointer;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.2s;
+}
+.del-btn:hover { background: #fecaca; }
+
+/* ── TOGGLE CHIPS ── */
+.chip-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; }
+.chip {
+  border: none;
+  padding: 9px 18px;
+  border-radius: 999px;
+  background: #f1f5f9;
+  color: var(--muted);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  font-size: 13.5px;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+.chip.on { background: var(--accent); color: white; }
+.chip:hover:not(.on) { background: #e2e8f0; }
+
+.quick-chip {
+  border: none;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+.quick-chip:hover { opacity: 0.8; }
+.qc-green { background: #dcfce7; color: #15803d; }
+.qc-blue  { background: #dbeafe; color: #1d4ed8; }
+.qc-gray  { background: #f1f5f9; color: #475569; }
+
+/* ── BUTTONS ── */
+.btn-row { display: flex; gap: 12px; margin-top: 20px; }
+.btn {
+  flex: 1;
+  border: none;
+  padding: 15px;
+  border-radius: 14px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+.btn-primary { background: var(--accent); color: white; }
+.btn-primary:hover { background: #4338ca; transform: translateY(-1px); }
+.btn-outline { background: #f1f5f9; color: var(--text); }
+.btn-outline:hover { background: #e2e8f0; }
+.btn-full { width: 100%; }
+.btn-danger { background: #fff1f1; color: var(--red); border: 1px solid #fecaca; margin-top: 12px; width: 100%; }
+.btn-danger:hover { background: #fee2e2; }
+
+/* ── FIELDSET ── */
+fieldset.optional {
+  border: 1.5px dashed #cbd5e1;
+  border-radius: 14px;
+  padding: 18px;
+  margin-bottom: 22px;
+}
+fieldset.optional legend {
+  padding: 0 10px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent);
 }
 
-.sport-checkbox {
-    width: 20px;
-    height: 20px;
-    cursor: pointer;
-    accent-color: #2563eb;
+/* ── RESULT BOX ── */
+.result {
+  display: none;
+  margin-top: 26px;
+  background: linear-gradient(135deg, #f0f4ff, #f0fdf4);
+  border: 1px solid #dbeafe;
+  border-radius: 18px;
+  padding: 26px;
+  text-align: center;
+  animation: pop 0.35s ease;
+}
+@keyframes pop {
+  from { opacity: 0; transform: scale(0.97) translateY(8px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+.big-num {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(48px, 10vw, 72px);
+  font-weight: 800;
+  color: var(--green);
+  line-height: 1;
+}
+.big-num.blue { color: var(--accent); }
+.big-num.red  { color: var(--red); }
+.result-label { font-size: 13px; color: var(--muted); margin-top: 4px; margin-bottom: 14px; }
+.bracket-label { font-size: 20px; font-weight: 700; margin-top: 8px; }
+
+.progress-track {
+  background: #dbeafe;
+  border-radius: 999px;
+  height: 10px;
+  margin-top: 16px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  border-radius: 999px;
+  width: 0%;
+  transition: width 0.9s ease-out;
 }
 
-.label-text {
-    font-size: 14px;
-    font-weight: bold;
-    color: #4b5563;
-    margin-bottom: 6px;
-    display: block;
+.insight-box {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px 18px;
+  text-align: left;
+  line-height: 1.6;
+  margin-top: 16px;
+  font-size: 14.5px;
+  color: #374151;
 }
 
-.grid-2 {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
-    margin-bottom: 15px;
+.two-col-result {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 10px;
 }
 
-.grid-3 {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 15px;
-    margin-bottom: 20px;
+/* ── ELIGIBILITY BADGES ── */
+.badge-row { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-top: 12px; }
+.elig-badge {
+  padding: 7px 16px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 700;
+}
+.elig-green  { background: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
+.elig-yellow { background: #fef9c3; color: #a16207; border: 1px solid #fef08a; }
+.elig-red    { background: #fee2e2; color: #dc2626; border: 1px solid #fecaca; }
+
+/* ── CREDIT TABLE ── */
+.credit-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+.credit-table th, .credit-table td { padding: 13px 14px; text-align: left; border-bottom: 1px solid var(--border); font-size: 14px; }
+.credit-table th { background: #f8fafc; font-size: 12.5px; text-transform: uppercase; letter-spacing: 0.4px; font-weight: 700; color: var(--muted); }
+.status-badge { display: inline-block; padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 700; }
+.sb-done    { background: #dcfce7; color: #15803d; }
+.sb-pending { background: #fff7ed; color: #c2410c; }
+
+/* ── TRUST CARDS ── */
+.trust { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 24px; }
+.trust-card { background: white; padding: 20px; border-radius: 16px; text-align: center; border: 1px solid var(--border); }
+.trust-card h3 { font-family: 'Syne', sans-serif; font-size: 16px; margin-bottom: 6px; }
+.trust-card p  { color: var(--muted); font-size: 13px; line-height: 1.5; }
+
+/* ── FOOTER ── */
+.disclaimer {
+  margin-top: 28px;
+  padding: 18px;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.6;
+  text-align: center;
 }
 
-.delete-btn{
-    width: 45px;
-    height: 45px;
-    border: none;
-    border-radius: 50%;
-    background: #fee2e2;
-    color: #dc2626;
-    cursor: pointer;
-    font-size: 18px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+/* ── DARK MODE ── */
+body.dark {
+  --bg: #0f172a;
+  --surface: #1e293b;
+  --border: #334155;
+  --text: #f1f5f9;
+  --muted: #94a3b8;
 }
+body.dark .explainer { background: #0c4a6e; color: #e0f2fe; border-left-color: #38bdf8; }
+body.dark .chip { background: #334155; color: #94a3b8; }
+body.dark .chip.on { background: var(--accent); color: white; }
+body.dark .btn-outline { background: #334155; color: var(--text); }
+body.dark .result { background: #1e293b; border-color: #334155; }
+body.dark .insight-box { background: #0f172a; border-color: #334155; color: #cbd5e1; }
+body.dark .trust-card, body.dark .credit-table th { background: #0f172a; }
+body.dark .progress-track { background: #334155; }
 
-.delete-btn:hover { background: #fca5a5; }
-
-/* ================= CREDIT TRACKER TABLE ================= */
-.credit-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
-}
-
-.credit-table th, .credit-table td {
-    padding: 14px;
-    text-align: left;
-    border-bottom: 1px solid #e5e7eb;
-}
-
-.credit-table th { background: #f8fafc; font-weight: bold; }
-
-.status-badge {
-    display: inline-block;
-    padding: 4px 10px;
-    border-radius: 999px;
-    font-size: 12px;
-    font-weight: bold;
-}
-
-.status-badge.done { background: #dcfce7; color: #15803d; }
-.status-badge.pending { background: #ffedd5; color: #c2410c; }
-
-/* ================= BUTTONS ================= */
-.actions{
-    margin-top: 25px;
-    display: flex;
-    gap: 15px;
-}
-
-.btn{
-    flex: 1;
-    border: none;
-    padding: 16px;
-    border-radius: 16px;
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 15px;
-    transition: background 0.2s;
-}
-
-.btn-primary{ background: #2563eb; color: white; }
-.btn-primary:hover { background: #1d4ed8; }
-.btn-secondary{ background: #e5e7eb; color: #1f2937; }
-.btn-secondary:hover { background: #d1d5db; }
-
-.btn-clear {
-    width: 100%;
-    background: #fff5f5;
-    color: #e53e3e;
-    border: 1px solid #fed7d7;
-    margin-top: 15px;
-}
-.btn-clear:hover { background: #fff5f5; border-color: #e53e3e; }
-
-/* ================= RESULTS DISPLAY ================= */
-.result{
-    margin-top: 30px;
-    background: #eff6ff;
-    border-radius: 20px;
-    padding: 25px;
-    display: none;
-    text-align: center;
-}
-
-.gpa-value{
-    font-size: 65px;
-    font-weight: 900;
-    color: #16a34a;
-    line-height: 1;
-}
-
-.gpa-sub-label {
-    font-size: 14px;
-    color: #4b5563;
-    margin-top: 4px;
-    margin-bottom: 15px;
-}
-
-.letter{
-    font-size: 24px;
-    margin-top: 10px;
-    font-weight: bold;
-}
-
-.progress{
-    margin-top: 20px;
-    background: #d1d5db;
-    border-radius: 999px;
-    height: 16px;
-    overflow: hidden;
-}
-
-.progress-bar{
-    height: 100%;
-    width: 0%;
-    background: linear-gradient(90deg, #2563eb, #60a5fa);
-    transition: width 1s ease-out;
-}
-
-.insight{
-    margin-top: 20px;
-    background: white;
-    padding: 18px;
-    border-radius: 16px;
-    border: 1px solid #e5e7eb;
-    color: #374151;
-    text-align: left;
-    line-height: 1.5;
-}
-
-/* ================= ELIGIBILITY BADGES ================= */
-.badge-container {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin-top: 15px;
-    flex-wrap: wrap;
-}
-
-.eligibility-badge {
-    padding: 8px 16px;
-    border-radius: 12px;
-    font-size: 13px;
-    font-weight: bold;
-}
-.eligibility-badge.eligible { background: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
-.eligibility-badge.warning { background: #fef9c3; color: #a16207; border: 1px solid #fef08a; }
-.eligibility-badge.danger { background: #fee2e2; color: #dc2626; border: 1px solid #fecaca; }
-
-/* ================= TRUST BADGES ================= */
-.trust{
-    margin-top: 30px;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-}
-
-.trust-card{
-    background: white;
-    padding: 22px;
-    border-radius: 20px;
-    text-align: center;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
-}
-
-.trust-card h3 { margin-bottom: 5px; font-size: 18px; }
-.trust-card p { color: #6b7280; font-size: 14px; }
-
-/* ================= LEGAL DISCLAIMER ================= */
-.legal-disclaimer {
-    margin-top: 30px;
-    padding: 20px;
-    border-top: 1px solid #e5e7eb;
-    font-size: 12px;
-    color: #6b7280;
-    line-height: 1.6;
-    text-align: justify;
-}
-
-/* ================= ANIMATIONS & UTILITIES ================= */
-.fade-in { animation: fadeIn 0.3s ease-in-out; }
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
+/* ── UTILITIES ── */
 .hidden { display: none !important; }
+.fade { animation: fadeIn 0.25s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
-/* ================= DARK MODE ================= */
-body.dark { background: #0f172a; color: #f8fafc; }
-body.dark .card, body.dark .trust-card, body.dark .insight, body.dark th {
-    background: #1e293b; color: #f8fafc; border-color: #334155; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-}
-body.dark .tab-explainer { background: #0c4a6e; color: #e0f2fe; border-left-color: #38bdf8; }
-body.dark .gpa-row input, body.dark .gpa-row select,
-body.dark .class-row input, body.dark .input-box {
-    background: #334155; border-color: #475569; color: white;
-}
-body.dark .label-text { color: #cbd5e1; }
-body.dark .subtitle { color: #94a3b8; }
-body.dark .btn-secondary { background: #334155; color: white; }
-body.dark .btn-secondary:hover { background: #475569; }
-body.dark .toggle-btn { background: #334155; color: #cbd5e1; }
-body.dark .toggle-btn.active { background: #2563eb; color: white; }
-body.dark .legal-disclaimer { border-top-color: #334155; color: #94a3b8; }
-
-/* ================= MOBILE ADAPTATION ================= */
-@media(max-width: 768px){
-    .hero h1{ font-size: 30px; }
-    .gpa-row { grid-template-columns: 1fr; gap: 8px; padding-bottom: 15px; border-bottom: 1px dashed #e5e7eb; }
-    .class-row { grid-template-columns: 1fr; gap: 8px; }
-    .grid-2, .grid-3 { grid-template-columns: 1fr; gap: 0; }
-    .delete-btn { width: 100%; border-radius: 12px; height: 40px; }
-    .actions{ flex-direction: column; }
-    .trust{ grid-template-columns: 1fr; }
-    .gpa-value{ font-size: 48px; }
+/* ── RESPONSIVE ── */
+@media (max-width: 720px) {
+  .gpa-row { grid-template-columns: 1fr; gap: 8px; padding-bottom: 16px; border-bottom: 1px dashed var(--border); }
+  .class-row { grid-template-columns: 1fr; gap: 8px; }
+  .col-labels { display: none; }
+  .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  .two-col-result { grid-template-columns: 1fr; }
+  .btn-row { flex-direction: column; }
+  .trust { grid-template-columns: 1fr; }
+  .del-btn { width: 100%; border-radius: 10px; height: 38px; }
 }
 
 @media print {
-    .no-print, .hero-buttons, .tabs, .tab-explainer, .actions, .btn-clear, .delete-btn, .legal-disclaimer { display: none !important; }
-    .container { margin-top: 0; }
-    .card { box-shadow: none; padding: 0; margin-bottom: 40px; }
-    .result { display: block !important; background: none; }
+  .no-print, .hero-actions, .tabs, .explainer, .btn-row, .btn-danger, .del-btn, .disclaimer { display: none !important; }
+  .container { margin-top: 0; }
+  .card { box-shadow: none; padding: 0; margin-bottom: 36px; }
+  .result { display: block !important; background: none; border: none; }
 }
 </style>
 </head>
 <body>
 
 <section class="hero no-print">
-    <div class="hero-buttons">
-        <button onclick="toggleDark()">🌙 Dark</button>
-        <button onclick="window.print()">🖨️ Print</button>
-    </div>
-    <h1>🎓 High School Academic Dashboard</h1>
-    <p>GPA Engine • Grade Protect • NCAA Monitor • Graduation Credit Tracker • Study Planner</p>
-    
-    <div class="streak-container">
-        <span>🔥 Study Streak: <span id="streak-count">0</span> days</span>
-        <button class="streak-btn" onclick="incrementStreak()">+1 Day</button>
-    </div>
+  <div class="hero-actions">
+    <button onclick="toggleDark()">🌙 Dark</button>
+    <button onclick="window.print()">🖨️ Print</button>
+  </div>
+  <h1>🎓 High School Academic Dashboard</h1>
+  <p>GPA Calculator · Final Grade Planner · NCAA Tracker · Credits · Study Planner</p>
+  <div class="streak-pill">
+    🔥 Study Streak: <span id="streakCount">0</span> days
+    <button onclick="bumpStreak()">+ Day</button>
+  </div>
 </section>
 
 <div class="container">
 
-    <div class="tabs no-print">
-        <button class="tab-btn active" onclick="switchTab('gpa', this)">📊 GPA & NCAA Tracker</button>
-        <button class="tab-btn" onclick="switchTab('final', this)">🎯 Final Grade Cushion</button>
-        <button class="tab-btn" onclick="switchTab('class', this)">📝 Class Grade Tracker</button>
-        <button class="tab-btn" onclick="switchTab('goal', this)">🏆 GPA Goal Planner</button>
-        <button class="tab-btn" onclick="switchTab('credits', this)">📜 Graduation Progress</button>
-        <button class="tab-btn" onclick="switchTab('study', this)">📅 Study Planner</button>
-        <button class="tab-btn" onclick="switchTab('semester', this)">📈 Semester Compare</button>
+  <div class="tabs no-print">
+    <button class="tab-btn active" onclick="switchTab('gpa',this)">📊 GPA Calculator</button>
+    <button class="tab-btn" onclick="switchTab('final',this)">🎯 Final Grade</button>
+    <button class="tab-btn" onclick="switchTab('class',this)">📝 Class Grade</button>
+    <button class="tab-btn" onclick="switchTab('goal',this)">🏆 GPA Goal</button>
+    <button class="tab-btn" onclick="switchTab('credits',this)">📜 Graduation Credits</button>
+    <button class="tab-btn" onclick="switchTab('study',this)">📅 Study Planner</button>
+    <button class="tab-btn" onclick="switchTab('semester',this)">📈 Compare Terms</button>
+    <button class="tab-btn" onclick="switchTab('milestone',this)">🚀 Project Planner</button>
+  </div>
+
+  <div id="explainerBanner" class="explainer no-print"></div>
+
+  <div id="section-gpa" class="tab-content fade">
+    <div class="card">
+      <h2>Calculate Your GPA</h2>
+      <p class="subtitle">Enter your classes below. Choose weighted or unweighted scale. Optionally add your past GPA to see your new overall cumulative GPA.</p>
+
+      <fieldset class="optional">
+        <legend>📁 Add Past GPA History (Optional)</legend>
+        <div class="grid-2" style="margin-bottom:0">
+          <div>
+            <label class="label">Past Cumulative GPA</label>
+            <input id="priorGPA" class="input" type="number" placeholder="e.g. 3.45" step="0.01" min="0" max="5">
+          </div>
+          <div>
+            <label class="label">Credits Already Earned</label>
+            <input id="priorCredits" class="input" type="number" placeholder="e.g. 32" step="0.5" min="0">
+          </div>
+        </div>
+      </fieldset>
+
+      <div class="chip-row">
+        <button class="chip on" id="btn-unweighted" onclick="setScale('unweighted',this)">Unweighted (4.0 max)</button>
+        <button class="chip" id="btn-weighted" onclick="setScale('weighted',this)">Weighted (5.0 max for AP)</button>
+      </div>
+
+      <div class="col-labels no-print">
+        <div>Class Name</div>
+        <div>Course Type</div>
+        <div>Grade</div>
+        <div>Credits</div>
+        <div style="text-align:center">NCAA</div>
+        <div></div>
+      </div>
+
+      <div id="gpaRows" class="rows-wrap"></div>
+
+      <div class="btn-row">
+        <button class="btn btn-outline" onclick="addRow()">+ Add Class</button>
+        <button class="btn btn-primary" onclick="calcGPA()">Calculate GPA ✨</button>
+      </div>
+      <button class="btn btn-danger" onclick="clearGPA()">🗑️ Clear All</button>
+
+      <div class="result" id="gpa-result">
+        <div class="two-col-result">
+          <div>
+            <div class="big-num" id="termGpaVal">0.00</div>
+            <div class="result-label">This Term GPA</div>
+          </div>
+          <div>
+            <div class="big-num blue" id="cumGpaVal">0.00</div>
+            <div class="result-label">Overall Cumulative GPA</div>
+          </div>
+        </div>
+        <div class="bracket-label" id="bracketLabel"></div>
+        <div class="badge-row"><div id="ncaaBadge" class="elig-badge elig-yellow">No classes marked for NCAA tracking</div></div>
+        <div class="progress-track"><div class="progress-fill" id="gpaBar"></div></div>
+        <div class="insight-box" id="gpaInsight"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="section-final" class="tab-content fade hidden">
+    <div class="card">
+      <h2>🎯 Final Exam Score Calculator</h2>
+      <p class="subtitle">Find out exactly what score you need on your final exam to earn your target grade — and the lowest score you can get without dropping a letter grade.</p>
+
+      <div class="grid-3">
+        <div>
+          <label class="label">My Current Grade (%)</label>
+          <input id="currentGrade" class="input" type="number" placeholder="e.g. 88">
+        </div>
+        <div>
+          <label class="label">Grade I Want to End Up With (%)</label>
+          <input id="desiredGrade" class="input" type="number" placeholder="e.g. 90">
+        </div>
+        <div>
+          <label class="label">Final Exam Worth (%)</label>
+          <input id="finalWorth" class="input" type="number" placeholder="e.g. 20">
+        </div>
+      </div>
+
+      <div style="margin-bottom:18px; display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+        <span style="font-size:12px; font-weight:700; color:var(--muted)">Quick targets:</span>
+        <button class="quick-chip qc-green" onclick="setDesired(93)">A (93%)</button>
+        <button class="quick-chip qc-green" onclick="setDesired(90)">A- (90%)</button>
+        <button class="quick-chip qc-blue"  onclick="setDesired(83)">B (83%)</button>
+        <button class="quick-chip qc-blue"  onclick="setDesired(80)">B- (80%)</button>
+        <button class="quick-chip qc-gray"  onclick="setWeight(10)">10% final</button>
+        <button class="quick-chip qc-gray"  onclick="setWeight(20)">20% final</button>
+      </div>
+
+      <button class="btn btn-primary btn-full" onclick="calcFinal()">Calculate What I Need 🎯</button>
+
+      <div class="result" id="final-result">
+        <div class="big-num" id="neededScore">--%</div>
+        <div class="result-label">Score needed on your final exam</div>
+        <div class="insight-box" id="finalInsight"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="section-class" class="tab-content fade hidden">
+    <div class="card">
+      <h2>📝 Class Grade Breakdown</h2>
+      <p class="subtitle">Break your class into categories (like Tests, Homework, Quizzes) with their weights to calculate your real current grade.</p>
+
+      <div id="classRows" class="rows-wrap"></div>
+
+      <div class="btn-row">
+        <button class="btn btn-outline" onclick="addClassRow()">+ Add Category</button>
+        <button class="btn btn-primary" onclick="calcClassGrade()">Calculate My Grade ✨</button>
+      </div>
+      <button class="btn btn-danger" onclick="clearClass()">🗑️ Clear All</button>
+
+      <div class="result" id="class-result">
+        <div class="big-num" id="classGradeVal">0.0%</div>
+        <div class="result-label">Your current class grade</div>
+        <div class="insight-box" id="classInsight"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="section-goal" class="tab-content fade hidden">
+    <div class="card">
+      <h2>🏆 GPA Goal Planner</h2>
+      <p class="subtitle">Tell us your target GPA and how many credits you have left, and we'll tell you exactly what average GPA you need to hit it.</p>
+
+      <div class="grid-2">
+        <div>
+          <label class="label">Current Cumulative GPA</label>
+          <input id="goal-cur-gpa" class="input" type="number" placeholder="e.g. 3.20" step="0.01">
+        </div>
+        <div>
+          <label class="label">Credits Already Earned</label>
+          <input id="goal-cur-cred" class="input" type="number" placeholder="e.g. 40">
+        </div>
+      </div>
+      <div class="grid-2">
+        <div>
+          <label class="label">My Target GPA</label>
+          <input id="goal-target" class="input" type="number" placeholder="e.g. 3.50" step="0.01">
+        </div>
+        <div>
+          <label class="label">Credits Still to Take</label>
+          <input id="goal-remain" class="input" type="number" placeholder="e.g. 15">
+        </div>
+      </div>
+
+      <button class="btn btn-primary btn-full" onclick="calcGoal()">Show Me What I Need 🏆</button>
+
+      <div class="result" id="goal-result">
+        <div class="big-num" id="goalNeeded">0.00</div>
+        <div class="result-label">Average GPA needed in remaining credits</div>
+        <div class="insight-box" id="goalInsight"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="section-credits" class="tab-content fade hidden">
+    <div class="card">
+      <h2>📜 Graduation Credit Tracker</h2>
+      <p class="subtitle">Enter how many credits you've earned in each subject area to see how close you are to graduating.</p>
+
+      <table class="credit-table">
+        <thead>
+          <tr>
+            <th>Subject</th>
+            <th>Credits Needed</th>
+            <th>Credits Earned</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>📚 English / Language Arts</b></td>
+            <td>4.0 credits</td>
+            <td><input type="number" class="input" style="padding:8px; max-width:90px" id="cred-eng" value="2.0" step="0.5" onchange="calcGrad()"></td>
+            <td><span id="badge-eng" class="status-badge sb-pending">⏳ In progress</span></td>
+          </tr>
+          <tr>
+            <td><b>🧮 Math</b></td>
+            <td>4.0 credits</td>
+            <td><input type="number" class="input" style="padding:8px; max-width:90px" id="cred-math" value="3.0" step="0.5" onchange="calcGrad()"></td>
+            <td><span id="badge-math" class="status-badge sb-pending">⏳ In progress</span></td>
+          </tr>
+          <tr>
+            <td><b>🔬 Science (Lab Courses)</b></td>
+            <td>3.0 credits</td>
+            <td><input type="number" class="input" style="padding:8px; max-width:90px" id="cred-sci" value="2.0" step="0.5" onchange="calcGrad()"></td>
+            <td><span id="badge-sci" class="status-badge sb-pending">⏳ In progress</span></td>
+          </tr>
+          <tr>
+            <td><b>🗺️ Social Studies / History</b></td>
+            <td>3.0 credits</td>
+            <td><input type="number" class="input" style="padding:8px; max-width:90px" id="cred-soc" value="1.5" step="0.5" onchange="calcGrad()"></td>
+            <td><span id="badge-soc" class="status-badge sb-pending">⏳ In progress</span></td>
+          </tr>
+          <tr>
+            <td><b>🎨 Electives / Tech / Arts</b></td>
+            <td>8.0 credits</td>
+            <td><input type="number" class="input" style="padding:8px; max-width:90px" id="cred-elec" value="4.0" step="0.5" onchange="calcGrad()"></td>
+            <td><span id="badge-elec" class="status-badge sb-pending">⏳ In progress</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="result" id="grad-result" style="display:block; margin-top:18px;">
+        <div class="big-num blue" id="gradTotal" style="font-size:52px;">12.5 / 22.0</div>
+        <div class="result-label">Total graduation credits</div>
+        <div class="insight-box" id="gradInsight" style="text-align:center;">Update the table above to track your progress.</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="section-study" class="tab-content fade hidden">
+    <div class="card">
+      <h2>📅 Study Planner</h2>
+      <p class="subtitle">Enter your exam date and how many hours you can study per day, and we'll build a simple daily study plan for you.</p>
+
+      <div class="grid-2">
+        <div>
+          <label class="label">Class or Exam Name</label>
+          <input id="studySubject" class="input" type="text" placeholder="e.g. AP Chemistry">
+        </div>
+        <div>
+          <label class="label">Exam Date</label>
+          <input id="studyDate" class="input" type="date">
+        </div>
+      </div>
+      <div class="grid-2">
+        <div>
+          <label class="label">My Current Grade in This Class (%)</label>
+          <input id="studyGrade" class="input" type="number" placeholder="e.g. 78">
+        </div>
+        <div>
+          <label class="label">Hours I Can Study Per Day</label>
+          <input id="studyHours" class="input" type="number" placeholder="e.g. 2" step="0.5">
+        </div>
+      </div>
+
+      <div style="margin-bottom:22px;">
+        <label class="label">How hard is this class for you?</label>
+        <div class="chip-row" id="diff-group">
+          <button class="chip on" id="diff-easy"     onclick="setDiff('easy')">😊 Easy</button>
+          <button class="chip"   id="diff-medium"   onclick="setDiff('medium')">😐 Medium</button>
+          <button class="chip"   id="diff-hard"     onclick="setDiff('hard')">😓 Hard</button>
+          <button class="chip"   id="diff-veryhard" onclick="setDiff('veryhard')">🤯 Very Hard</button>
+        </div>
+      </div>
+
+      <button class="btn btn-primary btn-full" onclick="genStudyPlan()">Build My Study Plan 📅</button>
+
+      <div class="result" id="study-result">
+        <div class="insight-box" id="studyPlanText" style="text-align:left; line-height:1.8;"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="section-semester" class="tab-content fade hidden">
+    <div class="card">
+      <h2>📈 Compare Two Terms</h2>
+      <p class="subtitle">Enter your GPA from two different terms to see how much you've improved (or where to focus).</p>
+
+      <div class="grid-2">
+        <div>
+          <label class="label">Term 1 GPA</label>
+          <input id="sem1" class="input" type="number" placeholder="e.g. 3.40" step="0.01">
+        </div>
+        <div>
+          <label class="label">Term 2 GPA</label>
+          <input id="sem2" class="input" type="number" placeholder="e.g. 3.65" step="0.01">
+        </div>
+      </div>
+
+      <button class="btn btn-primary btn-full" onclick="compareSems()">Compare My Terms 📈</button>
+
+      <div class="result" id="sem-result">
+        <div class="insight-box" id="semText" style="text-align:center; font-size:16px;"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="section-milestone" class="tab-content fade hidden">
+    <div class="card">
+      <h2>🚀 Project Milestone Planner</h2>
+      <p class="subtitle">Enter your project name and due date — we'll split it into 4 manageable steps and build a board you can track your progress on.</p>
+
+      <div class="grid-2">
+        <div>
+          <label class="label">Project or Assignment Name</label>
+          <input id="ms-name" class="input" type="text" placeholder="e.g. Senior Research Paper">
+        </div>
+        <div>
+          <label class="label">Due Date</label>
+          <input id="ms-date" class="input" type="date">
+        </div>
+      </div>
+
+      <button class="btn btn-primary btn-full" onclick="genMilestones()">Build My Project Plan ✨</button>
+
+      <div class="result" id="ms-summary" style="text-align:left;">
+        <div class="insight-box" id="ms-summary-text"></div>
+      </div>
     </div>
 
-    <div id="dynamic-explainer" class="tab-explainer no-print">
-        <strong>💡 About this tool:</strong> Calculate your term GPA with custom weights (Regular vs AP). Optional: Add past high school history to see your new overall cumulative GPA, and check athletic core course eligibility benchmarks.
+    <div id="ms-board" class="hidden">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px;">
+        <h3 style="font-family:'Syne',sans-serif;font-size:20px;font-weight:700;">📋 Your Project Board</h3>
+        <span style="font-size:13px;color:var(--muted);background:white;border:1px solid var(--border);border-radius:999px;padding:6px 14px;">Drag cards between columns as you work ✌️</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;" id="ms-kanban">
+
+        <div class="card" style="padding:18px;min-height:320px;border-top:3px solid #94a3b8;"
+             ondragover="msDragOver(event,this)" ondragleave="msDragLeave(this)" ondrop="msDrop(event,'ms-todo')">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+            <span style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)">⏳ To Do</span>
+            <span class="col-count" id="ms-cnt-todo" style="background:var(--border);color:var(--muted);font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;">0</span>
+          </div>
+          <div id="ms-todo"></div>
+        </div>
+
+        <div class="card" style="padding:18px;min-height:320px;border-top:3px solid var(--accent);"
+             ondragover="msDragOver(event,this)" ondragleave="msDragLeave(this)" ondrop="msDrop(event,'ms-doing')">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+            <span style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)">⚡ Working On It</span>
+            <span class="col-count" id="ms-cnt-doing" style="background:var(--border);color:var(--muted);font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;">0</span>
+          </div>
+          <div id="ms-doing"></div>
+        </div>
+
+        <div class="card" style="padding:18px;min-height:320px;border-top:3px solid var(--green);"
+             ondragover="msDragOver(event,this)" ondragleave="msDragLeave(this)" ondrop="msDrop(event,'ms-done')">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+            <span style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)">✅ Done</span>
+            <span class="col-count" id="ms-cnt-done" style="background:var(--border);color:var(--muted);font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;">0</span>
+          </div>
+          <div id="ms-done"></div>
+        </div>
+
+      </div>
     </div>
+  </div>
 
-    <div id="section-gpa" class="tab-content fade-in">
-        <div class="card">
-            <h2>Calculate Your GPA & NCAA Eligibility</h2>
-            <p class="subtitle">Factor in custom course weighting configurations along with prior multi-term cumulative milestones.</p>
-            
-            <fieldset style="border: 1px dashed #cbd5e1; border-radius: 16px; padding: 20px; margin-bottom: 25px;">
-                <legend style="padding: 0 10px; font-weight: bold; font-size: 14px; color: #2563eb;">🔗 Cumulative History Merger (Optional)</legend>
-                <div class="grid-2" style="margin-bottom: 0;">
-                    <div>
-                        <label class="label-text">Prior Cumulative GPA</label>
-                        <input type="number" id="priorGPA" class="input-box" placeholder="e.g. 3.45" step="0.01" min="0" max="5">
-                    </div>
-                    <div>
-                        <label class="label-text">Prior Earned Credits</label>
-                        <input type="number" id="priorCredits" class="input-box" placeholder="e.g. 32" step="0.5" min="0">
-                    </div>
-                </div>
-            </fieldset>
-
-            <div class="toggle-group">
-                <button class="toggle-btn active" id="btn-unweighted" onclick="setScale('unweighted', this)">Unweighted Scale (4.0)</button>
-                <button class="toggle-btn" id="btn-weighted" onclick="setScale('weighted', this)">Weighted Scale (5.0)</button>
-            </div>
-
-            <div style="display: grid; grid-template-columns: 2fr 1.5fr 1fr 1fr auto auto; gap:10px; padding: 0 10px 5px; font-size:12px; font-weight:bold; color:#6b7280;" class="no-print">
-                <div>Class Name</div>
-                <div>Course Type</div>
-                <div>Grade</div>
-                <div>Credits</div>
-                <div style="text-align: center;">NCAA?</div>
-                <div>Remove</div>
-            </div>
-
-            <div id="gpaRows" class="rows-container"></div>
-
-            <div class="actions">
-                <button class="btn btn-secondary" onclick="addRow()">+ Add Class</button>
-                <button class="btn btn-primary" onclick="calculateGPA()">Run Evaluation Matrix ✨</button>
-            </div>
-            <button class="btn btn-secondary btn-clear" onclick="clearSection('gpa')">🗑️ Clear All Rows</button>
-
-            <div class="result" id="gpa-result">
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                    <div>
-                        <div class="gpa-value" id="termGpaValue">0.00</div>
-                        <div class="gpa-sub-label">This Term GPA</div>
-                    </div>
-                    <div>
-                        <div class="gpa-value" id="cumulativeGpaValue" style="color: #2563eb;">0.00</div>
-                        <div class="gpa-sub-label">New Total Cumulative GPA</div>
-                    </div>
-                </div>
-                
-                <div class="letter" id="letterGrade">Bracket: -</div>
-                
-                <div class="badge-container">
-                    <div id="ncaaBadge" class="eligibility-badge warning">NCAA Status Matrix Evaluation Required</div>
-                </div>
-
-                <div class="progress">
-                    <div class="progress-bar" id="progressBar"></div>
-                </div>
-                <div class="insight" id="insightText"></div>
-            </div>
-        </div>
+  <div class="trust no-print">
+    <div class="trust-card">
+      <h3>🎓 Regular, Honors & AP</h3>
+      <p>Handles all course types with proper GPA weighting for each tier.</p>
     </div>
-
-    <div id="section-final" class="tab-content fade-in hidden">
-        <div class="card">
-            <h2>🎯 Final Grade & Protection Cushion Calculator</h2>
-            <p class="subtitle">Determine exact score requirements on your upcoming final exam to lock in standard target ranges or protect your current standing floor boundaries.</p>
-
-            <div class="grid-3">
-                <div>
-                    <label class="label-text">📌 My Current Grade (%)</label>
-                    <input type="number" id="currentGrade" class="input-box" placeholder="e.g. 88">
-                </div>
-                <div>
-                    <label class="label-text">🎯 Grade I Want in Class (%)</label>
-                    <input type="number" id="desiredGrade" class="input-box" placeholder="e.g. 90">
-                </div>
-                <div>
-                    <label class="label-text">⚖️ Final Exam Weight (%)</label>
-                    <input type="number" id="finalWorth" class="input-box" placeholder="e.g. 20">
-                </div>
-            </div>
-            
-            <div class="chip-group">
-                <span style="font-size:12px; font-weight:bold; align-self:center; color:#4b5563;">Presets:</span>
-                <button class="chip green" onclick="setDesired(93)">A (93%)</button>
-                <button class="chip green" onclick="setDesired(90)">A- (90%)</button>
-                <button class="chip blue" onclick="setDesired(83)">B (83%)</button>
-                <button class="chip blue" onclick="setDesired(80)">B- (80%)</button>
-                <button class="chip gray" onclick="setWeight(10)">10% Exam</button>
-                <button class="chip gray" onclick="setWeight(15)">15% Exam</button>
-                <button class="chip gray" onclick="setWeight(20)">20% Exam</button>
-            </div>
-
-            <button class="btn btn-primary" style="width:100%" onclick="calculateFinalGrade()">Calculate Target & Floor Bounds 🎯</button>
-
-            <div class="result" id="finalResult">
-                <div class="gpa-value" id="neededScore">--%</div>
-                <div class="insight" id="finalInsight" style="text-align: left; line-height:1.6;"></div>
-            </div>
-        </div>
+    <div class="trust-card">
+      <h3>⚡ Works Offline</h3>
+      <p>Everything runs in your browser — no account or internet needed after loading.</p>
     </div>
-
-    <div id="section-class" class="tab-content fade-in hidden">
-        <div class="card">
-            <h2>📝 Class Category Grade Tracker</h2>
-            <p class="subtitle">Calculate your overall grade dynamically using weighted course metrics (e.g., Tests, Homework).</p>
-
-            <div id="classRows" class="rows-container"></div>
-
-            <div class="actions">
-                <button class="btn btn-secondary" onclick="addClassRow()">+ Add Category Row</button>
-                <button class="btn btn-primary" onclick="calculateClassGrade()">Calculate Class Grade ✨</button>
-            </div>
-            <button class="btn btn-secondary btn-clear" onclick="clearSection('class')">🗑️ Clear All Categories</button>
-
-            <div class="result" id="classResult">
-                <div class="gpa-value" id="classGradeValue">0.0%</div>
-                <div class="insight" id="classInsight" style="text-align: center;">Your calculated structural distribution metrics profile breakdown.</div>
-            </div>
-        </div>
+    <div class="trust-card">
+      <h3>🏃 NCAA Eligibility</h3>
+      <p>Flags your core course GPA and checks it against Division I eligibility benchmarks.</p>
     </div>
+  </div>
 
-    <div id="section-goal" class="tab-content fade-in hidden">
-        <div class="card">
-            <h2>🏆 GPA Goal Planner Matrix</h2>
-            <p class="subtitle">Find out exactly what benchmarks are needed down the line to match your target configurations.</p>
+  <footer class="disclaimer no-print">
+    <strong>Heads up:</strong> This tool gives you estimates based on common grading frameworks, including weighted scales and general NCAA guidelines. It's meant to help you plan and set goals — not replace official records. Always confirm your actual GPA, credits, and eligibility with your school counselor or registrar.
+  </footer>
 
-            <div class="grid-2">
-                <div>
-                    <label class="label-text">Current Cumulative GPA</label>
-                    <input type="number" id="goal-current-gpa" class="input-box" placeholder="e.g. 3.20" step="0.01">
-                </div>
-                <div>
-                    <label class="label-text">Credits Already Earned</label>
-                    <input type="number" id="goal-credits-earned" class="input-box" placeholder="e.g. 40">
-                </div>
-            </div>
+</div><script>
+/* ── CONFIG ── */
+const GRADE_PTS = { A:4.0,"A-":3.7,"B+":3.3,B:3.0,"B-":2.7,"C+":2.3,C:2.0,D:1.0,F:0.0 };
+let scale = "unweighted", diff = "easy";
 
-            <div class="grid-2">
-                <div>
-                    <label class="label-text">Target Milestone GPA Goal</label>
-                    <input type="number" id="goal-target-gpa" class="input-box" placeholder="e.g. 3.50" step="0.01">
-                </div>
-                <div>
-                    <label class="label-text">Credits Remaining / In-Flight</label>
-                    <input type="number" id="goal-credits-remaining" class="input-box" placeholder="e.g. 15">
-                </div>
-            </div>
-
-            <button class="btn btn-primary" style="width:100%" onclick="calculateGPAGoal()">Calculate Goal Framework 🏆</button>
-
-            <div class="result" id="goalResult">
-                <div class="gpa-value" id="goalRequiredValue">0.00</div>
-                <div class="insight" id="goalInsight" style="text-align: center;">Required benchmark GPA matrix profile allocations.</div>
-            </div>
-        </div>
-    </div>
-
-    <div id="section-credits" class="tab-content fade-in hidden">
-        <div class="card">
-            <h2>📜 District Graduation Core Credit Monitor</h2>
-            <p class="subtitle">Map your aggregate earned credits against standard structural graduation baseline frameworks to confirm distribution tracking metrics.</p>
-            
-            <table class="credit-table">
-                <thead>
-                    <tr>
-                        <th>Subject Category Space</th>
-                        <th>Standard Target Needs</th>
-                        <th>My Earned Units</th>
-                        <th>Status Monitor</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><b>📚 English Language Arts</b></td>
-                        <td>4.0 Credits</td>
-                        <td><input type="number" class="credit-input input-box" style="padding:8px;" value="2.0" step="0.5" id="cred-eng" onchange="calcGradProgress()"></td>
-                        <td><div id="badge-eng" class="status-badge pending">Tracking</div></td>
-                    </tr>
-                    <tr>
-                        <td><b>🧮 Mathematics Pathways</b></td>
-                        <td>4.0 Credits</td>
-                        <td><input type="number" class="credit-input input-box" style="padding:8px;" value="3.0" step="0.5" id="cred-math" onchange="calcGradProgress()"></td>
-                        <td><div id="badge-math" class="status-badge pending">Tracking</div></td>
-                    </tr>
-                    <tr>
-                        <td><b>🔬 Laboratory Sciences</b></td>
-                        <td>3.0 Credits</td>
-                        <td><input type="number" class="credit-input input-box" style="padding:8px;" value="2.0" step="0.5" id="cred-sci" onchange="calcGradProgress()"></td>
-                        <td><div id="badge-sci" class="status-badge pending">Tracking</div></td>
-                    </tr>
-                    <tr>
-                        <td><b>🗺️ Social Studies Core</b></td>
-                        <td>3.0 Credits</td>
-                        <td><input type="number" class="credit-input input-box" style="padding:8px;" value="1.5" step="0.5" id="cred-soc" onchange="calcGradProgress()"></td>
-                        <td><div id="badge-soc" class="status-badge pending">Tracking</div></td>
-                    </tr>
-                    <tr>
-                        <td><b>🎨 Electives & Tech tracks</b></td>
-                        <td>8.0 Credits</td>
-                        <td><input type="number" class="credit-input input-box" style="padding:8px;" value="4.0" step="0.5" id="cred-elec" onchange="calcGradProgress()"></td>
-                        <td><div id="badge-elec" class="status-badge pending">Tracking</div></td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <div class="result" id="gradResult" style="display:block; margin-top:20px;">
-                <div class="gpa-value" id="gradTotalValue" style="font-size:45px; color:#2563eb;">12.5 / 22.0</div>
-                <div class="gpa-sub-label">Total Graduation Credits Aggregated</div>
-                <div class="insight" id="gradInsightText" style="text-align: center;">Update items inside table arrays to automatically map pathway variables.</div>
-            </div>
-        </div>
-    </div>
-
-    <div id="section-study" class="tab-content fade-in hidden">
-        <div class="card">
-            <h2>📅 Smart Study Planner Matrix</h2>
-            <p class="subtitle">Structure optimized study modules contextualized right down to diagnostic test vectors.</p>
-
-            <div class="grid-2">
-                <div>
-                    <label class="label-text">📚 Course / Exam Target Name</label>
-                    <input type="text" id="studySubject" class="input-box" placeholder="e.g. AP Chemistry">
-                </div>
-                <div>
-                    <label class="label-text">📅 Scheduled Exam Date Label</label>
-                    <input type="date" id="studyDate" class="input-box">
-                </div>
-            </div>
-
-            <div class="grid-2">
-                <div>
-                    <label class="label-text">📊 Current Class Standing Grade (%)</label>
-                    <input type="number" id="studyGrade" class="input-box" placeholder="e.g. 78">
-                </div>
-                <div>
-                    <label class="label-text">⏰ Hours Disposable Per Day Block</label>
-                    <input type="number" id="studyHours" class="input-box" placeholder="e.g. 2" step="0.5">
-                </div>
-            </div>
-
-            <div style="margin-bottom: 25px;">
-                <label class="label-text">😰 Class Parameters Complexity Level</label>
-                <div class="toggle-group" id="difficulty-group">
-                    <button class="toggle-btn active" id="diff-easy" onclick="setDifficulty('easy')">😊 Easy Mode</button>
-                    <button class="toggle-btn" id="diff-medium" onclick="setDifficulty('medium')">😐 Medium Tier</button>
-                    <button class="toggle-btn" id="diff-hard" onclick="setDifficulty('hard')">😓 Hard Mode</button>
-                    <button class="toggle-btn" id="diff-veryhard" onclick="setDifficulty('veryhard')">🤯 Intense Track</button>
-                </div>
-            </div>
-
-            <button class="btn btn-primary" style="width:100%" onclick="generateStudyPlan()">Generate Optimized Study Plan 📅</button>
-
-            <div class="result" id="studyResult">
-                <div class="insight" id="studyPlan">Matrix results yield generation metrics structures here.</div>
-            </div>
-        </div>
-    </div>
-
-    <div id="section-semester" class="tab-content fade-in hidden">
-        <div class="card">
-            <h2>📈 Multi-Term Performance Trend Analysis</h2>
-            <p class="subtitle">Audit vector changes relative across two distinct measurement points.</p>
-
-            <div class="grid-2">
-                <div>
-                    <label class="label-text">Term Profile Metric Point A (GPA)</label>
-                    <input type="number" id="semester1" class="input-box" placeholder="e.g. 3.40" step="0.01">
-                </div>
-                <div>
-                    <label class="label-text">Term Profile Metric Point B (GPA)</label>
-                    <input type="number" id="semester2" class="input-box" placeholder="e.g. 3.65" step="0.01">
-                </div>
-            </div>
-
-            <button class="btn btn-primary" style="width:100%" onclick="compareSemester()">Compute Tracking Variances 📈</button>
-
-            <div class="result" id="semesterResult">
-                <div class="insight" id="semesterText" style="text-align: center;">Variance tracking evaluations dump parameters configuration points right here.</div>
-            </div>
-        </div>
-    </div>
-
-    <div class="trust no-print">
-        <div class="trust-card">
-            <h3>🎓 Multi-Weight Competent</h3>
-            <p>Full support mapping Regular, Honors, and AP/IB tier point configurations natively.</p>
-        </div>
-        <div class="trust-card">
-            <h3>⚡ Safe Client Runtimes</h3>
-            <p>Executes entirely via client JavaScript sandbox boundaries without networking tracking traces.</p>
-        </div>
-        <div class="trust-card">
-            <h3>🏃 Athletic Compliance Ready</h3>
-            <p>Integrates core baseline assessments mirroring standard athletic eligibility criteria bounds.</p>
-        </div>
-    </div>
-
-    <footer class="legal-disclaimer no-print">
-        <strong>Disclaimer & Regulatory Statement Notice:</strong> This software utility framework calculates projections, estimations, and trend matrices matching common secondary institution evaluation structures (including global general weighted multi-tier allocations and core NCAA academic distribution paths). All generated evaluation parameters, core graduation compliance counts, and grading thresholds are intended purely for personal structural student goal modeling exercises. Absolute official calculations, credential audits, transcripts validation, sports league registration requirements, and grade designations must be verified with your targeted district counselor office or formal registrar. No representations of absolute compliance mapping values or official registration validity results are guaranteed.
-    </footer>
-
-</div>
-
-<script>
-/* ================= RUNTIME CONFIGURATION SETUPS ================= */
-let scale = "unweighted";
-let selectedDifficulty = "easy";
-const gradeMap = { "A": 4.0, "A-": 3.7, "B+": 3.3, "B": 3.0, "B-": 2.7, "C+": 2.3, "C": 2.0, "D": 1.0, "F": 0.0 };
-
-// Object holding all explanations for the dynamic banner
-const tabExplanations = {
-    gpa: "<strong>💡 About this tool:</strong> Calculate your current term GPA with custom multi-tiered weights (Regular vs Honors vs AP). Optional: Add your past high school history values to see your new overall cumulative milestone, and check athletic core course eligibility benchmarks.",
-    final: "<strong>🎯 About this tool:</strong> Type in your current grade standing and target grade to find exactly what you need to score on the final exam. It also calculates your <b>Grade Protection Cushion</b>—the lowest possible score you can get without dropping down a full letter grade group.",
-    class: "<strong>📝 About this tool:</strong> Missing an official class grade summary? Break a single class down into its custom syllabus category chunks (e.g., Homework 20%, Tests 50%, Quizzes 30%) to accurately calculate your exact current course average percentage.",
-    goal: "<strong>🏆 About this tool:</strong> Reverse-engineer your graduation milestones. Tell the calculator what overall cumulative GPA you want to achieve, and it will calculate the exact average GPA score you must pull in across all remaining terms and credits.",
-    credits: "<strong>📜 About this tool:</strong> High school diplomas depend on meeting graduation group distribution allocations. Input your current earned credits by subject area to instantly track credit deficits against standard 22-credit academic pathways.",
-    study: "<strong>📅 About this tool:</strong> Map your upcoming exam timeline parameters. Input your test date, current class standing, and class difficulty, and the app balances a tailored countdown matrix outlining how many daily blocks to allocate.",
-    semester: "<strong>📈 About this tool:</strong> Compare two distinct reporting periods side-by-side. Useful for auditing historical vector shifts, identifying academic momentum drops, or validating positive upward grading curves."
+const EXPLAINERS = {
+  gpa: "<strong>💡 GPA Calculator:</strong> Add each class below with its type and grade. Toggle between unweighted (4.0) or weighted (5.0) scales. Check the NCAA box for any class that counts toward athletic eligibility. Optionally paste in your past GPA to get an updated overall cumulative number.",
+  final: "<strong>🎯 Final Exam Calculator:</strong> Enter your current grade, the grade you want in the class, and how much the final is worth. We'll tell you exactly what score you need — plus the minimum score to avoid dropping a letter grade.",
+  class: "<strong>📝 Class Grade Breakdown:</strong> Don't know your grade? Break your class into categories (Tests, Homework, Quizzes, etc.) and enter what weight each one carries. We'll calculate your current grade for you.",
+  goal: "<strong>🏆 GPA Goal Planner:</strong> Want a 3.5 GPA by graduation? Enter where you are now and how many credits you have left — we'll show you what average you need from here on out to hit your goal.",
+  credits: "<strong>📜 Graduation Credits:</strong> Enter how many credits you've earned in each subject. You'll instantly see which areas you've completed and how many more you need to graduate.",
+  study: "<strong>📅 Study Planner:</strong> Enter your exam date and how many hours you can study each day. Based on class difficulty and your current grade, we'll map out a daily study schedule.",
+  semester: "<strong>📈 Compare Terms:</strong> Plug in your GPA from two different semesters or quarters to see how your performance has changed — and what direction you're heading.",
+  milestone: "<strong>🚀 Project Planner:</strong> Got a big project, paper, or assignment coming up? Enter the name and due date and we'll break it into 4 clear steps with target dates — then drag each step across the board as you make progress."
 };
 
 document.addEventListener("DOMContentLoaded", () => {
-    for(let i=0; i<4; i++) { addRow(); }
-    for(let i=0; i<3; i++) { addClassRow(); }
-    loadStreak();
-    calcGradProgress();
+  for(let i=0;i<4;i++) addRow();
+  for(let i=0;i<3;i++) addClassRow();
+  loadStreak();
+  calcGrad();
+  setExplainer("gpa");
 });
 
-function switchTab(tabId, buttonElement) {
-    document.querySelectorAll(".tab-content").forEach(el => el.classList.add("hidden"));
-    document.querySelectorAll(".tab-btn").forEach(el => el.classList.remove("active"));
-    
-    const targetSection = document.getElementById("section-" + tabId);
-    if(targetSection) targetSection.classList.remove("hidden");
-    if(buttonElement) buttonElement.classList.add("active");
-
-    // Dynamic banner text generation script engine integration
-    const explainerBanner = document.getElementById("dynamic-explainer");
-    if (explainerBanner && tabExplanations[tabId]) {
-        explainerBanner.innerHTML = tabExplanations[tabId];
-    }
+/* ── TABS ── */
+function switchTab(id, btn){
+  document.querySelectorAll(".tab-content").forEach(e=>e.classList.add("hidden"));
+  document.querySelectorAll(".tab-btn").forEach(e=>e.classList.remove("active"));
+  document.getElementById("section-"+id).classList.remove("hidden");
+  btn.classList.add("active");
+  setExplainer(id);
+}
+function setExplainer(id){
+  const el=document.getElementById("explainerBanner");
+  el.innerHTML = EXPLAINERS[id]||"";
 }
 
-function loadStreak() {
-    let count = localStorage.getItem("gpa_study_streak") || 0;
-    document.getElementById("streak-count").innerText = count;
-}
-function incrementStreak() {
-    let count = parseInt(localStorage.getItem("gpa_study_streak") || 0) + 1;
-    localStorage.setItem("gpa_study_streak", count);
-    document.getElementById("streak-count").innerText = count;
+/* ── STREAK ── */
+function loadStreak(){ document.getElementById("streakCount").textContent = localStorage.getItem("streak")||0; }
+function bumpStreak(){
+  const n = (parseInt(localStorage.getItem("streak")||0))+1;
+  localStorage.setItem("streak",n);
+  document.getElementById("streakCount").textContent = n;
 }
 
-/* ================= TAB 1: CORE ENGINE MATRICES (GPA + NCAA + HISTORY) ================= */
-function setScale(type, btn) {
-    scale = type;
-    document.querySelectorAll("#section-gpa .toggle-btn").forEach(b => b.classList.remove("active"));
-    btn.classList.add("active");
+/* ══════════════ TAB 1 · GPA ══════════════ */
+function setScale(type, btn){
+  scale = type;
+  document.querySelectorAll("#section-gpa .chip").forEach(b=>b.classList.remove("on"));
+  btn.classList.add("on");
 }
 
-function addRow() {
-    const container = document.getElementById("gpaRows");
-    const row = document.createElement("div");
-    row.className = "gpa-row";
-    row.innerHTML = `
-        <input type="text" placeholder="e.g. AP Literature">
-        <select class="weight-type">
-            <option value="regular">Regular/CP (4.0 Max)</option>
-            <option value="honors">Honors (+0.5)</option>
-            <option value="ap">AP / IB / Dual (+1.0)</option>
-        </select>
-        <select class="grade">
-            <option value="">Grade</option>
-            <option>A</option><option>A-</option><option>B+</option>
-            <option>B</option><option>B-</option><option>C+</option>
-            <option>C</option><option>D</option><option>F</option>
-        </select>
-        <input type="number" class="credit" value="1" min="0.5" step="0.5">
-        <div style="text-align:center;"><input type="checkbox" class="sport-checkbox" checked></div>
-        <button class="delete-btn" onclick="this.parentElement.remove()">✕</button>
-    `;
-    container.appendChild(row);
+function addRow(){
+  const c = document.getElementById("gpaRows");
+  const d = document.createElement("div");
+  d.className = "gpa-row";
+  d.innerHTML = `
+    <input class="input" type="text" placeholder="e.g. AP Literature">
+    <select class="input wt">
+      <option value="regular">Regular / CP</option>
+      <option value="honors">Honors (+0.5 weighted)</option>
+      <option value="ap">AP / IB / Dual Enrollment (+1.0)</option>
+    </select>
+    <select class="input gr">
+      <option value="">Grade</option>
+      <option>A</option><option>A-</option><option>B+</option>
+      <option>B</option><option>B-</option><option>C+</option>
+      <option>C</option><option>D</option><option>F</option>
+    </select>
+    <input class="input cr" type="number" value="1" min="0.5" step="0.5">
+    <div style="text-align:center"><input type="checkbox" class="ncaa-check" checked></div>
+    <button class="del-btn" onclick="this.parentElement.remove()">✕</button>`;
+  c.appendChild(d);
 }
 
-function calculateGPA() {
-    const rows = document.querySelectorAll(".gpa-row");
-    let totalPoints = 0, totalCredits = 0;
-    let ncaaPoints = 0, ncaaCredits = 0;
-    let hasNcaaCourses = false;
-
-    rows.forEach(row => {
-        const type = row.querySelector(".weight-type").value;
-        const gradeVal = row.querySelector(".grade").value;
-        const creditVal = parseFloat(row.querySelector(".credit").value);
-        const isNcaa = row.querySelector(".sport-checkbox").checked;
-
-        if (gradeVal && !isNaN(creditVal)) {
-            let points = gradeMap[gradeVal];
-            
-            if (scale === "weighted" && gradeVal !== "F") {
-                if (type === "honors") points += 0.5;
-                if (type === "ap") points += 1.0;
-            }
-            
-            totalPoints += points * creditVal;
-            totalCredits += creditVal;
-
-            if (isNcaa) {
-                hasNcaaCourses = true;
-                ncaaPoints += gradeMap[gradeVal] * creditVal;
-                ncaaCredits += creditVal;
-            }
-        }
-    });
-
-    if (totalCredits === 0) {
-        alert("Please map entry values into grade selections first.");
-        return;
+function calcGPA(){
+  const rows = document.querySelectorAll(".gpa-row");
+  let pts=0,cred=0,np=0,nc=0,hasNcaa=false;
+  rows.forEach(r=>{
+    const type=r.querySelector(".wt").value;
+    const grade=r.querySelector(".gr").value;
+    const cr=parseFloat(r.querySelector(".cr").value);
+    const ncaa=r.querySelector(".ncaa-check").checked;
+    if(!grade||isNaN(cr)) return;
+    let p = GRADE_PTS[grade];
+    if(scale==="weighted" && grade!=="F"){
+      if(type==="honors") p+=0.5;
+      if(type==="ap") p+=1.0;
     }
+    pts+=p*cr; cred+=cr;
+    if(ncaa){ hasNcaa=true; np+=GRADE_PTS[grade]*cr; nc+=cr; }
+  });
+  if(!cred){ alert("Please enter at least one class with a grade."); return; }
 
-    const termGpa = totalPoints / totalCredits;
-    
-    const priorGpaInput = parseFloat(document.getElementById("priorGPA").value);
-    const priorCreditsInput = parseFloat(document.getElementById("priorCredits").value);
-    let cumulativeGpa = termGpa;
+  const termGpa = pts/cred;
+  let cumGpa = termGpa;
+  const pGpa=parseFloat(document.getElementById("priorGPA").value);
+  const pCred=parseFloat(document.getElementById("priorCredits").value);
+  if(!isNaN(pGpa)&&!isNaN(pCred)&&pCred>0){
+    cumGpa=(pts+pGpa*pCred)/(cred+pCred);
+  }
 
-    if (!isNaN(priorGpaInput) && !isNaN(priorCreditsInput) && priorCreditsInput > 0) {
-        const currentPoints = termGpa * totalCredits;
-        const historicalPoints = priorGpaInput * priorCreditsInput;
-        cumulativeGpa = (currentPoints + historicalPoints) / (totalCredits + priorCreditsInput);
-    }
+  document.getElementById("termGpaVal").textContent=termGpa.toFixed(2);
+  document.getElementById("cumGpaVal").textContent=cumGpa.toFixed(2);
 
-    document.getElementById("termGpaValue").innerText = termGpa.toFixed(2);
-    document.getElementById("cumulativeGpaValue").innerText = cumulativeGpa.toFixed(2);
+  const max=scale==="weighted"?5.0:4.0;
+  document.getElementById("gpaBar").style.width=Math.min(termGpa/max*100,100)+"%";
 
-    const ncaaBadge = document.getElementById("ncaaBadge");
-    if (hasNcaaCourses && ncaaCredits > 0) {
-        const finalNcaaGpa = ncaaPoints / ncaaCredits;
-        if (finalNcaaGpa >= 2.3) {
-            ncaaBadge.className = "eligibility-badge eligible";
-            ncaaBadge.innerText = `✅ NCAA Core Eligible Profile: ${finalNcaaGpa.toFixed(2)} Core GPA`;
-        } else if (finalNcaaGpa >= 2.0) {
-            ncaaBadge.className = "eligibility-badge warning";
-            ncaaBadge.innerText = `⚠️ NCAA Academic Warning Status: ${finalNcaaGpa.toFixed(2)} (Needs 2.3 for Division I status)`;
-        } else {
-            ncaaBadge.className = "eligibility-badge danger";
-            ncaaBadge.innerText = `🛑 NCAA Ineligible Core Score: ${finalNcaaGpa.toFixed(2)} (Below 2.0 threshold rules)`;
-        }
-    } else {
-        ncaaBadge.className = "eligibility-badge warning";
-        ncaaBadge.innerText = "No class items flagged for NCAA Core Sports Tracking validation bounds.";
-    }
+  let bracket="";
+  if(termGpa>=3.7) bracket="🌟 A Range — Great work!";
+  else if(termGpa>=3.0) bracket="👍 B Range — Solid effort!";
+  else if(termGpa>=2.0) bracket="📘 C Range — Keep pushing!";
+  else bracket="⚠️ Below 2.0 — Let's make a plan.";
+  document.getElementById("bracketLabel").textContent=bracket;
 
-    const maxScale = scale === "weighted" ? 5.0 : 4.0;
-    document.getElementById("progressBar").style.width = Math.min((termGpa / maxScale) * 100, 100) + "%";
-    
-    let bracket = "F";
-    if (termGpa >= 3.7) bracket = "A Range";
-    else if (termGpa >= 3.0) bracket = "B Range";
-    else if (termGpa >= 2.0) bracket = "C Range";
-    else bracket = "Passing/Deficient Track";
-    document.getElementById("letterGrade").innerText = "Current Calculated Term Bracket Structure: " + bracket;
+  const nb=document.getElementById("ncaaBadge");
+  if(hasNcaa&&nc>0){
+    const ng=np/nc;
+    if(ng>=2.3){ nb.className="elig-badge elig-green"; nb.textContent=`✅ NCAA Core GPA: ${ng.toFixed(2)} (Eligible)`; }
+    else if(ng>=2.0){ nb.className="elig-badge elig-yellow"; nb.textContent=`⚠️ NCAA Core GPA: ${ng.toFixed(2)} — Need 2.3 for Division I`; }
+    else { nb.className="elig-badge elig-red"; nb.textContent=`🛑 NCAA Core GPA: ${ng.toFixed(2)} — Below minimum (2.0)`; }
+  } else {
+    nb.className="elig-badge elig-yellow"; nb.textContent="Check the NCAA box on classes that count toward eligibility";
+  }
 
-    document.getElementById("gpa-result").style.display = "block";
+  let tip="";
+  if(termGpa<2.0) tip="⚠️ A GPA below 2.0 may affect sports eligibility and academic standing. Talk to your counselor about a recovery plan.";
+  else if(termGpa<3.0) tip="📘 You're passing! To reach the B range, aim to raise grades in one or two classes this term.";
+  else if(termGpa<3.5) tip="👍 You're in solid shape! A small push in your hardest class could get you to the A range.";
+  else tip="🌟 Excellent! Keep it up — maintain these habits through finals season.";
+  document.getElementById("gpaInsight").textContent=tip;
+
+  document.getElementById("gpa-result").style.display="block";
 }
 
-/* ================= TAB 2: GRADE PROTECT CUSHION CALCULATOR ================= */
-function setDesired(val) { document.getElementById("desiredGrade").value = val; }
-function setWeight(val) { document.getElementById("finalWorth").value = val; }
-
-function calculateFinalGrade() {
-    const current = parseFloat(document.getElementById("currentGrade").value);
-    const desired = parseFloat(document.getElementById("desiredGrade").value);
-    const worth = parseFloat(document.getElementById("finalWorth").value);
-
-    if (isNaN(current) || isNaN(desired) || isNaN(worth) || worth <= 0 || worth >= 100) {
-        alert("Please establish accurate percentage boundaries across calculation boxes.");
-        return;
-    }
-
-    const examNeeded = ((desired - (current * (100 - worth) / 100)) / (worth / 100)).toFixed(1);
-    
-    let structuralFloor = Math.floor(current / 10) * 10;
-    if (structuralFloor === current) structuralFloor = current - 10; 
-    if (structuralFloor < 60) structuralFloor = 60; 
-
-    const floorExamScore = ((structuralFloor - (current * (100 - worth) / 100)) / (worth / 100)).toFixed(1);
-
-    const resultBox = document.getElementById("finalResult");
-    document.getElementById("neededScore").innerText = examNeeded + "%";
-    
-    let insightHtml = `Required score index targets on your exam to lock down a flat <b>${desired}%</b> class average total.<br><br>`;
-    
-    if (floorExamScore <= 0) {
-        insightHtml += `🔒 <b>Grade Cushion Protection Status:</b> Mathematically secure baseline. Your average current metrics mean you can get a <b>0.0%</b> on the exam block and still maintain your safe baseline grade cutoff framework of <b>${structuralFloor}%</b>.`;
-    } else {
-        insightHtml += `🔒 <b>Grade Floor Protection Warning:</b> To guard against falling a complete letter grade bracket below your current track, do not let your final exam grade score dip below <b>${floorExamScore}%</b>. Doing so maintains your <b>${structuralFloor}%</b> class minimum floor average.`;
-    }
-
-    document.getElementById("finalInsight").innerHTML = insightHtml;
-    resultBox.style.display = "block";
+function clearGPA(){
+  document.getElementById("gpaRows").innerHTML="";
+  document.getElementById("gpa-result").style.display="none";
+  for(let i=0;i<4;i++) addRow();
 }
 
-/* ================= TAB 3: CATEGORY WEIGHT TRACKER ================= */
-function addClassRow() {
-    const container = document.getElementById("classRows");
-    const row = document.createElement("div");
-    row.className = "class-row";
-    row.innerHTML = `
-        <input type="text" placeholder="Category Name (e.g. Tests)">
-        <input type="number" class="cat-grade" placeholder="Grade %">
-        <input type="number" class="cat-weight" placeholder="Weight %">
-        <button class="delete-btn" onclick="this.parentElement.remove()">✕</button>
-    `;
-    container.appendChild(row);
+/* ── TAB 2 · FINAL GRADE ── */
+function setDesired(v){ document.getElementById("desiredGrade").value=v; }
+function setWeight(v){ document.getElementById("finalWorth").value=v; }
+
+function calcFinal(){
+  const cur=parseFloat(document.getElementById("currentGrade").value);
+  const des=parseFloat(document.getElementById("desiredGrade").value);
+  const wt=parseFloat(document.getElementById("finalWorth").value);
+  if(isNaN(cur)||isNaN(des)||isNaN(wt)||wt<=0||wt>=100){ alert("Please fill in all three fields with valid numbers."); return; }
+
+  const needed = ((des-(cur*(100-wt)/100))/(wt/100)).toFixed(1);
+
+  let floorTarget = Math.floor(cur/10)*10;
+  if(floorTarget===cur) floorTarget-=10;
+  if(floorTarget<60) floorTarget=60;
+  const floorScore = ((floorTarget-(cur*(100-wt)/100))/(wt/100)).toFixed(1);
+
+  const numEl=document.getElementById("neededScore");
+  numEl.textContent=needed+"%";
+  numEl.className=parseFloat(needed)>100?"big-num red":parseFloat(needed)<0?"big-num blue":"big-num";
+
+  let html=`To finish with a <b>${des}%</b> in this class, you need at least a <b>${needed}%</b> on your final exam.<br><br>`;
+  if(parseFloat(needed)>100) html+="❌ <b>Not mathematically possible</b> with the current grade and exam weight. Focus on any extra credit or talk to your teacher.";
+  else if(parseFloat(needed)<0) html+="✅ <b>You're already locked in!</b> Your current grade is so strong that you'll hit your target even with a 0% on the final.";
+
+  if(parseFloat(floorScore)<=0){
+    html+=`<br><br>🛡️ <b>Grade cushion:</b> You can score as low as <b>0%</b> on the final and still stay above the ${floorTarget}% floor.`;
+  } else {
+    html+=`<br><br>🛡️ <b>Grade cushion:</b> Don't score below <b>${floorScore}%</b> on the final or your grade will drop below <b>${floorTarget}%</b>.`;
+  }
+  document.getElementById("finalInsight").innerHTML=html;
+  document.getElementById("final-result").style.display="block";
 }
 
-function calculateClassGrade() {
-    const grades = document.querySelectorAll(".cat-grade");
-    const weights = document.querySelectorAll(".cat-weight");
-    let totalWeightedScore = 0, totalWeightEntered = 0;
-
-    for (let i = 0; i < grades.length; i++) {
-        const grade = parseFloat(grades[i].value);
-        const weight = parseFloat(weights[i].value);
-        if (!isNaN(grade) && !isNaN(weight)) {
-            totalWeightedScore += (grade * (weight / 100));
-            totalWeightEntered += weight;
-        }
-    }
-
-    if (totalWeightEntered === 0) {
-        alert("Please make certain category input parameters are allocated structural percentages.");
-        return;
-    }
-
-    let finalClassGrade = totalWeightedScore;
-    if (totalWeightEntered !== 100) {
-        finalClassGrade = (totalWeightedScore / totalWeightEntered) * 100;
-    }
-
-    const resultBox = document.getElementById("classResult");
-    document.getElementById("classGradeValue").innerText = finalClassGrade.toFixed(1) + "%";
-    document.getElementById("classInsight").innerText = `Calculated profile metrics dynamically normalized relative against a combined weight allocation summary total of ${totalWeightEntered}%.`;
-    resultBox.style.display = "block";
+/* ── TAB 3 · CLASS GRADE ── */
+function addClassRow(){
+  const c=document.getElementById("classRows");
+  const d=document.createElement("div");
+  d.className="class-row";
+  d.innerHTML=`
+    <input class="input" type="text" placeholder="Category (e.g. Tests)">
+    <input class="input cat-grade" type="number" placeholder="Grade %">
+    <input class="input cat-weight" type="number" placeholder="Weight %">
+    <button class="del-btn" onclick="this.parentElement.remove()">✕</button>`;
+  c.appendChild(d);
 }
 
-/* ================= TAB 4: GPA GOAL PLANNER MODULE ================= */
-function calculateGPAGoal() {
-    const currentGPA = parseFloat(document.getElementById("goal-current-gpa").value);
-    const creditsEarned = parseFloat(document.getElementById("goal-credits-earned").value);
-    const targetGPA = parseFloat(document.getElementById("goal-target-gpa").value);
-    const creditsRemaining = parseFloat(document.getElementById("goal-credits-remaining").value);
+function calcClassGrade(){
+  const gs=document.querySelectorAll(".cat-grade");
+  const ws=document.querySelectorAll(".cat-weight");
+  let score=0,totalW=0;
+  for(let i=0;i<gs.length;i++){
+    const g=parseFloat(gs[i].value), w=parseFloat(ws[i].value);
+    if(!isNaN(g)&&!isNaN(w)){ score+=g*(w/100); totalW+=w; }
+  }
+  if(!totalW){ alert("Enter at least one category with a grade and weight."); return; }
+  const final = totalW===100 ? score : (score/totalW)*100;
+  document.getElementById("classGradeVal").textContent=final.toFixed(1)+"%";
 
-    if (isNaN(currentGPA) || isNaN(creditsEarned) || isNaN(targetGPA) || isNaN(creditsRemaining) || creditsRemaining <= 0) {
-        alert("Please ensure valid target criteria parameters are defined inside form locations.");
-        return;
-    }
-
-    const targetTotalPoints = targetGPA * (creditsEarned + creditsRemaining);
-    const currentTotalPoints = currentGPA * creditsEarned;
-    const requiredGPA = (targetTotalPoints - currentTotalPoints) / creditsRemaining;
-
-    const resultBox = document.getElementById("goalResult");
-    const displayValue = document.getElementById("goalRequiredValue");
-    const displayInsight = document.getElementById("goalInsight");
-
-    displayValue.innerText = requiredGPA.toFixed(2);
-    if (requiredGPA > 5.0 || requiredGPA < 0) {
-        displayInsight.innerText = "❌ Incompatible criteria threshold configuration limits. This milestone cannot be achieved within remaining credit bounds.";
-        displayValue.style.color = "#dc2626";
-    } else {
-        displayInsight.innerText = `Average term GPA optimization score goals required over your upcoming ${creditsRemaining} working validation metrics units to force matching parameters values.`;
-        displayValue.style.color = "#16a34a";
-    }
-    resultBox.style.display = "block";
+  let note="";
+  if(totalW!==100) note=` (Note: your weights only add up to ${totalW}%, so we scaled proportionally.)`;
+  document.getElementById("classInsight").textContent=`Your current average across all categories is ${final.toFixed(1)}%.${note}`;
+  document.getElementById("class-result").style.display="block";
 }
 
-/* ================= TAB 5: GRADUATION PROGRESS MONITOR ================= */
-function calcGradProgress() {
-    const targets = { eng: 4.0, math: 4.0, sci: 3.0, soc: 3.0, elec: 8.0 };
-    let aggregateEarned = 0;
-    let aggregateTarget = 22.0;
-
-    for (let key in targets) {
-        const inputEl = document.getElementById(`cred-${key}`);
-        const badgeEl = document.getElementById(`badge-${key}`);
-        let currentVal = parseFloat(inputEl.value) || 0;
-        
-        if(currentVal < 0) currentVal = 0;
-        aggregateEarned += currentVal;
-
-        if (currentVal >= targets[key]) {
-            badgeEl.className = "status-badge done";
-            badgeEl.innerText = "✅ Met Category Requirements";
-        } else {
-            const remains = (targets[key] - currentVal).toFixed(1);
-            badgeEl.className = "status-badge pending";
-            badgeEl.innerText = `⏳ Needs ${remains} Credits`;
-        }
-    }
-
-    document.getElementById("gradTotalValue").innerText = `${aggregateEarned.toFixed(1)} / ${aggregateTarget.toFixed(1)} Credits`;
-    
-    const insightBox = document.getElementById("gradInsightText");
-    if (aggregateEarned >= aggregateTarget) {
-        insightBox.innerHTML = "🎉 <b>Pathway Verified:</b> Aggregate distribution matrices confirm structural fulfillment parameters across all target zones.";
-    } else {
-        insightBox.innerHTML = `Core mapping tracks require an additional aggregate sum of <b> ${(aggregateTarget - aggregateEarned).toFixed(1)} credits</b> distributed across outstanding profile buckets.`;
-    }
+function clearClass(){
+  document.getElementById("classRows").innerHTML="";
+  document.getElementById("class-result").style.display="none";
+  for(let i=0;i<3;i++) addClassRow();
 }
 
-/* ================= TAB 6: SMART STUDY TIMELINE ================= */
-function setDifficulty(level) {
-    selectedDifficulty = level;
-    document.querySelectorAll("#difficulty-group .toggle-btn").forEach(b => b.classList.remove("active"));
-    document.getElementById("diff-" + level).classList.add("active");
+/* ── TAB 4 · GPA GOAL ── */
+function calcGoal(){
+  const curGpa=parseFloat(document.getElementById("goal-cur-gpa").value);
+  const curCred=parseFloat(document.getElementById("goal-cur-cred").value);
+  const target=parseFloat(document.getElementById("goal-target").value);
+  const rem=parseFloat(document.getElementById("goal-remain").value);
+  if([curGpa,curCred,target,rem].some(isNaN)||rem<=0){ alert("Please fill in all four fields."); return; }
+
+  const needed=(target*(curCred+rem)-curGpa*curCred)/rem;
+  const el=document.getElementById("goalNeeded");
+  el.textContent=needed.toFixed(2);
+
+  let msg="";
+  if(needed>5.0||needed<0){
+    el.className="big-num red";
+    msg="❌ This goal isn't reachable in the remaining credits. Consider adjusting your target GPA, or see your counselor to explore options.";
+  } else {
+    el.className="big-num";
+    const label=needed>=3.7?"A range":needed>=3.0?"B range":needed>=2.0?"C range":"any passing grade";
+    msg=`You need to average a <b>${needed.toFixed(2)}</b> (${label}) across your remaining <b>${rem} credits</b> to hit your goal of <b>${target}</b>.`;
+    if(needed<=curGpa) msg+=" 🎉 This is actually <em>lower</em> than your current GPA — you're already on track!";
+  }
+  document.getElementById("goalInsight").innerHTML=msg;
+  document.getElementById("goal-result").style.display="block";
 }
 
-function generateStudyPlan() {
-    const subject = document.getElementById("studySubject").value || "Core Curriculum Modules";
-    const examDateVal = document.getElementById("studyDate").value;
-    const currentGrade = parseFloat(document.getElementById("studyGrade").value);
-    const dailyHours = parseFloat(document.getElementById("studyHours").value) || 2;
-
-    if (!examDateVal) {
-        alert("Please set an active Target Exam Date parameter point.");
-        return;
-    }
-
-    const today = new Date();
-    const examDate = new Date(examDateVal);
-    const diffDays = Math.ceil((examDate - today) / (1000 * 60 * 60 * 24));
-
-    if (diffDays < 0) {
-        alert("Exam target windows must project dynamically down the timeline!");
-        return;
-    }
-
-    let intensityMod = 1.0;
-    if (selectedDifficulty === "medium") intensityMod = 1.3;
-    if (selectedDifficulty === "hard") intensityMod = 1.6;
-    if (selectedDifficulty === "veryhard") intensityMod = 2.0;
-    if (!isNaN(currentGrade) && currentGrade < 80) intensityMod += 0.2; 
-
-    const blocks = Math.ceil((dailyHours * intensityMod) * 2); 
-
-    const resultBox = document.getElementById("studyResult");
-    document.getElementById("studyPlan").innerHTML = `
-        <h3 style="font-size:16px; margin-bottom:8px;">📅 Action Optimization Matrix: <b>${subject}</b></h3>
-        ⏱️ <b>Diagnostic Windows Remaining:</b> ${diffDays} calendar days.<br>
-        🔥 <b>Intensity Scaling Focus Index:</b> ${(intensityMod * 100).toFixed(0)}% runtime velocity index.<br>
-        🎯 <b>Daily Operations Mandate:</b> Budget <b>${(dailyHours * intensityMod).toFixed(1)} hours/day</b> partitioned across <b>${blocks} study modules</b>.
-    `;
-    resultBox.style.display = "block";
+/* ── TAB 5 · GRADUATION CREDITS ── */
+function calcGrad(){
+  const TARGETS={eng:4.0,math:4.0,sci:3.0,soc:3.0,elec:8.0};
+  let earned=0, total=22.0;
+  for(const key in TARGETS){
+    const val=Math.max(0,parseFloat(document.getElementById("cred-"+key).value)||0);
+    earned+=val;
+    const badge=document.getElementById("badge-"+key);
+    if(val>=TARGETS[key]){ badge.className="status-badge sb-done"; badge.textContent="✅ Done"; }
+    else { badge.className="status-badge sb-pending"; badge.textContent=`⏳ Need ${(TARGETS[key]-val).toFixed(1)} more`; }
+  }
+  document.getElementById("gradTotal").textContent=`${earned.toFixed(1)} / ${total.toFixed(1)}`;
+  const ins=document.getElementById("gradInsight");
+  if(earned>=total){ ins.innerHTML="🎉 <b>You've met all graduation credit requirements!</b>"; }
+  else { ins.innerHTML=`You still need <b>${(total-earned).toFixed(1)} more credits</b> across any incomplete areas.`; }
 }
 
-/* ================= TAB 7: TREND VARIANCE AUDITOR ENGINE ================= */
-function compareSemester() {
-    const s1 = parseFloat(document.getElementById("semester1").value);
-    const s2 = parseFloat(document.getElementById("semester2").value);
-
-    if (isNaN(s1) || isNaN(s2)) {
-        alert("Please populate field parameters completely.");
-        return;
-    }
-
-    let diff = (s2 - s1).toFixed(2);
-    let out = "";
-    if (s2 > s1) out = `📈 Upward performance trend spike of <b>+${diff}</b> tracking points recorded! Excellent momentum shift.`;
-    else if (s1 > s2) out = `📉 Negative directional drift variance of <b>${diff}</b> points observed. Performance audit suggested.`;
-    else out = `⚖️ Equilibrium verified. Static consistency matched precisely across both measurement validation marks.`;
-
-    const resultBox = document.getElementById("semesterResult");
-    document.getElementById("semesterText").innerHTML = out;
-    resultBox.style.display = "block";
+/* ── TAB 6 · STUDY PLANNER ── */
+function setDiff(d){
+  diff=d;
+  document.querySelectorAll("#diff-group .chip").forEach(b=>b.classList.remove("on"));
+  document.getElementById("diff-"+d).classList.add("on");
 }
 
-function clearSection(type) {
-    if (type === "gpa") {
-        document.getElementById("gpaRows").innerHTML = "";
-        document.getElementById("gpa-result").style.display = "none";
-        for(let i=0; i<4; i++) { addRow(); }
-    } else if (type === "class") {
-        document.getElementById("classRows").innerHTML = "";
-        document.getElementById("classResult").style.display = "none";
-        for(let i=0; i<3; i++) { addClassRow(); }
-    }
+function genStudyPlan(){
+  const sub=document.getElementById("studySubject").value||"your exam";
+  const dateVal=document.getElementById("studyDate").value;
+  const grade=parseFloat(document.getElementById("studyGrade").value);
+  const hrs=parseFloat(document.getElementById("studyHours").value)||2;
+
+  if(!dateVal){ alert("Please pick your exam date."); return; }
+  const days=Math.ceil((new Date(dateVal)-new Date())/(864e5));
+  if(days<0){ alert("Exam date must be in the future!"); return; }
+
+  let mult={easy:1.0,medium:1.3,hard:1.6,veryhard:2.0}[diff]||1.0;
+  if(!isNaN(grade)&&grade<80) mult+=0.2;
+
+  const dailyHrs=(hrs*mult).toFixed(1);
+  const sessions=Math.ceil(parseFloat(dailyHrs)*2);
+  const urgency=days<=3?"🚨 Crunch time!":days<=7?"⚡ This week counts!":"📅 You've got time — stay consistent.";
+
+  const tips={
+    easy:"Focus on reviewing notes and doing a couple of practice problems each session.",
+    medium:"Mix reading, practice problems, and short quizzes on the hardest topics.",
+    hard:"Prioritize the concepts you're weakest on first. Use active recall, not just rereading.",
+    veryhard:"Go all in: past tests, study groups, teacher office hours, and timed practice exams."
+  };
+
+  document.getElementById("studyPlanText").innerHTML=`
+    <h3 style="font-family:'Syne',sans-serif;font-size:17px;margin-bottom:10px">📅 Study Plan for <em>${sub}</em></h3>
+    ${urgency}<br><br>
+    📆 <b>Days until exam:</b> ${days}<br>
+    ⏱️ <b>Recommended daily study time:</b> ${dailyHrs} hours (split into ~${sessions} focused sessions of 30 min each)<br>
+    💡 <b>Strategy tip:</b> ${tips[diff]}<br>
+    ${!isNaN(grade)&&grade<75?"<br>⚠️ <b>Your grade is below 75% — prioritize this class over others this week.</b>":""}
+  `;
+  document.getElementById("study-result").style.display="block";
 }
 
-function toggleDark() { document.body.classList.toggle("dark"); }
+/* ── TAB 7 · COMPARE TERMS ── */
+function compareSems(){
+  const s1=parseFloat(document.getElementById("sem1").value);
+  const s2=parseFloat(document.getElementById("sem2").value);
+  if(isNaN(s1)||isNaN(s2)){ alert("Please enter both GPA values."); return; }
+  const d=(s2-s1).toFixed(2);
+  let txt="";
+  if(s2>s1) txt=`📈 <b>Nice improvement!</b> Your GPA went up by <b>+${d}</b> points from Term 1 to Term 2. Keep the momentum going.`;
+  else if(s1>s2) txt=`📉 <b>Your GPA dipped by ${Math.abs(d)} points.</b> That's okay — identify which classes pulled it down and make a plan for next term.`;
+  else txt="⚖️ <b>Exactly the same both terms.</b> Consistency is great — see if there's a class or two where you can push higher.";
+  document.getElementById("semText").innerHTML=txt;
+  document.getElementById("sem-result").style.display="block";
+}
+
+/* ── TAB 8 · MILESTONE PLANNER ── */
+const MS_TASKS = [
+  { step:1, title:"Find Your Sources", desc:"Locate at least 5 reliable sources. Write down the title, author, and where you found each one.", priority:"high" },
+  { step:2, title:"Write an Outline", desc:"Create a simple outline with your main argument and 3–5 key points. Bullet points are fine!", priority:"med" },
+  { step:3, title:"Write Your First Draft", desc:"Get your ideas down without worrying about perfection. Write from your outline — fix wording later.", priority:"high" },
+  { step:4, title:"Edit, Proofread & Submit", desc:"Check spelling, grammar, and flow. Verify your citations, then turn it in with confidence.", priority:"med" }
+];
+let msDragId = null;
+
+function genMilestones(){
+  const name = document.getElementById("ms-name").value.trim() || "Your Project";
+  const dateVal = document.getElementById("ms-date").value;
+  if(!dateVal){ alert("Please pick a due date first!"); return; }
+  const days = Math.ceil((new Date(dateVal) - new Date()) / 864e5);
+  if(days < 0){ alert("Due date needs to be in the future!"); return; }
+
+  let urgency = days<=3 ? "⚠️ You're very close to the deadline — start Step 1 today." :
+                days<=7 ? "This week matters. Try to finish one step every couple of days." :
+                          "You've got good time — but don't wait too long to start!";
+
+  document.getElementById("ms-summary-text").innerHTML =
+    `<b>📌 ${name}</b> is due in <b>${days} days.</b> We've split it into 4 steps, each spaced about ${Math.floor(days/4)} days apart.<br>${urgency}`;
+  document.getElementById("ms-summary").style.display = "block";
+
+  ["ms-todo","ms-doing","ms-done"].forEach(id => document.getElementById(id).innerHTML = "");
+
+  MS_TASKS.forEach((t, i) => {
+    const dueDay = Math.ceil((days/4) * t.step);
+    const card = document.createElement("div");
+    card.id = "ms-card-"+i;
+    card.draggable = true;
+    card.style.cssText = "background:var(--bg);border:1.5px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px;cursor:grab;transition:box-shadow .15s,transform .15s;";
+    card.innerHTML = `
+      <div style="font-size:14px;font-weight:700;margin-bottom:4px;">Step ${t.step}: ${t.title}</div>
+      <div style="font-size:12.5px;color:var(--muted);line-height:1.5;margin-bottom:10px;">${t.desc}</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <span style="font-size:11px;font-weight:700;padding:3px 10px;border-radius:999px;${t.priority==='high'?'background:#fee2e2;color:#dc2626':'background:#fef3c7;color:#b45309'}">${t.priority==='high'?'🔥 High':'📌 Medium'}</span>
+        <span style="font-size:11px;color:#94a3b8;font-weight:700;">Aim for day ${dueDay}</span>
+      </div>`;
+    card.addEventListener("dragstart", e => { msDragId=card.id; setTimeout(()=>card.style.opacity=".4",0); });
+    card.addEventListener("dragend", () => { card.style.opacity="1"; msDragId=null; });
+    card.addEventListener("mouseover", () => card.style.boxShadow="0 6px 20px rgba(0,0,0,.08)");
+    card.addEventListener("mouseout",  () => card.style.boxShadow="");
+    document.getElementById("ms-todo").appendChild(card);
+  });
+
+  document.getElementById("ms-board").classList.remove("hidden");
+  msUpdateCounts();
+}
+
+function msDragOver(e, col){ e.preventDefault(); col.style.background="var(--bg)"; col.style.borderColor="var(--accent)"; }
+function msDragLeave(col){ col.style.background=""; col.style.borderColor=""; }
+function msDrop(e, holderId){
+  e.preventDefault();
+  document.querySelectorAll("#ms-kanban .card").forEach(c=>{ c.style.background=""; c.style.borderColor=""; });
+  if(!msDragId) return;
+  const card = document.getElementById(msDragId);
+  if(card) { document.getElementById(holderId).appendChild(card); msUpdateCounts(); }
+}
+function msUpdateCounts(){
+  ["todo","doing","done"].forEach(s => {
+    document.getElementById("ms-cnt-"+s).textContent = document.getElementById("ms-"+s).children.length;
+  });
+}
+
+function toggleDark(){ document.body.classList.toggle("dark"); }
 </script>
-
 </body>
 </html>
