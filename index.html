@@ -112,7 +112,7 @@ body {
   margin: -80px auto 60px;
   padding: 0 20px;
   position: relative;
- z-index: 10;
+  z-index: 10;
 }
 
 /* ── TABS ── */
@@ -439,6 +439,7 @@ body.dark .progress-track { background: #334155; }
   .btn-row { flex-direction: column; }
   .trust { grid-template-columns: 1fr; }
   .del-btn { width: 100%; border-radius: 10px; height: 38px; }
+  #appRows > div, #scholRows > div, #clRows > div, #aidCompareRows > div { grid-template-columns: 1fr !important; }
 }
 
 @media print {
@@ -466,6 +467,7 @@ body.dark .progress-track { background: #334155; }
 
 <div class="container">
 
+  <!-- TABS -->
   <div class="tabs no-print">
     <button class="tab-btn active" onclick="switchTab('gpa',this)">📊 GPA Calculator</button>
     <button class="tab-btn" onclick="switchTab('final',this)">🎯 Final Grade</button>
@@ -475,10 +477,19 @@ body.dark .progress-track { background: #334155; }
     <button class="tab-btn" onclick="switchTab('study',this)">📅 Study Planner</button>
     <button class="tab-btn" onclick="switchTab('semester',this)">📈 Compare Terms</button>
     <button class="tab-btn" onclick="switchTab('milestone',this)">🚀 Project Planner</button>
+    <button class="tab-btn" onclick="switchTab('apptracker',this)">🏫 College Apps</button>
+    <button class="tab-btn" onclick="switchTab('scholarships',this)">💸 Scholarships</button>
+    <button class="tab-btn" onclick="switchTab('fafsa',this)">📋 FAFSA / Aid</button>
+    <button class="tab-btn" onclick="switchTab('loans',this)">🏦 Loan Estimator</button>
+    <button class="tab-btn" onclick="switchTab('collegelist',this)">🗂️ College List</button>
+    <button class="tab-btn" onclick="switchTab('senioryear',this)">🎓 Senior Checklist</button>
   </div>
 
   <div id="explainerBanner" class="explainer no-print"></div>
 
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- TAB 1 · GPA CALCULATOR -->
+  <!-- ═══════════════════════════════════════════════ -->
   <div id="section-gpa" class="tab-content fade">
     <div class="card">
       <h2>Calculate Your GPA</h2>
@@ -539,6 +550,9 @@ body.dark .progress-track { background: #334155; }
     </div>
   </div>
 
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- TAB 2 · FINAL GRADE CALCULATOR -->
+  <!-- ═══════════════════════════════════════════════ -->
   <div id="section-final" class="tab-content fade hidden">
     <div class="card">
       <h2>🎯 Final Exam Score Calculator</h2>
@@ -579,6 +593,9 @@ body.dark .progress-track { background: #334155; }
     </div>
   </div>
 
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- TAB 3 · CLASS GRADE TRACKER -->
+  <!-- ═══════════════════════════════════════════════ -->
   <div id="section-class" class="tab-content fade hidden">
     <div class="card">
       <h2>📝 Class Grade Breakdown</h2>
@@ -600,6 +617,9 @@ body.dark .progress-track { background: #334155; }
     </div>
   </div>
 
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- TAB 4 · GPA GOAL PLANNER -->
+  <!-- ═══════════════════════════════════════════════ -->
   <div id="section-goal" class="tab-content fade hidden">
     <div class="card">
       <h2>🏆 GPA Goal Planner</h2>
@@ -636,6 +656,9 @@ body.dark .progress-track { background: #334155; }
     </div>
   </div>
 
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- TAB 5 · GRADUATION CREDITS -->
+  <!-- ═══════════════════════════════════════════════ -->
   <div id="section-credits" class="tab-content fade hidden">
     <div class="card">
       <h2>📜 Graduation Credit Tracker</h2>
@@ -692,6 +715,9 @@ body.dark .progress-track { background: #334155; }
     </div>
   </div>
 
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- TAB 6 · STUDY PLANNER -->
+  <!-- ═══════════════════════════════════════════════ -->
   <div id="section-study" class="tab-content fade hidden">
     <div class="card">
       <h2>📅 Study Planner</h2>
@@ -736,6 +762,9 @@ body.dark .progress-track { background: #334155; }
     </div>
   </div>
 
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- TAB 7 · COMPARE TERMS -->
+  <!-- ═══════════════════════════════════════════════ -->
   <div id="section-semester" class="tab-content fade hidden">
     <div class="card">
       <h2>📈 Compare Two Terms</h2>
@@ -760,6 +789,9 @@ body.dark .progress-track { background: #334155; }
     </div>
   </div>
 
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- TAB 8 · PROJECT MILESTONE PLANNER -->
+  <!-- ═══════════════════════════════════════════════ -->
   <div id="section-milestone" class="tab-content fade hidden">
     <div class="card">
       <h2>🚀 Project Milestone Planner</h2>
@@ -821,6 +853,174 @@ body.dark .progress-track { background: #334155; }
     </div>
   </div>
 
+  <!-- TRUST CARDS -->
+  <!-- ═══ TAB 9 · COLLEGE APPLICATION TRACKER ═══ -->
+  <div id="section-apptracker" class="tab-content fade hidden">
+    <div class="card">
+      <h2>🏫 College Application Tracker</h2>
+      <p class="subtitle">Track every school you're applying to — deadlines, essay status, and where things stand.</p>
+      <div style="display:grid;grid-template-columns:2fr 1.2fr 1fr 1fr 1fr auto;gap:10px;padding:0 2px 8px;font-size:11.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;" class="no-print">
+        <div>School Name</div><div>Deadline</div><div>App Status</div><div>Essays</div><div>Decision</div><div></div>
+      </div>
+      <div id="appRows" class="rows-wrap"></div>
+      <div class="btn-row">
+        <button class="btn btn-outline" onclick="addAppRow()">+ Add School</button>
+        <button class="btn btn-primary" onclick="calcApps()">Update Summary ✨</button>
+      </div>
+      <div class="result" id="app-result" style="text-align:left;">
+        <div class="insight-box" id="app-insight"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ TAB 10 · SCHOLARSHIP TRACKER ═══ -->
+  <div id="section-scholarships" class="tab-content fade hidden">
+    <div class="card">
+      <h2>💸 Scholarship Checklist</h2>
+      <p class="subtitle">Log every scholarship you're applying for. Track deadlines, amounts, and submission status.</p>
+      <div style="display:grid;grid-template-columns:2fr 1fr 1.2fr 1fr 1fr auto;gap:10px;padding:0 2px 8px;font-size:11.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;" class="no-print">
+        <div>Scholarship Name</div><div>Amount ($)</div><div>Deadline</div><div>Status</div><div>Notes</div><div></div>
+      </div>
+      <div id="scholRows" class="rows-wrap"></div>
+      <div class="btn-row">
+        <button class="btn btn-outline" onclick="addScholRow()">+ Add Scholarship</button>
+        <button class="btn btn-primary" onclick="calcSchols()">Update Total 💰</button>
+      </div>
+      <div class="result" id="schol-result" style="text-align:left;">
+        <div class="two-col-result" style="text-align:center;">
+          <div><div class="big-num" id="scholTotalVal" style="font-size:48px;">$0</div><div class="result-label">Total potential aid</div></div>
+          <div><div class="big-num blue" id="scholSubmitVal" style="font-size:48px;">$0</div><div class="result-label">Already submitted for</div></div>
+        </div>
+        <div class="insight-box" id="schol-insight" style="margin-top:14px;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ TAB 11 · FAFSA & AID ESTIMATOR ═══ -->
+  <div id="section-fafsa" class="tab-content fade hidden">
+    <div class="card">
+      <h2>📋 FAFSA & Financial Aid Estimator</h2>
+      <p class="subtitle">Get a rough estimate of what you might pay out of pocket at different schools. These are estimates — always check each school's net price calculator too.</p>
+      <div class="grid-2">
+        <div><label class="label">Parent/Guardian Adjusted Gross Income (AGI)</label><input id="fafsa-agi" class="input" type="number" placeholder="e.g. 65000"></div>
+        <div><label class="label">Total Household Assets (savings, investments)</label><input id="fafsa-assets" class="input" type="number" placeholder="e.g. 20000"></div>
+      </div>
+      <div class="grid-3">
+        <div><label class="label">Number of People in Household</label><input id="fafsa-household" class="input" type="number" placeholder="e.g. 4" value="4"></div>
+        <div><label class="label">Number in College at Same Time</label><input id="fafsa-incollege" class="input" type="number" placeholder="e.g. 1" value="1"></div>
+        <div><label class="label">Student's Own Income (if any)</label><input id="fafsa-studentincome" class="input" type="number" placeholder="e.g. 3000" value="0"></div>
+      </div>
+      <div style="margin-bottom:16px;">
+        <label class="label">Dependency Status</label>
+        <div class="chip-row" id="dep-group">
+          <button class="chip on" id="dep-dependent" onclick="setDep('dependent')">Dependent (parent info required)</button>
+          <button class="chip" id="dep-independent" onclick="setDep('independent')">Independent (on my own)</button>
+        </div>
+      </div>
+      <button class="btn btn-primary btn-full" onclick="calcFAFSA()">Estimate My Aid 📋</button>
+      <div class="result" id="fafsa-result">
+        <div class="two-col-result">
+          <div><div class="big-num" id="fafsa-efc" style="font-size:44px;">$0</div><div class="result-label">Estimated Family Contribution (EFC)</div></div>
+          <div><div class="big-num blue" id="fafsa-need" style="font-size:44px;">$0</div><div class="result-label">Estimated financial need (avg. school cost)</div></div>
+        </div>
+        <div class="insight-box" id="fafsa-insight" style="text-align:left; margin-top:16px;"></div>
+        <div style="margin-top:18px;">
+          <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;margin-bottom:12px;">📊 Compare Aid Offers from Different Schools</div>
+          <div id="aidCompareRows" class="rows-wrap"></div>
+          <button class="btn btn-outline" style="width:100%;margin-top:4px;" onclick="addAidRow()">+ Add a School to Compare</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ TAB 12 · STUDENT LOAN ESTIMATOR ═══ -->
+  <div id="section-loans" class="tab-content fade hidden">
+    <div class="card">
+      <h2>🏦 Student Loan Estimator</h2>
+      <p class="subtitle">Understand what you'll actually owe each month before you borrow. Federal loans shown here — always exhaust grants and scholarships first.</p>
+      <div class="grid-2">
+        <div><label class="label">Total Amount You Plan to Borrow ($)</label><input id="loan-amount" class="input" type="number" placeholder="e.g. 27000"></div>
+        <div><label class="label">Interest Rate (%)</label><input id="loan-rate" class="input" type="number" placeholder="e.g. 5.50" step="0.01" value="5.50"></div>
+      </div>
+      <div class="grid-2">
+        <div>
+          <label class="label">Repayment Plan</label>
+          <select id="loan-term" class="input">
+            <option value="10">Standard — 10 years</option>
+            <option value="20">Extended — 20 years</option>
+            <option value="25">Extended — 25 years</option>
+          </select>
+        </div>
+        <div><label class="label">Expected Starting Salary After College ($)</label><input id="loan-salary" class="input" type="number" placeholder="e.g. 45000"></div>
+      </div>
+      <div style="margin-bottom:16px;">
+        <label class="label">Quick loan presets (common federal amounts)</label>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="quick-chip qc-gray" onclick="document.getElementById('loan-amount').value=27000">$27k (4yr avg)</button>
+          <button class="quick-chip qc-gray" onclick="document.getElementById('loan-amount').value=37000">$37k (typical)</button>
+          <button class="quick-chip qc-gray" onclick="document.getElementById('loan-amount').value=57000">$57k (grad)</button>
+          <button class="quick-chip qc-blue" onclick="document.getElementById('loan-rate').value=5.50">5.50% (current fed)</button>
+          <button class="quick-chip qc-blue" onclick="document.getElementById('loan-rate').value=6.54">6.54% (unsub)</button>
+        </div>
+      </div>
+      <button class="btn btn-primary btn-full" onclick="calcLoans()">Show My Repayment Picture 🏦</button>
+      <div class="result" id="loan-result">
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:10px;">
+          <div><div class="big-num" id="loan-monthly" style="font-size:40px;">$0</div><div class="result-label">Monthly payment</div></div>
+          <div><div class="big-num blue" id="loan-total" style="font-size:40px;">$0</div><div class="result-label">Total you'll repay</div></div>
+          <div><div class="big-num" id="loan-interest" style="font-size:40px;color:var(--red);">$0</div><div class="result-label">Interest paid on top</div></div>
+        </div>
+        <div class="insight-box" id="loan-insight" style="text-align:left;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ TAB 13 · COLLEGE LIST BUILDER ═══ -->
+  <div id="section-collegelist" class="tab-content fade hidden">
+    <div class="card">
+      <h2>🗂️ College List Builder</h2>
+      <p class="subtitle">Organize your schools into Safety, Match, and Reach. Aim for 2–3 in each category for a balanced list.</p>
+      <div id="clRows" class="rows-wrap"></div>
+      <div class="btn-row">
+        <button class="btn btn-outline" onclick="addCLRow()">+ Add a School</button>
+        <button class="btn btn-primary" onclick="calcCL()">Review My List 🗂️</button>
+      </div>
+      <div class="result" id="cl-result">
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:16px;text-align:center;">
+          <div style="background:#dcfce7;border-radius:14px;padding:16px;">
+            <div style="font-family:'Syne',sans-serif;font-size:36px;font-weight:800;color:#15803d;" id="cl-safety-count">0</div>
+            <div style="font-size:13px;color:#166534;font-weight:600;">✅ Safety Schools</div>
+          </div>
+          <div style="background:#dbeafe;border-radius:14px;padding:16px;">
+            <div style="font-family:'Syne',sans-serif;font-size:36px;font-weight:800;color:#1d4ed8;" id="cl-match-count">0</div>
+            <div style="font-size:13px;color:#1e40af;font-weight:600;">🎯 Match Schools</div>
+          </div>
+          <div style="background:#fef3c7;border-radius:14px;padding:16px;">
+            <div style="font-family:'Syne',sans-serif;font-size:36px;font-weight:800;color:#b45309;" id="cl-reach-count">0</div>
+            <div style="font-size:13px;color:#92400e;font-weight:600;">🚀 Reach Schools</div>
+          </div>
+        </div>
+        <div class="insight-box" id="cl-insight" style="text-align:left;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ TAB 14 · SENIOR YEAR CHECKLIST ═══ -->
+  <div id="section-senioryear" class="tab-content fade hidden">
+    <div class="card">
+      <h2>🎓 Senior Year Checklist</h2>
+      <p class="subtitle">Every major milestone from the start of senior year through graduation. Check things off as you go!</p>
+      <div id="sy-checklist"></div>
+      <div class="result" id="sy-result" style="display:block;margin-top:18px;">
+        <div class="big-num blue" id="sy-progress-val" style="font-size:48px;">0%</div>
+        <div class="result-label">Senior year complete</div>
+        <div class="progress-track"><div class="progress-fill" id="sy-bar"></div></div>
+        <div class="insight-box" id="sy-insight" style="margin-top:14px;text-align:center;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TRUST CARDS -->
   <div class="trust no-print">
     <div class="trust-card">
       <h3>🎓 Regular, Honors & AP</h3>
@@ -840,7 +1040,9 @@ body.dark .progress-track { background: #334155; }
     <strong>Heads up:</strong> This tool gives you estimates based on common grading frameworks, including weighted scales and general NCAA guidelines. It's meant to help you plan and set goals — not replace official records. Always confirm your actual GPA, credits, and eligibility with your school counselor or registrar.
   </footer>
 
-</div><script>
+</div><!-- /container -->
+
+<script>
 /* ── CONFIG ── */
 const GRADE_PTS = { A:4.0,"A-":3.7,"B+":3.3,B:3.0,"B-":2.7,"C+":2.3,C:2.0,D:1.0,F:0.0 };
 let scale = "unweighted", diff = "easy";
@@ -853,14 +1055,25 @@ const EXPLAINERS = {
   credits: "<strong>📜 Graduation Credits:</strong> Enter how many credits you've earned in each subject. You'll instantly see which areas you've completed and how many more you need to graduate.",
   study: "<strong>📅 Study Planner:</strong> Enter your exam date and how many hours you can study each day. Based on class difficulty and your current grade, we'll map out a daily study schedule.",
   semester: "<strong>📈 Compare Terms:</strong> Plug in your GPA from two different semesters or quarters to see how your performance has changed — and what direction you're heading.",
-  milestone: "<strong>🚀 Project Planner:</strong> Got a big project, paper, or assignment coming up? Enter the name and due date and we'll break it into 4 clear steps with target dates — then drag each step across the board as you make progress."
+  milestone: "<strong>🚀 Project Planner:</strong> Got a big project, paper, or assignment coming up? Enter the name and due date and we'll break it into 4 clear steps with target dates — then drag each step across the board as you make progress.",
+  apptracker: "<strong>🏫 College Application Tracker:</strong> Add every school you're applying to. Track the deadline, application status, essay status, and any notes — all in one place so nothing slips through the cracks.",
+  scholarships: "<strong>💸 Scholarship Checklist:</strong> Log every scholarship you're applying for. Track the amount, deadline, whether you've submitted, and notes. Never lose track of free money!",
+  fafsa: "<strong>📋 FAFSA & Financial Aid Estimator:</strong> Enter your family's basic financial info to estimate your Expected Family Contribution (EFC) and compare financial aid offers from different schools.",
+  loans: "<strong>🏦 Student Loan Estimator:</strong> See your estimated monthly payment and total repayment amount before you borrow. Understand what you're committing to.",
+  collegelist: "<strong>🗂️ College List Builder:</strong> Organize your schools into Safety, Match, and Reach categories. Add notes on location, major, and why you like each one.",
+  senioryear: "<strong>🎓 Senior Year Checklist:</strong> Every important milestone from fall of senior year through graduation — test dates, application deadlines, financial aid, and more. Check things off as you go."
 };
 
 document.addEventListener("DOMContentLoaded", () => {
   for(let i=0;i<4;i++) addRow();
   for(let i=0;i<3;i++) addClassRow();
+  for(let i=0;i<3;i++) addAppRow();
+  for(let i=0;i<3;i++) addScholRow();
+  for(let i=0;i<3;i++) addCLRow();
+  addAidRow();
   loadStreak();
   calcGrad();
+  buildSYChecklist();
   setExplainer("gpa");
 });
 
@@ -981,7 +1194,7 @@ function clearGPA(){
   for(let i=0;i<4;i++) addRow();
 }
 
-/* ── TAB 2 · FINAL GRADE ── */
+/* ══════════════ TAB 2 · FINAL GRADE ══════════════ */
 function setDesired(v){ document.getElementById("desiredGrade").value=v; }
 function setWeight(v){ document.getElementById("finalWorth").value=v; }
 
@@ -1015,7 +1228,7 @@ function calcFinal(){
   document.getElementById("final-result").style.display="block";
 }
 
-/* ── TAB 3 · CLASS GRADE ── */
+/* ══════════════ TAB 3 · CLASS GRADE ══════════════ */
 function addClassRow(){
   const c=document.getElementById("classRows");
   const d=document.createElement("div");
@@ -1052,7 +1265,7 @@ function clearClass(){
   for(let i=0;i<3;i++) addClassRow();
 }
 
-/* ── TAB 4 · GPA GOAL ── */
+/* ══════════════ TAB 4 · GPA GOAL ══════════════ */
 function calcGoal(){
   const curGpa=parseFloat(document.getElementById("goal-cur-gpa").value);
   const curCred=parseFloat(document.getElementById("goal-cur-cred").value);
@@ -1078,7 +1291,7 @@ function calcGoal(){
   document.getElementById("goal-result").style.display="block";
 }
 
-/* ── TAB 5 · GRADUATION CREDITS ── */
+/* ══════════════ TAB 5 · GRADUATION CREDITS ══════════════ */
 function calcGrad(){
   const TARGETS={eng:4.0,math:4.0,sci:3.0,soc:3.0,elec:8.0};
   let earned=0, total=22.0;
@@ -1095,7 +1308,7 @@ function calcGrad(){
   else { ins.innerHTML=`You still need <b>${(total-earned).toFixed(1)} more credits</b> across any incomplete areas.`; }
 }
 
-/* ── TAB 6 · STUDY PLANNER ── */
+/* ══════════════ TAB 6 · STUDY PLANNER ══════════════ */
 function setDiff(d){
   diff=d;
   document.querySelectorAll("#diff-group .chip").forEach(b=>b.classList.remove("on"));
@@ -1137,7 +1350,7 @@ function genStudyPlan(){
   document.getElementById("study-result").style.display="block";
 }
 
-/* ── TAB 7 · COMPARE TERMS ── */
+/* ══════════════ TAB 7 · COMPARE TERMS ══════════════ */
 function compareSems(){
   const s1=parseFloat(document.getElementById("sem1").value);
   const s2=parseFloat(document.getElementById("sem2").value);
@@ -1151,7 +1364,7 @@ function compareSems(){
   document.getElementById("sem-result").style.display="block";
 }
 
-/* ── TAB 8 · MILESTONE PLANNER ── */
+/* ══════════════ TAB 8 · MILESTONE PLANNER ══════════════ */
 const MS_TASKS = [
   { step:1, title:"Find Your Sources", desc:"Locate at least 5 reliable sources. Write down the title, author, and where you found each one.", priority:"high" },
   { step:2, title:"Write an Outline", desc:"Create a simple outline with your main argument and 3–5 key points. Bullet points are fine!", priority:"med" },
@@ -1214,6 +1427,270 @@ function msUpdateCounts(){
   ["todo","doing","done"].forEach(s => {
     document.getElementById("ms-cnt-"+s).textContent = document.getElementById("ms-"+s).children.length;
   });
+}
+
+/* ══════════════ TAB 9 · COLLEGE APP TRACKER ══════════════ */
+function addAppRow(){
+  const c=document.getElementById("appRows");
+  const d=document.createElement("div");
+  d.style.cssText="display:grid;grid-template-columns:2fr 1.2fr 1fr 1fr 1fr auto;gap:10px;align-items:center;";
+  d.innerHTML=`
+    <input class="input app-school" type="text" placeholder="e.g. University of Michigan">
+    <input class="input app-deadline" type="date">
+    <select class="input app-status">
+      <option value="not-started">Not Started</option>
+      <option value="in-progress">In Progress</option>
+      <option value="submitted">Submitted ✅</option>
+      <option value="deferred">Deferred</option>
+      <option value="waitlisted">Waitlisted</option>
+    </select>
+    <select class="input app-essays">
+      <option value="not-started">Not Started</option>
+      <option value="drafting">Drafting</option>
+      <option value="revising">Revising</option>
+      <option value="done">Done ✅</option>
+    </select>
+    <select class="input app-decision">
+      <option value="pending">Pending</option>
+      <option value="accepted">Accepted 🎉</option>
+      <option value="rejected">Rejected</option>
+      <option value="waitlisted">Waitlisted</option>
+    </select>
+    <button class="del-btn" onclick="this.parentElement.remove();calcApps()">✕</button>`;
+  c.appendChild(d);
+}
+
+function calcApps(){
+  const schools=document.querySelectorAll(".app-school");
+  const statuses=document.querySelectorAll(".app-status");
+  const decisions=document.querySelectorAll(".app-decision");
+  let submitted=0,accepted=0,total=schools.length;
+  for(let i=0;i<total;i++){
+    if(statuses[i].value==="submitted") submitted++;
+    if(decisions[i].value==="accepted") accepted++;
+  }
+  const ins=document.getElementById("app-insight");
+  ins.innerHTML=`You have <b>${total} school${total!==1?'s':''}</b> on your list. <b>${submitted}</b> submitted, <b>${accepted}</b> acceptance${accepted!==1?'s':''} so far.`
+    +(total>0&&submitted===total?"<br>🎉 All applications submitted! Now sit tight.":"")
+    +(accepted>0?`<br>✅ You got in somewhere — congratulations!`:"");
+  document.getElementById("app-result").style.display="block";
+}
+
+/* ══════════════ TAB 10 · SCHOLARSHIP TRACKER ══════════════ */
+function addScholRow(){
+  const c=document.getElementById("scholRows");
+  const d=document.createElement("div");
+  d.style.cssText="display:grid;grid-template-columns:2fr 1fr 1.2fr 1fr 1fr auto;gap:10px;align-items:center;";
+  d.innerHTML=`
+    <input class="input schol-name" type="text" placeholder="e.g. Gates Scholarship">
+    <input class="input schol-amount" type="number" placeholder="e.g. 5000">
+    <input class="input schol-deadline" type="date">
+    <select class="input schol-status">
+      <option value="not-started">Not Started</option>
+      <option value="in-progress">In Progress</option>
+      <option value="submitted">Submitted ✅</option>
+      <option value="awarded">Awarded 🏆</option>
+      <option value="denied">Not Awarded</option>
+    </select>
+    <input class="input schol-notes" type="text" placeholder="Notes...">
+    <button class="del-btn" onclick="this.parentElement.remove();calcSchols()">✕</button>`;
+  c.appendChild(d);
+}
+
+function calcSchols(){
+  const amounts=document.querySelectorAll(".schol-amount");
+  const statuses=document.querySelectorAll(".schol-status");
+  let total=0,submitted=0,awarded=0;
+  for(let i=0;i<amounts.length;i++){
+    const amt=parseFloat(amounts[i].value)||0;
+    total+=amt;
+    if(statuses[i].value==="submitted"||statuses[i].value==="awarded") submitted+=amt;
+    if(statuses[i].value==="awarded") awarded+=amt;
+  }
+  document.getElementById("scholTotalVal").textContent="$"+total.toLocaleString();
+  document.getElementById("scholSubmitVal").textContent="$"+submitted.toLocaleString();
+  const ins=document.getElementById("schol-insight");
+  ins.innerHTML=`You're tracking <b>$${total.toLocaleString()}</b> in potential scholarships.`
+    +(awarded>0?` <b>$${awarded.toLocaleString()}</b> already awarded — great work! 🏆`:"")
+    +(total===0?"<br>💡 Start logging scholarships — even $500 awards add up fast!":"");
+  document.getElementById("schol-result").style.display="block";
+}
+
+/* ══════════════ TAB 11 · FAFSA ESTIMATOR ══════════════ */
+let depStatus="dependent";
+function setDep(s){
+  depStatus=s;
+  document.querySelectorAll("#dep-group .chip").forEach(b=>b.classList.remove("on"));
+  document.getElementById("dep-"+s).classList.add("on");
+}
+
+function calcFAFSA(){
+  const agi=parseFloat(document.getElementById("fafsa-agi").value)||0;
+  const assets=parseFloat(document.getElementById("fafsa-assets").value)||0;
+  const household=parseInt(document.getElementById("fafsa-household").value)||4;
+  const inCollege=parseInt(document.getElementById("fafsa-incollege").value)||1;
+  const studentIncome=parseFloat(document.getElementById("fafsa-studentincome").value)||0;
+
+  // Simplified EFC estimation (not official — illustrative only)
+  let incomeProtection=[0,0,17550,22040,27210,31980,37570][Math.min(household,6)]||37570;
+  let availableIncome=Math.max(0,agi-incomeProtection);
+  let assetContrib=Math.max(0,assets*0.12);
+  let studentContrib=Math.max(0,studentIncome*0.5);
+  let efc=Math.round((availableIncome*0.22+assetContrib+studentContrib)/Math.max(1,inCollege));
+  if(depStatus==="independent") efc=Math.round((agi*0.22+assets*0.2)/1);
+
+  const avgCost=55000; // avg total cost of attendance
+  const need=Math.max(0,avgCost-efc);
+
+  document.getElementById("fafsa-efc").textContent="$"+efc.toLocaleString();
+  document.getElementById("fafsa-need").textContent="$"+need.toLocaleString();
+
+  let msg=`Your estimated EFC is <b>$${efc.toLocaleString()}</b> — this is roughly what the government expects your family to contribute per year.`;
+  if(efc===0) msg+=" <b>You likely qualify for maximum federal aid including Pell Grants!</b>";
+  else if(efc<6000) msg+=" You likely qualify for <b>Pell Grant</b> aid.";
+  else if(efc<20000) msg+=" You may qualify for some need-based aid depending on the school.";
+  else msg+=" At this EFC, need-based aid may be limited — focus on merit scholarships and the Scholarship tab.";
+  msg+="<br><br>⚠️ <em>This is a rough estimate. Use each school's Net Price Calculator for accurate numbers, and always file the real FAFSA at studentaid.gov.</em>";
+  document.getElementById("fafsa-insight").innerHTML=msg;
+  document.getElementById("fafsa-result").style.display="block";
+}
+
+function addAidRow(){
+  const c=document.getElementById("aidCompareRows");
+  const d=document.createElement("div");
+  d.style.cssText="display:grid;grid-template-columns:2fr 1fr 1fr 1fr auto;gap:10px;align-items:center;margin-bottom:10px;";
+  d.innerHTML=`
+    <input class="input" type="text" placeholder="School name">
+    <input class="input aid-cost" type="number" placeholder="Total cost $">
+    <input class="input aid-grants" type="number" placeholder="Grants/scholarships $">
+    <div id="aid-net-${Date.now()}" style="font-weight:700;font-size:15px;color:var(--green);text-align:center;">—</div>
+    <button class="del-btn" onclick="this.parentElement.remove()">✕</button>`;
+  const costEl=d.querySelector(".aid-cost");
+  const grantEl=d.querySelector(".aid-grants");
+  const netEl=d.querySelector("div[id^='aid-net']");
+  const recalc=()=>{ const net=(parseFloat(costEl.value)||0)-(parseFloat(grantEl.value)||0); netEl.textContent=net>0?"$"+net.toLocaleString()+"  net":"—"; };
+  costEl.addEventListener("input",recalc); grantEl.addEventListener("input",recalc);
+  c.appendChild(d);
+}
+
+/* ══════════════ TAB 12 · LOAN ESTIMATOR ══════════════ */
+function calcLoans(){
+  const P=parseFloat(document.getElementById("loan-amount").value)||0;
+  const annualRate=parseFloat(document.getElementById("loan-rate").value)||5.5;
+  const years=parseInt(document.getElementById("loan-term").value)||10;
+  const salary=parseFloat(document.getElementById("loan-salary").value)||0;
+
+  if(P<=0){ alert("Please enter a loan amount."); return; }
+
+  const r=annualRate/100/12;
+  const n=years*12;
+  const monthly=r>0 ? P*(r*Math.pow(1+r,n))/(Math.pow(1+r,n)-1) : P/n;
+  const totalPay=monthly*n;
+  const interest=totalPay-P;
+
+  document.getElementById("loan-monthly").textContent="$"+Math.round(monthly).toLocaleString();
+  document.getElementById("loan-total").textContent="$"+Math.round(totalPay).toLocaleString();
+  document.getElementById("loan-interest").textContent="$"+Math.round(interest).toLocaleString();
+
+  let msg=`On a <b>${years}-year plan</b>, you'll pay <b>$${Math.round(monthly).toLocaleString()}/month</b> and a total of <b>$${Math.round(totalPay).toLocaleString()}</b> — that's <b>$${Math.round(interest).toLocaleString()}</b> in interest on top of what you borrowed.`;
+  if(salary>0){
+    const annualPay=monthly*12;
+    const pct=((annualPay/salary)*100).toFixed(1);
+    msg+=`<br><br>With a <b>$${salary.toLocaleString()}</b> starting salary, your loan payments would be about <b>${pct}%</b> of your gross income.`;
+    if(parseFloat(pct)>15) msg+=" ⚠️ <b>That's a heavy burden.</b> Try to keep loan payments under 10–15% of income. Consider borrowing less or choosing a lower-cost school.";
+    else msg+=" ✅ <b>That's manageable</b> — under 15% of income is a healthy range.";
+  }
+  msg+="<br><br>💡 Always borrow federal loans before private. Exhaust grants, scholarships, and work-study first.";
+  document.getElementById("loan-insight").innerHTML=msg;
+  document.getElementById("loan-result").style.display="block";
+}
+
+/* ══════════════ TAB 13 · COLLEGE LIST BUILDER ══════════════ */
+function addCLRow(){
+  const c=document.getElementById("clRows");
+  const d=document.createElement("div");
+  d.style.cssText="display:grid;grid-template-columns:2fr 1fr 1fr 1.5fr auto;gap:10px;align-items:center;";
+  d.innerHTML=`
+    <input class="input" type="text" placeholder="College / University name">
+    <select class="input cl-cat">
+      <option value="safety">✅ Safety</option>
+      <option value="match">🎯 Match</option>
+      <option value="reach">🚀 Reach</option>
+    </select>
+    <input class="input" type="text" placeholder="Intended major">
+    <input class="input" type="text" placeholder="Why I like it...">
+    <button class="del-btn" onclick="this.parentElement.remove();calcCL()">✕</button>`;
+  c.appendChild(d);
+}
+
+function calcCL(){
+  const cats=document.querySelectorAll(".cl-cat");
+  let safety=0,match=0,reach=0;
+  cats.forEach(c=>{ if(c.value==="safety") safety++; else if(c.value==="match") match++; else reach++; });
+  document.getElementById("cl-safety-count").textContent=safety;
+  document.getElementById("cl-match-count").textContent=match;
+  document.getElementById("cl-reach-count").textContent=reach;
+  const total=safety+match+reach;
+  let msg=`You have <b>${total} school${total!==1?'s':''}</b> on your list.`;
+  if(total===0) msg="Add some schools to get started!";
+  else{
+    if(safety<2) msg+=" ⚠️ Add at least <b>2 safety schools</b> where you're confident you'll get in.";
+    if(match<2) msg+=" 🎯 Aim for <b>2–3 match schools</b> where your stats are in the middle of their range.";
+    if(reach<1) msg+=" 🚀 Consider adding a <b>reach school</b> — dream big!";
+    if(safety>=2&&match>=2&&reach>=1) msg+=" ✅ <b>Great balance!</b> You have a solid spread of safety, match, and reach schools.";
+  }
+  document.getElementById("cl-insight").innerHTML=msg;
+  document.getElementById("cl-result").style.display="block";
+}
+
+/* ══════════════ TAB 14 · SENIOR YEAR CHECKLIST ══════════════ */
+const SY_ITEMS=[
+  {phase:"📚 Fall — Academic",items:["Request letters of recommendation from teachers","Register for SAT/ACT (if retaking)","Start working on Common App or coalition app","Write personal statement first draft","Request official high school transcript"]},
+  {phase:"🏫 Fall — Applications",items:["Research and finalize your college list","Submit Early Decision / Early Action apps (Nov 1–15 deadlines)","Submit Regular Decision apps (Jan 1 deadlines)","Apply for CSS Profile if needed (private schools)","Complete any supplemental essays"]},
+  {phase:"💰 Financial Aid",items:["File FAFSA (opens Oct 1 — file as early as possible)","File CSS Profile if required","Compare financial aid award letters","Request fee waivers if eligible","Research and apply for scholarships (see Scholarship tab)"]},
+  {phase:"🌟 Spring — Decisions",items:["Review all acceptance letters","Compare financial aid offers","Visit your top choice schools (if possible)","Make your final decision by May 1","Send enrollment deposit to your chosen school","Decline offers from other schools (be courteous!)"]},
+  {phase:"🎓 Graduation & Beyond",items:["Make sure you're on track to graduate (see Credits tab)","Order cap and gown","Register for freshman orientation","Set up your college email and student portal","Apply for housing / roommate matching","Celebrate! 🎉"]}
+];
+
+function buildSYChecklist(){
+  const container=document.getElementById("sy-checklist");
+  container.innerHTML="";
+  SY_ITEMS.forEach((phase,pi)=>{
+    const section=document.createElement("div");
+    section.style.marginBottom="20px";
+    const heading=document.createElement("div");
+    heading.style.cssText="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;margin-bottom:10px;color:var(--text);";
+    heading.textContent=phase.phase;
+    section.appendChild(heading);
+    phase.items.forEach((item,ii)=>{
+      const id=`sy-${pi}-${ii}`;
+      const row=document.createElement("label");
+      row.style.cssText="display:flex;align-items:center;gap:12px;padding:11px 14px;background:var(--bg);border:1.5px solid var(--border);border-radius:12px;margin-bottom:8px;cursor:pointer;transition:background .15s;font-size:14px;";
+      row.htmlFor=id;
+      row.innerHTML=`<input type="checkbox" id="${id}" style="width:18px;height:18px;accent-color:var(--accent);flex-shrink:0;" onchange="updateSYProgress()"><span>${item}</span>`;
+      section.appendChild(row);
+    });
+    container.appendChild(section);
+  });
+  updateSYProgress();
+}
+
+function updateSYProgress(){
+  const all=document.querySelectorAll("#sy-checklist input[type=checkbox]");
+  const checked=[...all].filter(c=>c.checked).length;
+  const pct=Math.round((checked/all.length)*100);
+  document.getElementById("sy-progress-val").textContent=pct+"%";
+  document.getElementById("sy-bar").style.width=pct+"%";
+  let msg="";
+  if(pct===0) msg="Check off items as you complete them — you've got this! 💪";
+  else if(pct<25) msg="Great start! Keep chipping away at the list.";
+  else if(pct<50) msg="You're making real progress — stay consistent!";
+  else if(pct<75) msg="Over halfway there! The finish line is in sight.";
+  else if(pct<100) msg="Almost done — just a few things left!";
+  else msg="🎉 <b>You've completed every item — congrats, graduate!</b>";
+  document.getElementById("sy-insight").innerHTML=`<b>${checked} of ${all.length}</b> tasks complete. ${msg}`;
+  // highlight checked rows
+  all.forEach(cb=>{ const row=cb.parentElement; row.style.background=cb.checked?"#f0fdf4":""; row.style.borderColor=cb.checked?"#86efac":""; });
 }
 
 function toggleDark(){ document.body.classList.toggle("dark"); }
