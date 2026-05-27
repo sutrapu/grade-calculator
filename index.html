@@ -106,42 +106,64 @@ body {
   cursor: pointer;
 }
 
+
 /* ── LAYOUT ── */
-.container {
-  max-width: 1100px;
+.page-body {
+  max-width: 1300px;
   margin: -80px auto 60px;
   padding: 0 20px;
   position: relative;
   z-index: 10;
+  display: grid;
+  grid-template-columns: 230px 1fr;
+  gap: 20px;
+  align-items: start;
 }
 
-/* ── TABS ── */
-.tabs {
+/* ── SIDEBAR ── */
+.sidebar {
   background: #1a1f36;
+  border-radius: 20px;
   padding: 10px;
-  border-radius: 18px;
-  display: flex;
-  gap: 6px;
-  overflow-x: auto;
-  margin-bottom: 14px;
-  scrollbar-width: none;
+  position: sticky;
+  top: 20px;
 }
-.tabs::-webkit-scrollbar { display: none; }
+.sidebar-group-label {
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #475569;
+  padding: 10px 12px 5px;
+}
+.sidebar-divider {
+  height: 1px;
+  background: #2d3748;
+  margin: 6px 4px;
+}
 .tab-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
   border: none;
   background: transparent;
   color: #94a3b8;
-  padding: 10px 16px;
+  padding: 10px 13px;
   border-radius: 12px;
   cursor: pointer;
   font-family: 'DM Sans', sans-serif;
   font-weight: 600;
-  font-size: 13.5px;
-  white-space: nowrap;
+  font-size: 13px;
+  text-align: left;
   transition: all 0.2s;
 }
+.tab-btn .ti { font-size: 15px; flex-shrink: 0; }
 .tab-btn.active { background: white; color: #1a1f36; }
 .tab-btn:hover:not(.active) { color: white; background: rgba(255,255,255,0.1); }
+
+/* ── MAIN CONTENT ── */
+.main-content { min-width: 0; }
 
 /* ── EXPLAINER BANNER ── */
 .explainer {
@@ -154,6 +176,15 @@ body {
   line-height: 1.55;
   margin-bottom: 20px;
 }
+
+/* ── MOBILE ── */
+@media (max-width: 860px) {
+  .page-body { grid-template-columns: 1fr; margin-top: -50px; }
+  .sidebar { position: static; display: flex; flex-wrap: wrap; gap: 4px; }
+  .sidebar-group-label, .sidebar-divider { display: none; }
+  .tab-btn { flex: 0 0 auto; padding: 8px 11px; font-size: 12px; }
+}
+
 
 /* ── CARD ── */
 .card {
@@ -443,8 +474,8 @@ body.dark .progress-track { background: #334155; }
 }
 
 @media print {
-  .no-print, .hero-actions, .tabs, .explainer, .btn-row, .btn-danger, .del-btn, .disclaimer { display: none !important; }
-  .container { margin-top: 0; }
+  .no-print, .hero-actions, .sidebar, .explainer, .btn-row, .btn-danger, .del-btn, .disclaimer { display: none !important; }
+  .page-body { display: block; margin-top: 0; }
   .card { box-shadow: none; padding: 0; margin-bottom: 36px; }
   .result { display: block !important; background: none; border: none; }
 }
@@ -465,26 +496,35 @@ body.dark .progress-track { background: #334155; }
   </div>
 </section>
 
-<div class="container">
+<div class="page-body">
 
-  <!-- TABS -->
-  <div class="tabs no-print">
-    <button class="tab-btn active" onclick="switchTab('gpa',this)">📊 GPA Calculator</button>
-    <button class="tab-btn" onclick="switchTab('final',this)">🎯 Final Grade</button>
-    <button class="tab-btn" onclick="switchTab('class',this)">📝 Class Grade</button>
-    <button class="tab-btn" onclick="switchTab('goal',this)">🏆 GPA Goal</button>
-    <button class="tab-btn" onclick="switchTab('credits',this)">📜 Graduation Credits</button>
-    <button class="tab-btn" onclick="switchTab('study',this)">📅 Study Planner</button>
-    <button class="tab-btn" onclick="switchTab('semester',this)">📈 Compare Terms</button>
-    <button class="tab-btn" onclick="switchTab('milestone',this)">🚀 Project Planner</button>
-    <button class="tab-btn" onclick="switchTab('apptracker',this)">🏫 College Apps</button>
-    <button class="tab-btn" onclick="switchTab('scholarships',this)">💸 Scholarships</button>
-    <button class="tab-btn" onclick="switchTab('fafsa',this)">📋 FAFSA / Aid</button>
-    <button class="tab-btn" onclick="switchTab('loans',this)">🏦 Loan Estimator</button>
-    <button class="tab-btn" onclick="switchTab('collegelist',this)">🗂️ College List</button>
-    <button class="tab-btn" onclick="switchTab('senioryear',this)">🎓 Senior Checklist</button>
-  </div>
+  <!-- SIDEBAR NAV -->
+  <nav class="sidebar no-print">
+    <div class="sidebar-group-label">📚 Academics</div>
+    <button class="tab-btn active" onclick="switchTab('gpa',this)"><span class="ti">📊</span> GPA Calculator</button>
+    <button class="tab-btn" onclick="switchTab('final',this)"><span class="ti">🎯</span> Final Grade</button>
+    <button class="tab-btn" onclick="switchTab('class',this)"><span class="ti">📝</span> Class Grade</button>
+    <button class="tab-btn" onclick="switchTab('goal',this)"><span class="ti">🏆</span> GPA Goal</button>
+    <button class="tab-btn" onclick="switchTab('credits',this)"><span class="ti">📜</span> Graduation Credits</button>
+    <button class="tab-btn" onclick="switchTab('semester',this)"><span class="ti">📈</span> Compare Terms</button>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-group-label">🗓️ Planning</div>
+    <button class="tab-btn" onclick="switchTab('study',this)"><span class="ti">📅</span> Study Planner</button>
+    <button class="tab-btn" onclick="switchTab('milestone',this)"><span class="ti">🚀</span> Project Planner</button>
+    <button class="tab-btn" onclick="switchTab('senioryear',this)"><span class="ti">🎓</span> Senior Checklist</button>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-group-label">🏫 College</div>
+    <button class="tab-btn" onclick="switchTab('collegelist',this)"><span class="ti">🗂️</span> College List</button>
+    <button class="tab-btn" onclick="switchTab('apptracker',this)"><span class="ti">🏫</span> College Apps</button>
+    <button class="tab-btn" onclick="switchTab('scholarships',this)"><span class="ti">💸</span> Scholarships</button>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-group-label">💰 Finance</div>
+    <button class="tab-btn" onclick="switchTab('fafsa',this)"><span class="ti">📋</span> FAFSA / Aid</button>
+    <button class="tab-btn" onclick="switchTab('loans',this)"><span class="ti">🏦</span> Loan Estimator</button>
+  </nav>
 
+  <!-- MAIN CONTENT -->
+  <div class="main-content">
   <div id="explainerBanner" class="explainer no-print"></div>
 
   <!-- ═══════════════════════════════════════════════ -->
@@ -1040,7 +1080,8 @@ body.dark .progress-track { background: #334155; }
     <strong>Heads up:</strong> This tool gives you estimates based on common grading frameworks, including weighted scales and general NCAA guidelines. It's meant to help you plan and set goals — not replace official records. Always confirm your actual GPA, credits, and eligibility with your school counselor or registrar.
   </footer>
 
-</div><!-- /container -->
+  </div><!-- /main-content -->
+</div><!-- /page-body -->
 
 <script>
 /* ── CONFIG ── */
