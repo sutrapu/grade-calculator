@@ -496,6 +496,9 @@ body.dark .progress-track { background: #334155; }
     🔥 Study Streak: <span id="streakCount">0</span> days
     <button onclick="bumpStreak()">+ Day</button>
   </div>
+  <div class="streak-pill" style="margin-left: 10px;">
+    👁️ Total Visits: <span id="visit-count">Loading...</span>
+  </div>
 </section>
 
 <div class="page-body">
@@ -1737,6 +1740,21 @@ function updateSYProgress(){
 }
 
 function toggleDark(){ document.body.classList.toggle("dark"); }
+</script>
+  <script>
+  fetch('https://abacus.jasoncameron.dev/hit/sutrapu-grade-calculator/visits')
+    .then(response => response.json())
+    .then(data => {
+      const visitElement = document.getElementById('visit-count');
+      if (visitElement) {
+        visitElement.innerText = data.value.toLocaleString();
+      }
+    })
+    .catch(err => {
+      console.error('Error fetching visitor stats:', err);
+      const visitElement = document.getElementById('visit-count');
+      if (visitElement) visitElement.innerText = 'Unavailable';
+    });
 </script>
 </body>
 </html>
